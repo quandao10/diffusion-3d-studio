@@ -76,13 +76,15 @@ bash scripts/serve_public.sh     # server (PUBLIC=1, 127.0.0.1 only) + Cloudflar
 bash scripts/stop_public.sh      # stop both
 ```
 
-* **Open access, limited jobs:** anyone can open the site. **One job runs at a time** (`MAX_PARALLEL=1`, on an idle GPU:
-  no process of anyone on it, compute or graphics, plus memory < 1 GB and utilisation < 10 %); other prompts wait in a FIFO queue. Before submitting, visitors see whether the
-  GPU is free or how many jobs are ahead (“Join queue (#N)”); after submitting they see their position until it starts.
-  `MAX_PARALLEL=0` = one job per idle GPU, `GPUS=4,5,6,7` restricts the pool.
-* **One job per browser session** (random id in `sessionStorage`, sent as `X-Studio-Session`), no per-IP limits (so a
-  class on one campus network is not blocked). Prompts ≤ 120 characters plus a word blocklist (`configs/blocklist.txt`),
-  ≤ 500 SDS steps, no mesh export (~1 min per job). Queue capped at 20.
+* **Open access, GPU-bound jobs:** anyone can open the site. Jobs run in parallel, **one per GPU that has no process of
+  anyone on it** (compute or graphics; plus memory < 1 GB, utilisation < 10 %), so the number of concurrent jobs follows
+  the machine live (e.g. 4 free GPUs → up to 4 jobs). When no GPU is free, jobs wait in a FIFO queue. The header shows
+  `max jobs now · running · free GPUs · waiting`; before submitting, visitors see “N GPUs free – starts right away” or
+  “Join queue (#N)”. `MAX_PARALLEL=n` caps it, `GPUS=4,5,6,7` restricts the pool.
+* **Per session:** one job queued *or* running at a time (random id in `sessionStorage`, sent as `X-Studio-Session`);
+  when it finishes the session can generate again. No per-IP limits (a class on one campus network is not blocked).
+  Prompts ≤ 120 characters plus a word blocklist (`configs/blocklist.txt`), ≤ 500 SDS steps, no mesh export
+  (~1 min per job). Queue capped at 20.
 * **Community gallery:** every finished visitor model is saved to `results/public/` and listed in the gallery for all
   visitors (tagged “community”), so anyone can render it without re-running; the newest 150 are kept.
   `python scripts/export_static.py --with-community` also bakes them into the static GitHub Pages demo.

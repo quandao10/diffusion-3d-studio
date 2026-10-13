@@ -47,7 +47,7 @@ RUN = os.path.join(ROOT, "run")
 PUBLIC = os.environ.get("PUBLIC", "0") == "1"
 
 GPUS = [int(g) for g in os.environ["GPUS"].split(",")] if os.environ.get("GPUS") else None  # None = all GPUs
-MAX_PARALLEL = int(os.environ.get("MAX_PARALLEL", 1))  # simultaneous jobs (0 = one per idle GPU)
+MAX_PARALLEL = int(os.environ.get("MAX_PARALLEL", 0))  # simultaneous jobs (0 = one per process-free GPU, live)
 GPU_FREE_MB = int(os.environ.get("GPU_FREE_MB", 1000))    # a GPU counts as idle below this memory use ...
 GPU_FREE_UTIL = int(os.environ.get("GPU_FREE_UTIL", 10))  # ... and this utilisation (%)
 
@@ -68,7 +68,6 @@ cond = threading.Condition()
 jobs = {}                      # id -> job dict
 queue = collections.deque()    # ids waiting for a GPU
 running = {}                   # job id -> GPU index
-used_sessions = set()          # browser sessions that already submitted their one job
 
 os.makedirs(RUN, exist_ok=True)
 VISITORS = os.path.join(RUN, "visitors.json")  # salted IP hash -> submit timestamps (survives restarts)
@@ -186,15 +185,14 @@ def enqueue(job, ip, admin):
             sid = job.get("session")
             if not sid:
                 raise HTTPException(400, "Missing session - please reload the page.")
-            if sid in used_sessions:
-                raise HTTPException(429, "One job per session - this session already generated a model. Thanks for trying the studio!")
+            if any(j.get("session") == sid and j["status"] in ("queued", "running") for j in jobs.values()):
+                raise HTTPException(429, "You already have a job in progress - wait until it finishes, then you can generate another.")
             if PER_IP_TOTAL and len(history[key]) >= PER_IP_TOTAL:
                 n = f"{PER_IP_TOTAL} model" + ("s" if PER_IP_TOTAL > 1 else "")
                 raise HTTPException(429, f"Each visitor can generate {n} per {PER_IP_WINDOW_S // 3600} h - "
                                          "thanks for trying the studio! You can still explore the gallery.")
             if len(queue) >= QUEUE_MAX:
                 raise HTTPException(503, "The queue is full right now - please try again in a few minutes.")
-            used_sessions.add(sid)
             history[key].append(now)
             with open(VISITORS, "w") as f:
                 json.dump(history, f)
@@ -384,8 +382,11 @@ def queue_state():
     pool = gpu_pool()
     idle = idle_gpus()
     with cond:
+        cap = len(running) + len(idle)  # jobs the machine can run right now (our running jobs + process-free GPUs)
+        if MAX_PARALLEL:
+            cap = min(cap, MAX_PARALLEL)
         return {"running": len(running), "queued": len(queue), "gpus_total": len(pool), "gpus_idle": len(idle),
-                "max_parallel": MAX_PARALLEL}
+                "capacity": cap, "max_parallel": MAX_PARALLEL}
 
 
 @app.get("/api/job")

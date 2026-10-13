@@ -153,22 +153,18 @@ function sessionId() {
     return s;
   } catch { return (st._sid ||= Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, "0")).join("")); }
 }
-const sessionUsed = () => { try { return sessionStorage.getItem("studio.used") === "1"; } catch { return !!st._used; } };
-function markSessionUsed() { try { sessionStorage.setItem("studio.used", "1"); } catch { st._used = true; } lockGenerate(); }
+// A session may have one job queued or running; the button unlocks again when it finishes.
 function lockGenerate() {
-  if (!st.cfg.public || st.cfg.admin || !sessionUsed()) return;
-  $("#go").disabled = true;
-  $("#go").textContent = "1 job per session – used ✓";
+  if (st.polling) { $("#go").disabled = true; $("#go").textContent = "Your job is in progress…"; }
+  else { $("#go").disabled = false; if (/in progress/.test($("#go").textContent)) $("#go").textContent = "Generate 3D on GPU"; }
 }
 
 async function generate() {
   const body = { prompt: $("#prompt").value.trim(), seed: +$("#seed").value, iters: +$("#iters").value, guidance_scale: +$("#cfg").value };
   try {
     const r = await postJSON("api/generate", body, { "X-Studio-Session": sessionId() });
-    if (st.cfg.public && !st.cfg.admin) markSessionUsed();
     startJob(r.id);
   } catch (e) {
-    if (/one job per session/i.test(e.message)) markSessionUsed();
     showError(e);
   }
 }
@@ -205,7 +201,7 @@ function startJob(id) {
   st.jobId = id; st.metrics = []; st.lastSnapStep = -1; drawMetrics();
   $("#log").textContent = "";
   $("#joberr").hidden = true;
-  try { localStorage.setItem("studio.job", id); } catch { /* storage unavailable */ }
+  try { sessionStorage.setItem("studio.job", id); } catch { /* storage unavailable */ }
   poll();
 }
 
@@ -216,16 +212,16 @@ async function poll() {
     for (;;) {
       let j;
       try { j = await fetchJSON(`api/jobs/${st.jobId}`); }
-      catch { try { localStorage.removeItem("studio.job"); } catch {} break; }
+      catch { try { sessionStorage.removeItem("studio.job"); } catch {} break; }
       const active = j.status === "queued" || j.status === "running";
-      $("#go").disabled = active;
+      lockGenerate();
       $("#bench").disabled = active || !st.cfg.admin;
       $("#log").textContent = j.log.join("\n");
       $("#log").scrollTop = 1e9;
       if (j.kind === "generate") await updateGen(j);
       else if (j.rows) { showBench(j.rows); $("#jobbox").hidden = false; $("#jobstatus").textContent = active ? "benchmark" : "bench done"; }
       if (!active) {
-        try { localStorage.removeItem("studio.job"); } catch {}
+        try { sessionStorage.removeItem("studio.job"); } catch {}
         if (j.kind === "generate" && j.status === "done" && j.run) {
           if (!st.mine.some((r) => r.name === j.run.name)) st.mine.unshift({ ...j.run, mine: true });
           await loadRuns(); await selectRun(j.run.name);
@@ -284,23 +280,19 @@ async function updateGen(j) {
 function showQueueHint(q) {
   const h = $("#queuehint"), go = $("#go");
   if (st.polling) { h.hidden = true; return; }  // the visitor's own job box shows their position instead
-  if (st.cfg.public && !st.cfg.admin && sessionUsed()) {
-    h.hidden = false; h.className = "qhint free";
-    h.textContent = "This session's job is used. Every generated model stays in the Community gallery below - click any to render it.";
-    lockGenerate();
-    return;
-  }
-  const full = q.max_parallel ? q.running >= q.max_parallel : q.gpus_idle === 0;
-  const ahead = q.queued + (full ? q.running : 0);
+  const free = q.capacity - q.running;  // job slots open right now = process-free GPUs
   h.hidden = false;
-  if (!full && q.queued === 0) {
+  if (free > 0 && q.queued === 0) {
     h.className = "qhint free";
-    h.textContent = "● GPU is free - your job starts right away (about 1 minute).";
+    h.textContent = `● ${free} GPU${free > 1 ? "s" : ""} free - your job starts right away (about 1 minute).`;
     go.textContent = "Generate 3D on GPU";
   } else {
     const pos = q.queued + 1;
+    const rounds = Math.ceil(pos / Math.max(1, q.capacity));
     h.className = "qhint busy";
-    h.textContent = `● ${q.running} job running, ${q.queued} waiting - yours would be #${pos} in line (about ${Math.max(1, Math.round(ahead * 1.2))} min wait). It starts automatically.`;
+    h.textContent = q.capacity
+      ? `● All ${q.capacity} available GPU${q.capacity > 1 ? "s are" : " is"} busy, ${q.queued} waiting - yours would be #${pos} in line (about ${Math.max(1, Math.round(rounds * 1.2))} min). It starts automatically when a GPU frees up.`
+      : `● No GPU is free on the server right now - yours would be #${pos} in line and starts as soon as a GPU frees up.`;
     go.textContent = `Join queue (#${pos})`;
   }
 }
@@ -309,9 +301,7 @@ async function pollQueue() {
   for (;;) {
     try {
       const q = await fetchJSON("api/queue");
-      $("#queue").textContent = q.max_parallel
-        ? `${q.running}/${q.max_parallel} job running · ${q.queued} waiting`
-        : `${q.gpus_idle}/${q.gpus_total} GPUs free · ${q.running} running · ${q.queued} waiting`;
+      $("#queue").textContent = `max jobs now: ${q.capacity} · running ${q.running} · free GPUs ${q.gpus_idle} · waiting ${q.queued}`;
       showQueueHint(q);
     } catch { /* ignore */ }
     await sleep(3000);
@@ -348,9 +338,9 @@ window.studio = {
       $("#iters").max = st.cfg.iters[1]; $("#iters").min = st.cfg.iters[0];
       $("#bench").disabled = true; $("#bench").title = "run by the owner; measured results are shown below";
       $("#publicnote").hidden = false;
-      const slots = st.cfg.max_parallel ? `${st.cfg.max_parallel} job${st.cfg.max_parallel > 1 ? "s" : ""} at a time` : "one job per free GPU";
+      const slots = st.cfg.max_parallel ? `up to ${st.cfg.max_parallel} job${st.cfg.max_parallel > 1 ? "s" : ""} at a time` : "one job on every GPU that nobody else is using (the count above updates live)";
       const quota = st.cfg.per_visitor ? ` Each visitor can generate ${st.cfg.per_visitor} model per ${st.cfg.window_h} h.` : "";
-      $("#publicnote").textContent = `Public demo: the server runs ${slots} on an A100 (about 1 minute each); other prompts wait in a queue and start automatically.${quota} One job per session, max ${st.cfg.iters[1]} SDS steps, no mesh export. Every finished model is added to the public gallery below.`;
+      $("#publicnote").textContent = `Public demo: the server runs ${slots} (about 1 minute each on an A100); other prompts wait in a queue and start automatically.${quota} Each session can have one job in progress at a time, max ${st.cfg.iters[1]} SDS steps, no mesh export. Every finished model is added to the public gallery below.`;
     }
     pollSystem();
     pollQueue();
@@ -368,7 +358,7 @@ window.studio = {
   else { drawMetrics(); showBench([]); }
   if (st.live) {
     let id = null;
-    try { id = localStorage.getItem("studio.job"); } catch { /* storage unavailable */ }
+    try { id = sessionStorage.getItem("studio.job"); } catch { /* storage unavailable */ }
     if (id) { st.jobId = id; poll(); }
   }
 })();
