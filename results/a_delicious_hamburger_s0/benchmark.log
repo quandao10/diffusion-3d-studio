@@ -1,0 +1,15 @@
+$ CUDA_VISIBLE_DEVICES=4 /research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/bin/python scripts/benchmark_renderer.py --ply /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/a_delicious_hamburger_s0/a_delicious_hamburger_s0_model.ply --out /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/a_delicious_hamburger_s0/benchmark.csv
+Number of points at loading :  281563
+[bench] gpu=NVIDIA A100-PCIE-40GB ply=/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/a_delicious_hamburger_s0/a_delicious_hamburger_s0_model.ply base_gaussians=281563
+[bench] {"setting": "resolution", "resolution": 256, "gaussians": 281563, "frames": 120, "seconds": 0.3331, "fps": 360.2, "peak_vram_mb": 131.3, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "resolution", "resolution": 512, "gaussians": 281563, "frames": 120, "seconds": 0.3063, "fps": 391.7, "peak_vram_mb": 208.4, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "resolution", "resolution": 1024, "gaussians": 281563, "frames": 120, "seconds": 0.6366, "fps": 188.5, "peak_vram_mb": 467.3, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "resolution", "resolution": 2048, "gaussians": 281563, "frames": 120, "seconds": 1.9329, "fps": 62.1, "peak_vram_mb": 1410.5, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "resolution", "resolution": 4096, "gaussians": 281563, "frames": 120, "seconds": 6.6258, "fps": 18.1, "peak_vram_mb": 4993.3, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 281563, "frames": 120, "seconds": 0.3103, "fps": 386.7, "peak_vram_mb": 207.5, "notes": "NVIDIA A100-PCIE-40GB; base x1 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 1126252, "frames": 120, "seconds": 0.7862, "fps": 152.6, "peak_vram_mb": 728.3, "notes": "NVIDIA A100-PCIE-40GB; base x4 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 4505008, "frames": 120, "seconds": 2.5181, "fps": 47.7, "peak_vram_mb": 2810.5, "notes": "NVIDIA A100-PCIE-40GB; base x16 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 18020032, "frames": 120, "seconds": 8.9846, "fps": 13.4, "peak_vram_mb": 11127.6, "notes": "NVIDIA A100-PCIE-40GB; base x64 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 36040064, "frames": 120, "seconds": 18.2405, "fps": 6.6, "peak_vram_mb": 22221.2, "notes": "NVIDIA A100-PCIE-40GB; base x128 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 72080128, "frames": 0, "seconds": 0, "fps": 0.0, "peak_vram_mb": 13437.0, "notes": "CUDA OOM (failure point)"}
+[bench] wrote /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/a_delicious_hamburger_s0/benchmark.csv

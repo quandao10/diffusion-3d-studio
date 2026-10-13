@@ -1,0 +1,69 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@page { size: Letter; margin: 0.55in 0.6in; }
+body { font: 9.6pt/1.33 "DejaVu Sans", Arial, sans-serif; color: #111; }
+h1 { font-size: 15pt; margin: 0 0 2px; color: #1b3a5c; } .meta { color: #444; font-size: 9.2pt; margin-bottom: 6px; }
+h2 { font-size: 11.5pt; color: #1b3a5c; margin: 10px 0 4px; border-bottom: 1px solid #c9d6e3; padding-bottom: 2px; }
+p { margin: 3px 0 5px; } ul { margin: 2px 0 5px 16px; padding: 0; } li { margin: 1px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 8.8pt; margin: 4px 0 6px; }
+th, td { border: 1px solid #cfd8e2; padding: 2px 5px; text-align: left; } th { background: #eef3f8; }
+.ok { color: #0a6b3d; font-weight: 600; } .chg { color: #a05a00; font-weight: 600; } .no { color: #a01c1c; font-weight: 600; }
+.todo { background: #fff3c4; color: #7a4b00; padding: 0 3px; } img { width: 100%; } .two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.cap { font-size: 8.4pt; color: #444; margin-top: -2px; } code { font-size: 8.6pt; }
+</style></head><body>
+<h1>Assignment 3 — MVP Implementation &amp; Demo</h1>
+<div class="meta"><b>Minh Quan Dao (qd66)</b> · Interactive Diffusion-Based 3D Generation Studio · Pillars: <b>Procedural Generation + Rendering</b><br>
+Source: <span class="todo">TODO – add after upload</span> · Web demo: <span class="todo">TODO – add after upload</span> · Video: <span class="todo">TODO – add after upload</span></div>
+
+<h2>1. Plan vs. Reality</h2>
+<p><b>A2 MVP:</b> one prompt → SDS from a frozen 2D diffusion model → optimise a <b>NeRF</b> → render novel views in an interactive viewer.
+<b>Built:</b> the same diffusion-guided loop running for real on an NVIDIA A100, but the 3D representation is <b>explicit 3D Gaussians</b>
+optimised with the official DreamGaussian code (commit <code>69a3c70</code>), not a NeRF. Reason: a from-scratch SDS-NeRF needs
+long optimisation and much more debugging for a one-person project; DreamGaussian's rasterizer makes a 500-step run take ≈47 s, so I could
+iterate and build the studio, monitor and stress test around it. Upstream code is used unmodified (one build-fix include); my own work is the
+instrumentation wrapper, the WebGL2 splatting viewer, the studio server/UI, the benchmark and the capture pipeline.</p>
+<table><tr><th>A2 feature (MoSCoW)</th><th>Status</th><th>Evidence</th></tr>
+<tr><td>MUST text prompt; frozen diffusion prior; random cameras; SDS optimisation</td><td class="ok">done</td><td>SD 2.1-base fp16, CFG 100, annealed t 980→20; <code>results/*/training.log</code></td></tr>
+<tr><td>MUST NeRF + differentiable volume rendering</td><td class="chg">changed</td><td>3D Gaussians + differentiable CUDA rasterizer (DreamGaussian)</td></tr>
+<tr><td>A2 “midterm proof”: non-zero SDS gradients reach the 3D parameters</td><td class="ok">done</td><td>per-step gradient norms of position/colour/opacity/scale/rotation all &gt; 0 for all 500 steps (<code>metrics.jsonl</code>)</td></tr>
+<tr><td>MUST interactive novel-view viewer</td><td class="ok">done</td><td>own WebGL2 splat viewer (orbit/zoom, splat-scale), CUDA turntables</td></tr>
+<tr><td>SHOULD progress visualisation; seed/guidance/steps controls; save views</td><td class="ok">done</td><td>live loss/gradient/#Gaussian charts, snapshot scrubber, 8 views + MP4 per run</td></tr>
+<tr><td>COULD 3DGS; mesh extraction; several variations</td><td class="ok">done</td><td>3DGS is now core; textured OBJ via upstream export; 5 prompts</td></tr>
+<tr><td>COULD VSD comparison · stage-2 mesh refinement</td><td class="no">cut</td><td>not implemented / not run</td></tr></table>
+<table><tr><th>prompt (500 SDS steps, CFG 100, seed 0)</th><th>SDS time</th><th>total incl. mesh</th><th>final #Gaussians</th><th>peak VRAM</th></tr><tr><td>a small red mushroom house</td><td>46.5 s</td><td>123 s</td><td>311,695</td><td>4.35 GB</td></tr><tr><td>a ripe pineapple</td><td>46.3 s</td><td>103 s</td><td>293,427</td><td>4.81 GB</td></tr><tr><td>a wooden treasure chest</td><td>46.9 s</td><td>142 s</td><td>298,342</td><td>4.33 GB</td></tr><tr><td>a cute corgi puppy</td><td>46.7 s</td><td>124 s</td><td>312,254</td><td>4.34 GB</td></tr><tr><td>a delicious hamburger</td><td>45.7 s</td><td>122 s</td><td>281,563</td><td>4.31 GB</td></tr></table>
+<div class="two"><div><img src="../docs_assets/progress.png"><div class="cap">CUDA-rasterizer snapshots during SDS (“a small red mushroom house”): random 5k-Gaussian blob → steps 50/150/300 → final (312k Gaussians).</div></div>
+<div><img src="../docs_assets/gallery_row.png"><div class="cap">Novel views (45°) of the five generated objects (the hamburger was generated live in the video). Visible artefacts: soft splats, speckled over-saturated colour (CFG 100), multi-face (“Janus”) corgi.</div></div></div>
+
+<h2>2. Stress test (measured)</h2>
+<p>CUDA rasterizer, forward pass along a fixed 360° orbit, 120 frames after warm-up, synchronised timing, peak VRAM from PyTorch, dedicated
+A100 (<code>scripts/benchmark_renderer.py</code> → <code>evidence/performance.csv</code>). Count axis = each Gaussian cloned k× with jitter, at 512².</p>
+<div class="two"><table><tr><th>resolution (311,695 Gaussians)</th><th>FPS</th><th>peak VRAM</th></tr><tr><td>256²</td><td>314.7</td><td>0.14 GB</td></tr><tr><td>512²</td><td>368.2</td><td>0.22 GB</td></tr><tr><td>1024²</td><td>175.1</td><td>0.50 GB</td></tr><tr><td>2048²</td><td>57.8</td><td>1.50 GB</td></tr><tr><td>4096²</td><td>16.8</td><td>5.30 GB</td></tr></table>
+<table><tr><th>#Gaussians (512²)</th><th>FPS</th><th>peak VRAM</th></tr><tr><td>311,695</td><td>354.5</td><td>0.22 GB</td></tr><tr><td>1,246,780</td><td>144.6</td><td>0.78 GB</td></tr><tr><td>4,987,120</td><td>44.8</td><td>3.02 GB</td></tr><tr><td>19,948,480</td><td>11.7</td><td>11.97 GB</td></tr><tr><td>39,896,960</td><td>5.5</td><td>23.90 GB</td></tr><tr><td>79,793,920</td><td colspan=2><b>CUDA OOM (failure point)</b></td></tr></table></div>
+<p>The A2 viewer target (≥30 FPS) holds up to 2048² and ≈5 M Gaussians; the hard limit is memory (OOM at ≈80 M Gaussians). The browser
+viewer has its own ×1–×16 sweep in the studio, but on the server it ran on a GPU shared with another user's job, so I treat it as indicative only.</p>
+
+<h2>3. AI Utility</h2>
+<ul>
+<li><b>Runtime AI (diffusion prior):</b> works as planned: frozen SD 2.1-base supplies every gradient; no training of the diffusion model.
+The original <code>stabilityai</code> repo now returns HTTP 401, so I used a mirror of the same weights (documented).</li>
+<li><b>Coding agent (Claude Code), listed in my tech spec:</b> very useful for environment work and scaffolding. From the logs, the env build
+started 11:44 and the first successful 500-step run finished 12:04. It found and fixed: <code>simple-knn</code> missing <code>&lt;cfloat&gt;</code>
+(gcc 13); CUDA runtime headers only under <code>targets/</code> on this server (<code>CPATH</code>); peak VRAM of 37 GB that turned out to be
+<code>cudnn.benchmark</code> switched on by the GUI seeding helper (fixed → 4.4 GB, the aborted log is kept); headless Chrome losing the WebGL context
+on Vulkan (switched to GL-EGL). It also wrote most of the wrapper, viewer, studio, benchmark and capture code.</li>
+<li><b>Where it cost time:</b> every result still had to be checked by looking at renders and logs. A blank viewer first looked like a
+shader bug but was a lost GPU context, and the browser landing on a busy GPU could not be fixed. Time savings are not measured against a baseline.
+The video voiceover is synthetic (Kokoro-82M TTS), and the on-screen captions match it.</li></ul>
+
+<h2>4. Roadmap to Final</h2>
+<ul>
+<li><b>Geometry/consistency:</b> try upstream MVDream/ImageDream multi-view guidance to reduce Janus faces; tune CFG/timestep schedule and negative prompts; run stage-2 mesh refinement (<code>main2.py</code>).</li>
+<li><b>Studio:</b> side-by-side seed/guidance comparison, run history with parameters, mesh/Gaussian toggle, websocket progress instead of polling.</li>
+<li><b>Viewer performance:</b> GPU sorting and level-of-detail for multi-million-Gaussian scenes; measure the browser viewer on a dedicated GPU.</li>
+<li><b>Stretch (only after the above):</b> VSD comparison, as described in A2.</li></ul>
+
+<h2>5. Build / run</h2>
+<p>Linux + NVIDIA GPU (≥8 GB). <code>bash scripts/setup_env.sh</code> → <code>conda activate dreamgaussian</code> →
+<code>GPU=0 bash scripts/run_text_to_3d.sh "a small red mushroom house" mushroom_house</code> → <code>GPU=0 python server.py</code> and open
+<code>http://127.0.0.1:8549</code>. Full instructions, versions and evidence are in the repository README and <code>evidence/</code>.
+Demo video: 179.6 s, real-time screen capture of the studio (two waits fast-forwarded 8× and labelled on screen).</p>
+</body></html>

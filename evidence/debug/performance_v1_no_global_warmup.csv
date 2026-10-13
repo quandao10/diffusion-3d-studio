@@ -1,0 +1,12 @@
+setting,resolution,gaussians,frames,seconds,fps,peak_vram_mb,notes
+resolution,256,311695,120,0.4574,262.3,144.0,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+resolution,512,311695,120,0.3274,366.5,227.6,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+resolution,1024,311695,120,0.6852,175.1,510.9,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+resolution,2048,311695,120,2.0761,57.8,1535.4,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+resolution,4096,311695,120,7.1608,16.8,5427.4,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+gaussians,512,311695,120,0.3388,354.2,228.1,NVIDIA A100-PCIE-40GB; base x1 jittered clones
+gaussians,512,1246780,120,0.8304,144.5,800.8,NVIDIA A100-PCIE-40GB; base x4 jittered clones
+gaussians,512,4987120,120,2.6708,44.9,3096.0,NVIDIA A100-PCIE-40GB; base x16 jittered clones
+gaussians,512,19948480,120,10.2541,11.7,12255.9,NVIDIA A100-PCIE-40GB; base x64 jittered clones
+gaussians,512,39896960,120,21.7767,5.5,24476.7,NVIDIA A100-PCIE-40GB; base x128 jittered clones
+gaussians,512,79793920,0,0,0.0,0,skipped: above cap 60000000

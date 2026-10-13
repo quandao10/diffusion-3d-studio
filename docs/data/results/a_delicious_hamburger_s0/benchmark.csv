@@ -1,0 +1,12 @@
+setting,resolution,gaussians,frames,seconds,fps,peak_vram_mb,notes
+resolution,256,281563,120,0.3331,360.2,131.3,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+resolution,512,281563,120,0.3063,391.7,208.4,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+resolution,1024,281563,120,0.6366,188.5,467.3,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+resolution,2048,281563,120,1.9329,62.1,1410.5,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+resolution,4096,281563,120,6.6258,18.1,4993.3,NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit
+gaussians,512,281563,120,0.3103,386.7,207.5,NVIDIA A100-PCIE-40GB; base x1 jittered clones
+gaussians,512,1126252,120,0.7862,152.6,728.3,NVIDIA A100-PCIE-40GB; base x4 jittered clones
+gaussians,512,4505008,120,2.5181,47.7,2810.5,NVIDIA A100-PCIE-40GB; base x16 jittered clones
+gaussians,512,18020032,120,8.9846,13.4,11127.6,NVIDIA A100-PCIE-40GB; base x64 jittered clones
+gaussians,512,36040064,120,18.2405,6.6,22221.2,NVIDIA A100-PCIE-40GB; base x128 jittered clones
+gaussians,512,72080128,0,0,0.0,13437.0,CUDA OOM (failure point)

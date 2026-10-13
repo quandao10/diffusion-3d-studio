@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Diffusion 3D Studio</title>
+<meta name="description" content="Text prompt -> frozen Stable Diffusion guidance (SDS) -> optimised 3D Gaussians (DreamGaussian) -> real-time novel-view rendering.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22%3E%3Ccircle cx=%228%22 cy=%228%22 r=%227%22 fill=%22%23e6623b%22/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo" aria-hidden="true"></div>
+    <div>
+      <h1>Interactive Diffusion-Based 3D Generation Studio</h1>
+      <p class="sub">CS 549 · Assignment 3 MVP · Minh Quan Dao (qd66) · Pillars: <b>Procedural Generation</b> + <b>Rendering</b></p>
+    </div>
+  </div>
+  <div class="status">
+    <span id="mode" class="pill">connecting…</span>
+    <span id="gpu" class="pill mono">GPU: –</span>
+  </div>
+</header>
+
+<main class="grid">
+  <!-- 1. Generate -->
+  <section class="card gen" aria-labelledby="h-gen">
+    <h2 id="h-gen"><span class="num">1</span> Generate (text → 3D)</h2>
+    <label class="field">Prompt
+      <textarea id="prompt" rows="2" spellcheck="false">a small red mushroom house</textarea>
+    </label>
+    <div class="row3">
+      <label class="field">Seed <input id="seed" type="number" value="0"></label>
+      <label class="field">SDS steps <input id="iters" type="number" value="500" min="50" max="2000" step="50"></label>
+      <label class="field">CFG scale <input id="cfg" type="number" value="100" min="1" max="200" step="5"></label>
+    </div>
+    <button id="go" class="primary">Generate 3D on GPU</button>
+    <p id="offline" class="note" hidden>Static build: generation needs the local GPU server (<code>python server.py</code>). Pre-generated runs below are real outputs of that server.</p>
+
+    <div id="jobbox" class="job" hidden>
+      <div class="jobhead"><span id="jobstatus" class="badge">idle</span><span id="jobname" class="mono dim"></span></div>
+      <div class="bar"><div id="jobbar"></div></div>
+      <dl class="kv">
+        <dt>step</dt><dd id="k-step">–</dd>
+        <dt>elapsed</dt><dd id="k-elapsed">–</dd>
+        <dt>SDS loss</dt><dd id="k-loss">–</dd>
+        <dt>timestep t</dt><dd id="k-t">–</dd>
+        <dt>train res</dt><dd id="k-res">–</dd>
+        <dt>#Gaussians</dt><dd id="k-n">–</dd>
+        <dt>peak VRAM</dt><dd id="k-vram">–</dd>
+        <dt>|∇xyz|</dt><dd id="k-gxyz">–</dd>
+      </dl>
+    </div>
+
+    <h3>Generated runs</h3>
+    <div id="runs" class="runs"><p class="dim">no runs yet</p></div>
+  </section>
+
+  <!-- Viewer -->
+  <section class="card viewer" aria-labelledby="h-view">
+    <h2 id="h-view"><span class="num">2</span> Real-time novel-view renderer <span class="dim" id="viewname"></span></h2>
+    <div class="canvaswrap">
+      <canvas id="gl"></canvas>
+      <div class="hud mono" id="hud">no model loaded</div>
+      <div class="hint">drag: orbit · wheel: zoom</div>
+    </div>
+    <div class="controls">
+      <label><input type="checkbox" id="rotate" checked> auto-rotate</label>
+      <label>splat scale <input type="range" id="scalemod" min="0.05" max="1" step="0.05" value="1"><span id="scalev" class="mono">1.00</span></label>
+      <label>background <select id="bg"><option value="1,1,1">white</option><option value="0.07,0.08,0.1">dark</option></select></label>
+      <button id="reset" class="ghost">reset view</button>
+    </div>
+    <div class="strip">
+      <figure><figcaption>CUDA rasterizer snapshots during SDS optimisation (front · side · back · side)</figcaption>
+        <img id="snap" alt="training snapshot strip" src="data:image/gif;base64,R0lGODlhAQABAAAAACw=">
+      </figure>
+      <div class="scrub" id="scrubwrap" hidden>
+        <input type="range" id="scrub" min="0" max="0" value="0"><span id="scrubv" class="mono dim"></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Monitor -->
+  <section class="card monitor" aria-labelledby="h-mon">
+    <h2 id="h-mon"><span class="num">3</span> Optimisation monitor</h2>
+    <div class="chart"><div class="ctitle">SDS loss ½‖w(t)(ε̂−ε)‖² per step</div><canvas id="c-loss"></canvas></div>
+    <div class="chart"><div class="ctitle">Gradient norm reaching each Gaussian parameter (log)</div><canvas id="c-grad"></canvas><div class="legend" id="l-grad"></div></div>
+    <div class="chart"><div class="ctitle">Number of Gaussians (densify / prune)</div><canvas id="c-n"></canvas></div>
+    <div class="term mono" id="log" aria-live="polite"></div>
+  </section>
+
+  <!-- Stress test -->
+  <section class="card stress" aria-labelledby="h-stress">
+    <h2 id="h-stress"><span class="num">4</span> Stress test</h2>
+    <div class="two">
+      <div>
+        <h3>CUDA Gaussian rasterizer (DreamGaussian renderer, A100)</h3>
+        <p class="dim small">Forward render along a fixed 360° orbit, 10 warm-up frames excluded, synced timing; peak VRAM via <code>torch.cuda.max_memory_allocated</code>. Gaussian axis = k jittered clones per Gaussian at 512².</p>
+        <button id="bench" class="ghost">Run CUDA stress test on selected model</button>
+        <div class="chart"><div class="ctitle">FPS vs output resolution</div><canvas id="c-bres"></canvas></div>
+        <div class="chart"><div class="ctitle">FPS vs Gaussian count (512²)</div><canvas id="c-bn"></canvas></div>
+        <table class="tbl mono" id="t-bench"><thead><tr><th>axis</th><th>res</th><th>Gaussians</th><th>FPS</th><th>VRAM MB</th><th>notes</th></tr></thead><tbody></tbody></table>
+      </div>
+      <div>
+        <h3>Browser WebGL2 viewer (this page)</h3>
+        <p class="dim small">Same model replicated k× with jitter; FPS is requestAnimationFrame rate (display-capped), GPU ms from <code>EXT_disjoint_timer_query</code> when available, sort ms = worker depth sort.</p>
+        <div class="mults" id="mults"></div>
+        <label class="small">resolution scale <select id="resscale"><option>0.5</option><option selected>1</option><option>1.5</option><option>2</option></select></label>
+        <button id="sweep" class="ghost">Auto sweep (≈3 s per setting)</button>
+        <table class="tbl mono" id="t-web"><thead><tr><th>k</th><th>Gaussians</th><th>canvas</th><th>FPS</th><th>GPU ms</th><th>sort ms</th></tr></thead><tbody></tbody></table>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="card how" aria-labelledby="h-how">
+    <h2 id="h-how"><span class="num">5</span> What is running</h2>
+    <ol class="pipe">
+      <li><b>Text prompt y</b><span>encoded once by the frozen SD-2.1-base text encoder</span></li>
+      <li><b>3D Gaussians θ</b><span>5k random blob → positions, scales, rotations, opacity, colour</span></li>
+      <li><b>Random camera c</b><span>elevation ±30°, full azimuth, radius 2.5</span></li>
+      <li><b>Differentiable rasterizer</b><span>CUDA tile splatting, x = g(θ, c), 128→512 px</span></li>
+      <li><b>SDS</b><span>add noise at annealed t, UNet predicts ε̂ (CFG 100), ∇θ = w(t)(ε̂ − ε)·∂x/∂θ</span></li>
+      <li><b>Adam + densify/prune</b><span>500 steps; then save PLY, extract textured mesh</span></li>
+    </ol>
+    <p class="small"><b>Plan vs. reality:</b> Assignment 2 planned an SDS-guided <i>NeRF</i> (volume rendering). This MVP keeps the same diffusion-guided loop but optimises <i>explicit 3D Gaussians</i> with the official DreamGaussian code (Tang et al., ICLR 2024) for speed and feasibility. VSD and TRELLIS are not implemented.</p>
+  </section>
+</main>
+
+<div id="caption" class="caption" hidden></div>
+<script type="module" src="app.js"></script>
+</body>
+</html>

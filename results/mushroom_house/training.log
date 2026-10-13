@@ -1,0 +1,98 @@
+[EVIDENCE] torch=2.4.1+cu124 cuda=12.4 gpu=NVIDIA A100-PCIE-40GB CUDA_VISIBLE_DEVICES=4
+[EVIDENCE] overrides={'prompt': 'a small red mushroom house', 'negative_prompt': '', 'save_path': 'mushroom_house', 'outdir': '/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/mushroom_house', 'iters': 500, 'gui': False, 'force_cuda_rast': True} guidance_scale=100.0 seed=0
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Number of points at initialisation :  5000
+[INFO] loading SD...
+[INFO] using hugging face custom model key: Manojb/stable-diffusion-2-1-base
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  17%|█▋        | 1/6 [00:00<00:02,  1.96it/s]Loading pipeline components...:  33%|███▎      | 2/6 [00:00<00:01,  2.38it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  7.85it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  5.83it/s]
+[INFO] loaded SD!
+[EVIDENCE] diffusion guidance model loaded in 1.9s (Manojb/stable-diffusion-2-1-base)
+[step   10/500] sds_loss=11074.43 t=980 res=128 N=5000 |grad| xyz=1.287e+03 color=3.773e+02 opac=4.956e+01 scale=9.142e+01 rot=2.211e+00 vram_peak=4220MB
+[step   20/500] sds_loss=19152.15 t=960 res=128 N=5000 |grad| xyz=1.045e+03 color=3.273e+02 opac=6.000e+01 scale=7.731e+01 rot=2.557e+00 vram_peak=4220MB
+[step   30/500] sds_loss=19483.95 t=940 res=128 N=5000 |grad| xyz=2.968e+03 color=3.555e+02 opac=9.380e+01 scale=1.825e+02 rot=8.196e+00 vram_peak=4220MB
+[step   40/500] sds_loss=28577.36 t=920 res=128 N=5000 |grad| xyz=2.928e+03 color=3.251e+02 opac=8.129e+01 scale=1.663e+02 rot=6.948e+00 vram_peak=4220MB
+[step   50/500] sds_loss=24176.22 t=900 res=128 N=10000 |grad| xyz=4.359e+03 color=5.108e+02 opac=1.161e+02 scale=2.518e+02 rot=2.311e+01 vram_peak=4220MB
+[step   60/500] sds_loss=21810.33 t=880 res=128 N=10000 |grad| xyz=2.762e+03 color=2.810e+02 opac=6.572e+01 scale=1.190e+02 rot=9.323e+00 vram_peak=4222MB
+[step   70/500] sds_loss=33784.97 t=860 res=128 N=10000 |grad| xyz=3.587e+03 color=2.448e+02 opac=9.027e+01 scale=1.876e+02 rot=1.190e+01 vram_peak=4222MB
+[step   80/500] sds_loss=21249.15 t=840 res=128 N=10000 |grad| xyz=2.811e+03 color=2.229e+02 opac=6.800e+01 scale=1.451e+02 rot=1.168e+01 vram_peak=4222MB
+[step   90/500] sds_loss=62188.25 t=820 res=128 N=10000 |grad| xyz=8.852e+03 color=4.435e+02 opac=1.734e+02 scale=5.362e+02 rot=4.873e+01 vram_peak=4222MB
+[step  100/500] sds_loss=34300.35 t=800 res=128 N=19578 |grad| xyz=1.296e+04 color=6.855e+02 opac=1.922e+02 scale=5.383e+02 rot=1.128e+02 vram_peak=4222MB
+[step  110/500] sds_loss=14287.21 t=780 res=128 N=19578 |grad| xyz=3.853e+03 color=2.126e+02 opac=3.557e+01 scale=1.798e+02 rot=2.008e+01 vram_peak=4227MB
+[step  120/500] sds_loss=19426.29 t=760 res=128 N=19578 |grad| xyz=4.368e+03 color=2.771e+02 opac=5.296e+01 scale=2.162e+02 rot=3.582e+01 vram_peak=4227MB
+[step  130/500] sds_loss=13202.96 t=740 res=128 N=19578 |grad| xyz=5.300e+03 color=2.772e+02 opac=5.148e+01 scale=2.857e+02 rot=5.080e+01 vram_peak=4227MB
+[step  140/500] sds_loss=27688.00 t=720 res=128 N=19578 |grad| xyz=3.023e+03 color=3.238e+02 opac=3.687e+01 scale=1.699e+02 rot=2.370e+01 vram_peak=4227MB
+[step  150/500] sds_loss=12385.95 t=700 res=256 N=35311 |grad| xyz=4.611e+03 color=2.429e+02 opac=4.083e+01 scale=2.755e+02 rot=5.465e+01 vram_peak=4231MB
+[step  160/500] sds_loss=14774.22 t=680 res=256 N=35311 |grad| xyz=4.911e+03 color=2.806e+02 opac=4.290e+01 scale=2.833e+02 rot=5.492e+01 vram_peak=4240MB
+[step  170/500] sds_loss=8338.33 t=660 res=256 N=35311 |grad| xyz=2.781e+03 color=1.286e+02 opac=2.258e+01 scale=1.581e+02 rot=3.372e+01 vram_peak=4240MB
+[step  180/500] sds_loss=10532.29 t=640 res=256 N=35311 |grad| xyz=5.900e+03 color=2.881e+02 opac=3.924e+01 scale=3.314e+02 rot=9.637e+01 vram_peak=4240MB
+[step  190/500] sds_loss=10198.09 t=620 res=256 N=35311 |grad| xyz=4.337e+03 color=1.511e+02 opac=3.253e+01 scale=2.220e+02 rot=5.288e+01 vram_peak=4240MB
+[step  200/500] sds_loss=39906.50 t=600 res=256 N=57925 |grad| xyz=5.871e+03 color=3.798e+02 opac=4.423e+01 scale=3.244e+02 rot=1.012e+02 vram_peak=4240MB
+[step  210/500] sds_loss=12479.35 t=580 res=256 N=57925 |grad| xyz=2.732e+03 color=1.498e+02 opac=2.227e+01 scale=1.308e+02 rot=2.878e+01 vram_peak=4250MB
+[step  220/500] sds_loss=13448.32 t=560 res=256 N=57925 |grad| xyz=4.077e+03 color=1.507e+02 opac=2.930e+01 scale=2.088e+02 rot=5.532e+01 vram_peak=4250MB
+[step  230/500] sds_loss=7503.10 t=540 res=256 N=57925 |grad| xyz=4.698e+03 color=1.384e+02 opac=4.364e+01 scale=2.283e+02 rot=6.178e+01 vram_peak=4250MB
+[step  240/500] sds_loss=21004.70 t=520 res=256 N=57925 |grad| xyz=6.730e+03 color=2.065e+02 opac=3.412e+01 scale=3.284e+02 rot=1.290e+02 vram_peak=4250MB
+[step  250/500] sds_loss=17566.59 t=500 res=256 N=86423 |grad| xyz=3.246e+03 color=2.398e+02 opac=2.998e+01 scale=1.697e+02 rot=5.263e+01 vram_peak=4250MB
+[step  260/500] sds_loss=8172.39 t=480 res=256 N=86423 |grad| xyz=3.837e+03 color=1.244e+02 opac=2.354e+01 scale=1.705e+02 rot=7.042e+01 vram_peak=4266MB
+[step  270/500] sds_loss=5653.46 t=460 res=256 N=86423 |grad| xyz=2.221e+03 color=1.204e+02 opac=1.567e+01 scale=1.279e+02 rot=3.823e+01 vram_peak=4266MB
+[step  280/500] sds_loss=9136.26 t=440 res=256 N=86423 |grad| xyz=4.455e+03 color=1.456e+02 opac=2.576e+01 scale=1.906e+02 rot=5.319e+01 vram_peak=4267MB
+[step  290/500] sds_loss=5638.47 t=420 res=256 N=86423 |grad| xyz=2.672e+03 color=1.440e+02 opac=2.205e+01 scale=1.139e+02 rot=4.928e+01 vram_peak=4267MB
+[step  300/500] sds_loss=14854.66 t=400 res=512 N=121111 |grad| xyz=4.675e+03 color=1.545e+02 opac=2.466e+01 scale=2.231e+02 rot=6.880e+01 vram_peak=4303MB
+[step  310/500] sds_loss=6662.04 t=380 res=512 N=121111 |grad| xyz=5.233e+03 color=2.082e+02 opac=3.139e+01 scale=1.741e+02 rot=7.566e+01 vram_peak=4336MB
+[step  320/500] sds_loss=5886.11 t=360 res=512 N=121111 |grad| xyz=3.751e+03 color=1.399e+02 opac=1.801e+01 scale=1.540e+02 rot=5.001e+01 vram_peak=4336MB
+[step  330/500] sds_loss=4669.39 t=340 res=512 N=121111 |grad| xyz=4.012e+03 color=2.554e+02 opac=4.110e+01 scale=1.540e+02 rot=7.794e+01 vram_peak=4336MB
+[step  340/500] sds_loss=3452.88 t=320 res=512 N=121111 |grad| xyz=3.989e+03 color=1.348e+02 opac=3.477e+01 scale=1.366e+02 rot=1.148e+02 vram_peak=4336MB
+[step  350/500] sds_loss=5099.83 t=300 res=512 N=165427 |grad| xyz=1.809e+03 color=1.142e+02 opac=1.162e+01 scale=8.290e+01 rot=3.467e+01 vram_peak=4336MB
+[step  360/500] sds_loss=3079.52 t=280 res=512 N=165427 |grad| xyz=2.550e+03 color=8.166e+01 opac=1.628e+01 scale=1.069e+02 rot=4.668e+01 vram_peak=4364MB
+[step  370/500] sds_loss=3267.23 t=260 res=512 N=165427 |grad| xyz=2.016e+03 color=1.047e+02 opac=9.230e+00 scale=7.670e+01 rot=3.969e+01 vram_peak=4364MB
+[step  380/500] sds_loss=2087.24 t=240 res=512 N=165427 |grad| xyz=1.557e+03 color=7.186e+01 opac=7.789e+00 scale=7.743e+01 rot=4.038e+01 vram_peak=4364MB
+[step  390/500] sds_loss=2370.49 t=220 res=512 N=165427 |grad| xyz=3.328e+03 color=1.062e+02 opac=1.752e+01 scale=1.094e+02 rot=7.621e+01 vram_peak=4364MB
+[step  400/500] sds_loss=806.23 t=200 res=512 N=217188 |grad| xyz=9.780e+02 color=4.433e+01 opac=5.501e+00 scale=4.167e+01 rot=2.576e+01 vram_peak=4364MB
+[step  410/500] sds_loss=1378.42 t=180 res=512 N=217188 |grad| xyz=1.667e+03 color=5.459e+01 opac=5.695e+00 scale=5.193e+01 rot=2.333e+01 vram_peak=4401MB
+[step  420/500] sds_loss=917.22 t=160 res=512 N=217188 |grad| xyz=1.393e+03 color=6.695e+01 opac=7.316e+00 scale=5.493e+01 rot=4.417e+01 vram_peak=4401MB
+[step  430/500] sds_loss=599.92 t=140 res=512 N=217188 |grad| xyz=6.892e+02 color=3.471e+01 opac=3.868e+00 scale=3.128e+01 rot=1.705e+01 vram_peak=4401MB
+[step  440/500] sds_loss=311.34 t=120 res=512 N=217188 |grad| xyz=5.406e+02 color=2.685e+01 opac=2.672e+00 scale=2.505e+01 rot=1.671e+01 vram_peak=4401MB
+[step  450/500] sds_loss=162.18 t=100 res=512 N=270755 |grad| xyz=4.287e+02 color=1.785e+01 opac=1.970e+00 scale=2.160e+01 rot=1.212e+01 vram_peak=4401MB
+[step  460/500] sds_loss=102.81 t=80 res=512 N=270755 |grad| xyz=5.210e+02 color=1.365e+01 opac=2.338e+00 scale=1.921e+01 rot=1.388e+01 vram_peak=4448MB
+[step  470/500] sds_loss=48.14 t=60 res=512 N=270755 |grad| xyz=2.753e+02 color=1.083e+01 opac=1.091e+00 scale=1.207e+01 rot=8.982e+00 vram_peak=4450MB
+[step  480/500] sds_loss=16.75 t=40 res=512 N=270755 |grad| xyz=1.249e+02 color=5.170e+00 opac=5.477e-01 scale=5.874e+00 rot=4.292e+00 vram_peak=4450MB
+[step  490/500] sds_loss=4.36 t=20 res=512 N=270755 |grad| xyz=6.477e+01 color=2.588e+00 opac=2.488e-01 scale=3.579e+00 rot=2.017e+00 vram_peak=4450MB
+[step  500/500] sds_loss=5.07 t=20 res=512 N=311695 |grad| xyz=8.241e+01 color=2.668e+00 opac=2.688e-01 scale=3.918e+00 rot=2.427e+00 vram_peak=4450MB
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/torch/functional.py:513: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at ../aten/src/ATen/native/TensorShape.cpp:3609.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+[INFO] save model to /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/mushroom_house/mushroom_house_model.ply.
+Tensor occ torch.Size([128, 128, 128]) torch.float32 cuda:0 ∈ [0.0, 
+240.08648681640625] μ = 6.252870559692383 σ = 15.232032775878906
+/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/third_party/dreamgaussian/mesh.py:348: UserWarning: Using torch.cross without specifying the dim arg is deprecated.
+Please either pass the dim explicitly or simply use torch.linalg.cross.
+The default value of dim will change to agree with that of linalg.cross in a future release. (Triggered internally at ../aten/src/ATen/native/Cross.cpp:62.)
+  face_normals = torch.cross(v1 - v0, v2 - v0)
+[INFO] mesh cleaning: (81916, 3) --> (54781, 3), (163748, 3) --> (109558, 3)
+[INFO] mesh decimation: (54781, 3) --> (50002, 3), (109558, 3) --> (100000, 3)
+[INFO] marching cubes result: torch.Size([50002, 3]) (-0.8530114889144897-0.8191305994987488), torch.Size([100000, 3])
+[INFO] unwrap uv...
+[INFO] save model to /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/mushroom_house/mushroom_house_mesh.obj.
+[EVIDENCE] summary {"prompt": "a small red mushroom house", "seed": 0, "iters": 500, "guidance_scale": 100.0, "sd_model": "Manojb/stable-diffusion-2-1-base", "gpu": "NVIDIA A100-PCIE-40GB", "num_gaussians_final": 311695, "load_model_s": 1.9, "train_s": 46.5, "export_s": 66.4, "render_views_s": 7.5, "total_s": 122.6, "peak_vram_mb": 4449.6, "ply": "mushroom_house_model.ply", "mesh": "mushroom_house_mesh.obj", "config_overrides": {"prompt": "a small red mushroom house", "negative_prompt": "", "save_path": "mushroom_house", "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/mushroom_house", "iters": 500, "gui": false, "force_cuda_rast": true, "guidance_scale": 100.0, "seed": 0}}
+	Command being timed: "python scripts/train_logged.py --prompt a small red mushroom house --name mushroom_house --seed 0 --iters 500 --guidance_scale 100"
+	User time (seconds): 155.94
+	System time (seconds): 221.33
+	Percent of CPU this job got: 282%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 2:13.31
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 6139944
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 126
+	Minor (reclaiming a frame) page faults: 1619436
+	Voluntary context switches: 97662
+	Involuntary context switches: 98522
+	Swaps: 0
+	File system inputs: 287912
+	File system outputs: 110272
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0

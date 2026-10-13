@@ -1,0 +1,14 @@
+Number of points at loading :  311695
+[bench] gpu=NVIDIA A100-PCIE-40GB ply=results/mushroom_house/mushroom_house_model.ply base_gaussians=311695
+[bench] {"setting": "resolution", "resolution": 256, "gaussians": 311695, "frames": 120, "seconds": 0.3813, "fps": 314.7, "peak_vram_mb": 144.0, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "resolution", "resolution": 512, "gaussians": 311695, "frames": 120, "seconds": 0.326, "fps": 368.2, "peak_vram_mb": 227.6, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "resolution", "resolution": 1024, "gaussians": 311695, "frames": 120, "seconds": 0.6851, "fps": 175.1, "peak_vram_mb": 510.9, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "resolution", "resolution": 2048, "gaussians": 311695, "frames": 120, "seconds": 2.0763, "fps": 57.8, "peak_vram_mb": 1535.4, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "resolution", "resolution": 4096, "gaussians": 311695, "frames": 120, "seconds": 7.1532, "fps": 16.8, "peak_vram_mb": 5427.4, "notes": "NVIDIA A100-PCIE-40GB; forward-only; 360deg orbit"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 311695, "frames": 120, "seconds": 0.3385, "fps": 354.5, "peak_vram_mb": 228.1, "notes": "NVIDIA A100-PCIE-40GB; base x1 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 1246780, "frames": 120, "seconds": 0.8301, "fps": 144.6, "peak_vram_mb": 800.8, "notes": "NVIDIA A100-PCIE-40GB; base x4 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 4987120, "frames": 120, "seconds": 2.6783, "fps": 44.8, "peak_vram_mb": 3096.0, "notes": "NVIDIA A100-PCIE-40GB; base x16 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 19948480, "frames": 120, "seconds": 10.2159, "fps": 11.7, "peak_vram_mb": 12255.9, "notes": "NVIDIA A100-PCIE-40GB; base x64 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 39896960, "frames": 120, "seconds": 21.799, "fps": 5.5, "peak_vram_mb": 24476.7, "notes": "NVIDIA A100-PCIE-40GB; base x128 jittered clones"}
+[bench] {"setting": "gaussians", "resolution": 512, "gaussians": 79793920, "frames": 0, "seconds": 0, "fps": 0.0, "peak_vram_mb": 14878.0, "notes": "CUDA OOM (failure point)"}
+[bench] wrote /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/evidence/performance.csv

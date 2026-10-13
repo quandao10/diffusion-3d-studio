@@ -1,0 +1,28 @@
+{
+  "prompt": "a cute corgi puppy",
+  "seed": 0,
+  "iters": 500,
+  "guidance_scale": 100.0,
+  "sd_model": "Manojb/stable-diffusion-2-1-base",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 312254,
+  "load_model_s": 3.6,
+  "train_s": 46.7,
+  "export_s": 65.9,
+  "render_views_s": 7.5,
+  "total_s": 124.1,
+  "peak_vram_mb": 4448.8,
+  "ply": "corgi_model.ply",
+  "mesh": "corgi_mesh.obj",
+  "config_overrides": {
+    "prompt": "a cute corgi puppy",
+    "negative_prompt": "",
+    "save_path": "corgi",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/corgi",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance_scale": 100.0,
+    "seed": 0
+  }
+}

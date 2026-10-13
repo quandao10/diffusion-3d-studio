@@ -1,0 +1,31 @@
+# collected 2026-10-13T11:59:27-04:00 on homer.cs.rutgers.edu
+## OS
+Linux homer.cs.rutgers.edu 6.8.0-106-generic #106-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar  6 07:58:08 UTC 2026 x86_64 x86_64 x86_64 GNU/Linux
+PRETTY_NAME="Ubuntu 24.04.4 LTS"
+## GPU (CUDA_VISIBLE_DEVICES=4 used for all jobs)
+index, name, memory.total [MiB], driver_version, compute_cap
+4, NVIDIA A100-PCIE-40GB, 40960 MiB, 560.28.03, 8.0
+## nvcc
+Cuda compilation tools, release 12.5, V12.5.82
+Build cuda_12.5.r12.5/compiler.34385749_0
+## gcc
+gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
+## python
+Python 3.10.22
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/bin/python
+## upstream DreamGaussian
+69a3c7065d580da124dc0bf2e9a21cd3b7973b35
+ M simple-knn/simple_knn.cu
+?? diff-gaussian-rasterization/
+## diff-gaussian-rasterization
+8829d14f814fccdaf840b7b0f3021a616583c0a1
+## torch / libs
+torch 2.4.1+cu124 cuda 12.4 cudnn 90100
+cuda available True device NVIDIA A100-PCIE-40GB
+diffusers 0.27.2 transformers 4.40.2
+diff_gaussian_rasterization OK /research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/diff_gaussian_rasterization/__init__.py
+simple_knn OK None
+nvdiffrast OK /research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/nvdiffrast/__init__.py
+kiui OK /research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/kiui/__init__.py
+## disk
+athina.cs.rutgers.edu:/main   37T   30T  6.7T  82% /research/cbim/vast

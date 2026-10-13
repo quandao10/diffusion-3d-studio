@@ -1,0 +1,14 @@
+[rec] intro @ 1791909056.6
+[rec] prompt @ 1791909076.0
+[rec] loading @ 1791909085.0
+[rec] train1 @ 1791909093.2
+[rec] train2 @ 1791909107.0
+[rec] train3 @ 1791909117.8
+[rec] export @ 1791909133.4
+[rec] viewer @ 1791909210.3
+[rec] primitives @ 1791909222.3
+[rec] stress1 @ 1791909232.6
+[rec] stress2 @ 1791909287.2
+[rec] stress3 @ 1791909299.5
+[rec] outro @ 1791909323.0
+[rec] wrote /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/video/demo.mp4  duration 179.6s  frames 5277  timeline [('intro', 1.46, 18.77), ('prompt', 20.87, 8.35), ('loading', 29.89, 7.5), ('train1', 38.06, 12.95), ('train2', 51.88, 10.1), ('train3', 62.64, 8.05), ('export', 78.28, 6.83), ('viewer', 88.39, 11.35), ('primitives', 100.43, 8.35), ('stress1', 110.67, 9.43), ('stress2', 127.19, 11.6), ('stress3', 139.42, 9.8), ('outro', 162.94, 14.43)]

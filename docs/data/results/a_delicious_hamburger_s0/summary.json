@@ -1,0 +1,28 @@
+{
+  "prompt": "a delicious hamburger",
+  "seed": 0,
+  "iters": 500,
+  "guidance_scale": 100.0,
+  "sd_model": "Manojb/stable-diffusion-2-1-base",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 281563,
+  "load_model_s": 2.0,
+  "train_s": 45.7,
+  "export_s": 67.7,
+  "render_views_s": 6.7,
+  "total_s": 122.4,
+  "peak_vram_mb": 4416.3,
+  "ply": "a_delicious_hamburger_s0_model.ply",
+  "mesh": "a_delicious_hamburger_s0_mesh.obj",
+  "config_overrides": {
+    "prompt": "a delicious hamburger",
+    "negative_prompt": "",
+    "save_path": "a_delicious_hamburger_s0",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/a_delicious_hamburger_s0",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance_scale": 100.0,
+    "seed": 0
+  }
+}

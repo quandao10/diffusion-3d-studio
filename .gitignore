@@ -1,0 +1,14 @@
+third_party/dreamgaussian/
+results/*/*.ply
+results/*/*.obj
+results/*/*.mtl
+results/*/*_albedo.png
+results/*/progress/latest.png
+results/*/progress.json*
+video/frames/
+video/frames.txt
+__pycache__/
+*.pyc
+video/take1_too_long.mp4
+video/voiceover.wav
+video/audio/
