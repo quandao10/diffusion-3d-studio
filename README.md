@@ -9,7 +9,7 @@ novel-view rendering (CUDA rasterizer + my own WebGL2 Gaussian-splatting viewer)
 | | |
 |---|---|
 | Demo video (2–3 min) | `video/demo.mp4` → upload to YouTube/Vimeo: **TODO link** |
-| Static web demo (GitHub Pages, read-only) | `docs/` → **TODO link** (`https://<user>.github.io/diffusion-3d-studio/`) |
+| Static web demo (GitHub Pages, read-only) | https://quandao10.github.io/diffusion-3d-studio/ (built from `docs/`) |
 | Live studio (generation) | local NVIDIA GPU: `GPU=0 python server.py` → http://127.0.0.1:8549 |
 | Report | `report/Assignment_3_Final.pdf` |
 
@@ -43,7 +43,7 @@ because `stabilityai/stable-diffusion-2-1-base` now returns HTTP 401; `Manojb/st
 ## Build
 
 ```bash
-git clone <this repo> diffusion-3d-studio && cd diffusion-3d-studio
+git clone https://github.com/quandao10/diffusion-3d-studio.git && cd diffusion-3d-studio
 CUDA_HOME=/usr/local/cuda-12.5 TORCH_CUDA_ARCH_LIST=8.0 bash scripts/setup_env.sh   # set the arch for your GPU (8.6 = RTX 30xx, 8.9 = RTX 40xx)
 conda activate dreamgaussian
 bash scripts/collect_env.sh            # writes evidence/environment.txt
