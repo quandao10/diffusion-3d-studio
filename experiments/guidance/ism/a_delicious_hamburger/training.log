@@ -1,0 +1,62 @@
+[EVIDENCE] torch=2.4.1+cu124 cuda=12.4 gpu=NVIDIA A100-PCIE-40GB CUDA_VISIBLE_DEVICES=6
+[EVIDENCE] overrides={'prompt': 'a delicious hamburger', 'save_path': 'a_delicious_hamburger', 'outdir': '/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/ism/a_delicious_hamburger', 'iters': 500, 'gui': False, 'force_cuda_rast': True, 'negative_prompt': ''} guidance_scale=7.5 seed=0
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Number of points at initialisation :  5000
+[INFO] loading SD...
+[INFO] using hugging face custom model key: Manojb/stable-diffusion-2-1-base
+Loading pipeline components...:   0%|          | 0/6 [00:00<?, ?it/s]Loading pipeline components...:  50%|█████     | 3/6 [00:00<00:00,  4.82it/s]Loading pipeline components...:  83%|████████▎ | 5/6 [00:00<00:00,  6.33it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.18it/s]Loading pipeline components...: 100%|██████████| 6/6 [00:01<00:00,  4.59it/s]
+[INFO] loaded SD!
+[EVIDENCE] diffusion guidance model loaded in 2.2s (Manojb/stable-diffusion-2-1-base)
+[step   10/500] sds_loss=4276.42 t=980 res=128 N=5000 |grad| xyz=8.872e+02 color=1.505e+02 opac=2.395e+01 scale=5.673e+01 rot=1.692e+00 vram_peak=4217MB
+[step   20/500] sds_loss=11576.06 t=960 res=128 N=5000 |grad| xyz=5.946e+02 color=2.184e+02 opac=1.597e+01 scale=4.059e+01 rot=2.164e+00 vram_peak=4217MB
+[step   30/500] sds_loss=3902.14 t=940 res=128 N=5000 |grad| xyz=1.095e+03 color=1.097e+02 opac=2.176e+01 scale=8.441e+01 rot=4.388e+00 vram_peak=4217MB
+[step   40/500] sds_loss=5488.88 t=920 res=128 N=5000 |grad| xyz=2.079e+03 color=1.641e+02 opac=3.273e+01 scale=1.388e+02 rot=1.092e+01 vram_peak=4217MB
+[step   50/500] sds_loss=5316.12 t=900 res=128 N=10000 |grad| xyz=2.577e+03 color=1.571e+02 opac=4.559e+01 scale=1.711e+02 rot=1.734e+01 vram_peak=4217MB
+[step   60/500] sds_loss=3877.34 t=880 res=128 N=10000 |grad| xyz=1.322e+03 color=8.791e+01 opac=1.929e+01 scale=6.231e+01 rot=7.163e+00 vram_peak=4219MB
+[step   70/500] sds_loss=29889.34 t=860 res=128 N=10000 |grad| xyz=1.402e+03 color=4.291e+02 opac=2.947e+01 scale=7.399e+01 rot=7.043e+00 vram_peak=4219MB
+[step   80/500] sds_loss=48582.89 t=840 res=128 N=10000 |grad| xyz=4.634e+03 color=5.040e+02 opac=6.876e+01 scale=2.539e+02 rot=2.626e+01 vram_peak=4219MB
+[step   90/500] sds_loss=50610.81 t=820 res=128 N=10000 |grad| xyz=8.039e+03 color=4.104e+02 opac=9.872e+01 scale=4.341e+02 rot=5.230e+01 vram_peak=4219MB
+[step  100/500] sds_loss=46580.57 t=800 res=128 N=19712 |grad| xyz=7.162e+03 color=4.140e+02 opac=5.814e+01 scale=4.052e+02 rot=7.335e+01 vram_peak=4219MB
+[step  110/500] sds_loss=99900.52 t=780 res=128 N=19712 |grad| xyz=1.286e+04 color=7.595e+02 opac=1.132e+02 scale=6.314e+02 rot=9.995e+01 vram_peak=4223MB
+[step  120/500] sds_loss=37804.64 t=760 res=128 N=19712 |grad| xyz=7.989e+03 color=3.763e+02 opac=6.102e+01 scale=4.454e+02 rot=1.106e+02 vram_peak=4223MB
+[step  130/500] sds_loss=24822.12 t=740 res=128 N=19712 |grad| xyz=1.299e+04 color=9.342e+02 opac=9.231e+01 scale=9.424e+02 rot=1.866e+02 vram_peak=4223MB
+[step  140/500] sds_loss=45572.84 t=720 res=128 N=19712 |grad| xyz=4.552e+03 color=3.757e+02 opac=3.835e+01 scale=2.516e+02 rot=4.910e+01 vram_peak=4223MB
+[step  150/500] sds_loss=55459.21 t=700 res=256 N=32394 |grad| xyz=1.177e+04 color=4.077e+02 opac=4.360e+01 scale=6.041e+02 rot=9.967e+01 vram_peak=4227MB
+[step  160/500] sds_loss=78368.05 t=680 res=256 N=32394 |grad| xyz=1.269e+04 color=5.698e+02 opac=6.297e+01 scale=4.923e+02 rot=1.297e+02 vram_peak=4234MB
+[step  170/500] sds_loss=49634.85 t=660 res=256 N=32394 |grad| xyz=6.334e+03 color=3.749e+02 opac=3.324e+01 scale=3.093e+02 rot=8.170e+01 vram_peak=4234MB
+[step  180/500] sds_loss=58322.30 t=640 res=256 N=32394 |grad| xyz=7.560e+03 color=4.145e+02 opac=4.484e+01 scale=3.676e+02 rot=1.358e+02 vram_peak=4234MB
+[step  190/500] sds_loss=29658.26 t=620 res=256 N=32394 |grad| xyz=8.736e+03 color=3.141e+02 opac=6.059e+01 scale=4.059e+02 rot=1.559e+02 vram_peak=4234MB
+[step  200/500] sds_loss=55223.19 t=600 res=256 N=49213 |grad| xyz=7.359e+03 color=4.006e+02 opac=3.877e+01 scale=3.286e+02 rot=1.493e+02 vram_peak=4234MB
+[step  210/500] sds_loss=31440.10 t=580 res=256 N=49213 |grad| xyz=8.160e+03 color=3.037e+02 opac=3.458e+01 scale=3.358e+02 rot=1.494e+02 vram_peak=4242MB
+[step  220/500] sds_loss=30199.89 t=560 res=256 N=49213 |grad| xyz=1.505e+04 color=4.282e+02 opac=7.521e+01 scale=7.761e+02 rot=5.124e+02 vram_peak=4242MB
+[step  230/500] sds_loss=47139.00 t=540 res=256 N=49213 |grad| xyz=1.206e+04 color=3.790e+02 opac=4.480e+01 scale=5.165e+02 rot=3.573e+02 vram_peak=4242MB
+[step  240/500] sds_loss=21753.38 t=520 res=256 N=49213 |grad| xyz=7.495e+03 color=2.415e+02 opac=2.513e+01 scale=3.384e+02 rot=1.465e+02 vram_peak=4242MB
+[step  250/500] sds_loss=47555.95 t=500 res=256 N=70243 |grad| xyz=1.087e+04 color=3.985e+02 opac=3.486e+01 scale=4.395e+02 rot=2.609e+02 vram_peak=4242MB
+[step  260/500] sds_loss=25193.76 t=480 res=256 N=70243 |grad| xyz=1.387e+04 color=3.919e+02 opac=3.832e+01 scale=7.537e+02 rot=4.477e+02 vram_peak=4255MB
+[step  270/500] sds_loss=22484.30 t=460 res=256 N=70243 |grad| xyz=6.779e+03 color=2.371e+02 opac=2.391e+01 scale=2.997e+02 rot=2.016e+02 vram_peak=4255MB
+[step  280/500] sds_loss=27303.72 t=440 res=256 N=70243 |grad| xyz=1.112e+04 color=3.594e+02 opac=3.434e+01 scale=4.484e+02 rot=3.134e+02 vram_peak=4255MB
+[step  290/500] sds_loss=18919.91 t=420 res=256 N=70243 |grad| xyz=6.040e+03 color=2.412e+02 opac=2.056e+01 scale=2.910e+02 rot=2.002e+02 vram_peak=4255MB
+[step  300/500] sds_loss=10824.15 t=400 res=512 N=97678 |grad| xyz=5.335e+03 color=1.608e+02 opac=1.636e+01 scale=2.470e+02 rot=1.489e+02 vram_peak=4285MB
+[step  310/500] sds_loss=17160.63 t=380 res=512 N=97678 |grad| xyz=9.881e+03 color=1.948e+02 opac=4.258e+01 scale=5.208e+02 rot=3.120e+02 vram_peak=4314MB
+[step  320/500] sds_loss=12559.73 t=360 res=512 N=97678 |grad| xyz=5.649e+03 color=1.732e+02 opac=3.223e+01 scale=2.213e+02 rot=1.562e+02 vram_peak=4314MB
+[step  330/500] sds_loss=5228.09 t=340 res=512 N=97678 |grad| xyz=3.174e+03 color=1.106e+02 opac=1.275e+01 scale=1.270e+02 rot=9.882e+01 vram_peak=4314MB
+[step  340/500] sds_loss=9003.28 t=320 res=512 N=97678 |grad| xyz=5.253e+03 color=1.419e+02 opac=1.625e+01 scale=2.044e+02 rot=1.420e+02 vram_peak=4314MB
+[step  350/500] sds_loss=5063.99 t=300 res=512 N=133703 |grad| xyz=3.672e+03 color=1.050e+02 opac=1.293e+01 scale=1.852e+02 rot=1.193e+02 vram_peak=4314MB
+[step  360/500] sds_loss=5463.36 t=280 res=512 N=133703 |grad| xyz=3.019e+03 color=1.043e+02 opac=1.192e+01 scale=1.215e+02 rot=7.557e+01 vram_peak=4337MB
+[step  370/500] sds_loss=2800.49 t=260 res=512 N=133703 |grad| xyz=2.281e+03 color=7.090e+01 opac=8.161e+00 scale=9.576e+01 rot=9.446e+01 vram_peak=4337MB
+[step  380/500] sds_loss=3730.88 t=240 res=512 N=133703 |grad| xyz=6.052e+03 color=1.071e+02 opac=1.351e+01 scale=1.711e+02 rot=1.672e+02 vram_peak=4337MB
+[step  390/500] sds_loss=2528.14 t=220 res=512 N=133703 |grad| xyz=2.618e+03 color=6.157e+01 opac=6.277e+00 scale=9.593e+01 rot=8.121e+01 vram_peak=4337MB
+[step  400/500] sds_loss=3440.97 t=200 res=512 N=177745 |grad| xyz=2.397e+03 color=8.291e+01 opac=5.836e+00 scale=9.035e+01 rot=8.082e+01 vram_peak=4337MB
+[step  410/500] sds_loss=1928.63 t=180 res=512 N=177745 |grad| xyz=2.195e+03 color=6.423e+01 opac=8.442e+00 scale=7.449e+01 rot=6.736e+01 vram_peak=4367MB
+[step  420/500] sds_loss=1450.79 t=160 res=512 N=177745 |grad| xyz=1.686e+03 color=5.500e+01 opac=3.652e+00 scale=6.277e+01 rot=5.050e+01 vram_peak=4367MB
+[step  430/500] sds_loss=953.30 t=140 res=512 N=177745 |grad| xyz=2.288e+03 color=5.212e+01 opac=5.349e+00 scale=7.382e+01 rot=6.340e+01 vram_peak=4367MB
+[step  440/500] sds_loss=647.94 t=120 res=512 N=177745 |grad| xyz=2.868e+03 color=5.179e+01 opac=4.292e+00 scale=6.538e+01 rot=9.241e+01 vram_peak=4367MB
+[step  450/500] sds_loss=422.31 t=100 res=512 N=225507 |grad| xyz=9.407e+02 color=2.685e+01 opac=4.248e+00 scale=4.014e+01 rot=4.644e+01 vram_peak=4367MB
+[step  460/500] sds_loss=377.90 t=80 res=512 N=225507 |grad| xyz=8.002e+02 color=2.713e+01 opac=1.734e+00 scale=3.127e+01 rot=2.464e+01 vram_peak=4405MB
+[step  470/500] sds_loss=403.31 t=60 res=512 N=225507 |grad| xyz=7.014e+02 color=3.232e+01 opac=2.176e+00 scale=3.381e+01 rot=2.428e+01 vram_peak=4406MB
+[step  480/500] sds_loss=387.08 t=40 res=512 N=225507 |grad| xyz=6.105e+02 color=2.275e+01 opac=1.577e+00 scale=4.144e+01 rot=2.712e+01 vram_peak=4406MB
+[step  490/500] sds_loss=83.19 t=20 res=512 N=225507 |grad| xyz=2.619e+02 color=1.396e+01 opac=1.002e+00 scale=1.274e+01 rot=9.498e+00 vram_peak=4406MB
+[step  500/500] sds_loss=80.13 t=20 res=512 N=268342 |grad| xyz=3.652e+02 color=1.265e+01 opac=1.427e+00 scale=2.054e+01 rot=1.147e+01 vram_peak=4406MB
+[INFO] save model to /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/ism/a_delicious_hamburger/a_delicious_hamburger_model.ply.
+[EVIDENCE] summary {"prompt": "a delicious hamburger", "seed": 0, "iters": 500, "guidance": "ism", "guidance_scale": 7.5, "sd_model": "Manojb/stable-diffusion-2-1-base", "gpu": "NVIDIA A100-PCIE-40GB", "num_gaussians_final": 268342, "load_model_s": 2.2, "train_s": 106.6, "export_s": 0.8, "render_views_s": 3.7, "total_s": 113.6, "peak_vram_mb": 4405.5, "ply": "a_delicious_hamburger_model.ply", "mesh": null, "config_overrides": {"prompt": "a delicious hamburger", "save_path": "a_delicious_hamburger", "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/ism/a_delicious_hamburger", "iters": 500, "gui": false, "force_cuda_rast": true, "negative_prompt": "", "guidance": "ism", "guidance_scale": 7.5, "seed": 0}}

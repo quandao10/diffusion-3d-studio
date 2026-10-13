@@ -1,0 +1,72 @@
+[EVIDENCE] torch=2.4.1+cu124 cuda=12.4 gpu=NVIDIA A100-PCIE-40GB CUDA_VISIBLE_DEVICES=5
+[EVIDENCE] overrides={'prompt': 'a small red mushroom house', 'save_path': 'a_small_red_mushroom_house', 'outdir': '/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream/a_small_red_mushroom_house', 'iters': 500, 'gui': False, 'force_cuda_rast': True} guidance_scale=50.0 seed=0
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/timm/models/layers/__init__.py:49: FutureWarning: Importing from timm.models.layers is deprecated, please import via timm.layers
+  warnings.warn(f"Importing from {__name__} is deprecated, please import via timm.layers", FutureWarning)
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/open_clip/factory.py:128: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  checkpoint = torch.load(checkpoint_path, map_location=map_location)
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/mvdream/model_zoo.py:57: FutureWarning: You are using `torch.load` with `weights_only=False` (the current default value), which uses the default pickle module implicitly. It is possible to construct malicious pickle data which will execute arbitrary code during unpickling (See https://github.com/pytorch/pytorch/blob/main/SECURITY.md#untrusted-models for more details). In a future release, the default value for `weights_only` will be flipped to `True`. This limits the functions that could be executed during unpickling. Arbitrary objects will no longer be allowed to be loaded via this mode unless they are explicitly allowlisted by the user via `torch.serialization.add_safe_globals`. We recommend you start setting `weights_only=True` for any use case where you don't have full control of the loaded file. Please open an issue on GitHub for any issues related to this experimental feature.
+  model.load_state_dict(torch.load(ckpt_path, map_location="cpu"))
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+Number of points at initialisation :  5000
+[INFO] loading MVDream...
+Loading model from config: sd-v2-base.yaml
+No module 'xformers'. Proceeding without it.
+making attention of type 'vanilla' with 512 in_channels
+Working with z of shape (1, 4, 32, 32) = 4096 dimensions.
+making attention of type 'vanilla' with 512 in_channels
+Loading model from cache file: /research/cbim/vast/qd66/.cache/huggingface/hub/models--MVDream--MVDream/snapshots/d14ac9d78c48c266005729f2d5633f6c265da467/sd-v2.1-base-4view.pt
+[INFO] loaded MVDream!
+[EVIDENCE] diffusion guidance model loaded in 30.7s (Manojb/stable-diffusion-2-1-base)
+[step   10/500] sds_loss=1101.94 t=980 res=128 N=5000 |grad| xyz=2.105e+02 color=2.690e+01 opac=6.114e+00 scale=1.217e+01 rot=3.768e-01 vram_peak=10408MB
+[step   20/500] sds_loss=855.25 t=960 res=128 N=5000 |grad| xyz=9.399e+01 color=1.912e+01 opac=3.478e+00 scale=6.232e+00 rot=1.947e-01 vram_peak=10408MB
+[step   30/500] sds_loss=4223.69 t=940 res=128 N=5000 |grad| xyz=8.821e+02 color=5.452e+01 opac=1.936e+01 scale=4.598e+01 rot=3.885e+00 vram_peak=10408MB
+[step   40/500] sds_loss=2850.51 t=920 res=128 N=5000 |grad| xyz=3.806e+02 color=3.610e+01 opac=1.058e+01 scale=3.484e+01 rot=1.505e+00 vram_peak=10408MB
+[step   50/500] sds_loss=3112.27 t=900 res=128 N=9859 |grad| xyz=5.133e+02 color=4.603e+01 opac=1.213e+01 scale=3.049e+01 rot=3.339e+00 vram_peak=10408MB
+[step   60/500] sds_loss=2568.38 t=880 res=128 N=9859 |grad| xyz=9.198e+02 color=4.033e+01 opac=1.560e+01 scale=4.209e+01 rot=4.611e+00 vram_peak=10413MB
+[step   70/500] sds_loss=3456.26 t=860 res=128 N=9859 |grad| xyz=5.425e+02 color=2.871e+01 opac=8.960e+00 scale=3.149e+01 rot=2.763e+00 vram_peak=10413MB
+[step   80/500] sds_loss=1991.16 t=840 res=128 N=9859 |grad| xyz=1.083e+03 color=4.321e+01 opac=1.156e+01 scale=5.387e+01 rot=8.431e+00 vram_peak=10413MB
+[step   90/500] sds_loss=1581.11 t=820 res=128 N=9859 |grad| xyz=6.728e+02 color=4.334e+01 opac=7.711e+00 scale=3.319e+01 rot=5.264e+00 vram_peak=10413MB
+[step  100/500] sds_loss=2289.20 t=800 res=128 N=16933 |grad| xyz=1.135e+03 color=4.858e+01 opac=1.291e+01 scale=5.388e+01 rot=1.155e+01 vram_peak=10413MB
+[step  110/500] sds_loss=3086.80 t=780 res=128 N=16933 |grad| xyz=9.232e+02 color=3.788e+01 opac=7.720e+00 scale=4.617e+01 rot=6.999e+00 vram_peak=10422MB
+[step  120/500] sds_loss=2903.46 t=760 res=128 N=16933 |grad| xyz=7.486e+02 color=3.775e+01 opac=5.747e+00 scale=3.736e+01 rot=6.514e+00 vram_peak=10422MB
+[step  130/500] sds_loss=3731.80 t=740 res=128 N=16933 |grad| xyz=1.036e+03 color=5.030e+01 opac=7.280e+00 scale=4.702e+01 rot=1.252e+01 vram_peak=10422MB
+[step  140/500] sds_loss=5427.71 t=720 res=128 N=16933 |grad| xyz=1.348e+03 color=4.698e+01 opac=7.871e+00 scale=5.029e+01 rot=1.585e+01 vram_peak=10422MB
+[step  150/500] sds_loss=3923.86 t=700 res=256 N=25514 |grad| xyz=1.066e+03 color=3.914e+01 opac=6.116e+00 scale=5.984e+01 rot=2.019e+01 vram_peak=10436MB
+[step  160/500] sds_loss=6173.70 t=680 res=256 N=25514 |grad| xyz=1.540e+03 color=5.662e+01 opac=5.333e+00 scale=7.873e+01 rot=2.145e+01 vram_peak=10450MB
+[step  170/500] sds_loss=4155.14 t=660 res=256 N=25514 |grad| xyz=8.731e+02 color=3.873e+01 opac=3.371e+00 scale=4.439e+01 rot=1.478e+01 vram_peak=10450MB
+[step  180/500] sds_loss=2231.66 t=640 res=256 N=25514 |grad| xyz=8.347e+02 color=2.928e+01 opac=3.199e+00 scale=3.650e+01 rot=1.710e+01 vram_peak=10450MB
+[step  190/500] sds_loss=3198.59 t=620 res=256 N=25514 |grad| xyz=1.534e+03 color=4.364e+01 opac=4.643e+00 scale=5.831e+01 rot=2.684e+01 vram_peak=10450MB
+[step  200/500] sds_loss=2339.39 t=600 res=256 N=36605 |grad| xyz=1.158e+03 color=3.774e+01 opac=3.815e+00 scale=4.262e+01 rot=2.694e+01 vram_peak=10450MB
+[step  210/500] sds_loss=7433.04 t=580 res=256 N=36605 |grad| xyz=1.164e+03 color=3.931e+01 opac=3.883e+00 scale=5.478e+01 rot=2.585e+01 vram_peak=10466MB
+[step  220/500] sds_loss=4986.65 t=560 res=256 N=36605 |grad| xyz=1.119e+03 color=3.826e+01 opac=3.848e+00 scale=5.299e+01 rot=2.496e+01 vram_peak=10466MB
+[step  230/500] sds_loss=6540.70 t=540 res=256 N=36605 |grad| xyz=3.258e+03 color=1.622e+02 opac=7.469e+00 scale=1.266e+02 rot=4.680e+01 vram_peak=10466MB
+[step  240/500] sds_loss=6635.90 t=520 res=256 N=36605 |grad| xyz=1.535e+03 color=5.669e+01 opac=5.687e+00 scale=6.997e+01 rot=3.758e+01 vram_peak=10466MB
+[step  250/500] sds_loss=4637.07 t=500 res=256 N=51561 |grad| xyz=8.706e+02 color=4.049e+01 opac=3.067e+00 scale=4.221e+01 rot=2.506e+01 vram_peak=10467MB
+[step  260/500] sds_loss=7575.80 t=480 res=256 N=51561 |grad| xyz=2.833e+03 color=7.389e+01 opac=8.095e+00 scale=1.361e+02 rot=5.521e+01 vram_peak=10487MB
+[step  270/500] sds_loss=5240.47 t=460 res=256 N=51561 |grad| xyz=1.128e+03 color=4.312e+01 opac=3.251e+00 scale=4.757e+01 rot=3.340e+01 vram_peak=10487MB
+[step  280/500] sds_loss=6310.89 t=440 res=256 N=51561 |grad| xyz=1.421e+03 color=5.653e+01 opac=3.220e+00 scale=5.667e+01 rot=4.200e+01 vram_peak=10487MB
+[step  290/500] sds_loss=6848.85 t=420 res=256 N=51561 |grad| xyz=1.061e+03 color=5.284e+01 opac=4.396e+00 scale=4.317e+01 rot=3.203e+01 vram_peak=10487MB
+[step  300/500] sds_loss=5391.54 t=400 res=512 N=72673 |grad| xyz=1.325e+03 color=5.850e+01 opac=4.098e+00 scale=6.082e+01 rot=4.446e+01 vram_peak=10579MB
+[step  310/500] sds_loss=6627.84 t=380 res=512 N=72673 |grad| xyz=2.218e+03 color=7.897e+01 opac=5.802e+00 scale=7.233e+01 rot=5.527e+01 vram_peak=10638MB
+[step  320/500] sds_loss=8879.47 t=360 res=512 N=72673 |grad| xyz=1.651e+03 color=6.989e+01 opac=3.895e+00 scale=6.115e+01 rot=4.817e+01 vram_peak=10638MB
+[step  330/500] sds_loss=6348.38 t=340 res=512 N=72673 |grad| xyz=3.043e+03 color=7.318e+01 opac=7.831e+00 scale=8.233e+01 rot=9.652e+01 vram_peak=10638MB
+[step  340/500] sds_loss=5138.98 t=320 res=512 N=72673 |grad| xyz=1.055e+03 color=4.983e+01 opac=2.461e+00 scale=4.501e+01 rot=3.592e+01 vram_peak=10640MB
+[step  350/500] sds_loss=5949.00 t=300 res=512 N=101588 |grad| xyz=1.771e+03 color=7.185e+01 opac=5.210e+00 scale=5.990e+01 rot=5.484e+01 vram_peak=10640MB
+[step  360/500] sds_loss=4724.69 t=280 res=512 N=101588 |grad| xyz=1.832e+03 color=6.574e+01 opac=3.952e+00 scale=6.347e+01 rot=5.745e+01 vram_peak=10724MB
+[step  370/500] sds_loss=5879.31 t=260 res=512 N=101588 |grad| xyz=1.410e+03 color=5.000e+01 opac=4.587e+00 scale=4.895e+01 rot=4.074e+01 vram_peak=10724MB
+[step  380/500] sds_loss=8704.18 t=240 res=512 N=101588 |grad| xyz=1.836e+03 color=6.222e+01 opac=3.403e+00 scale=7.724e+01 rot=6.585e+01 vram_peak=10725MB
+[step  390/500] sds_loss=6735.92 t=220 res=512 N=101588 |grad| xyz=3.025e+03 color=1.441e+02 opac=5.271e+00 scale=1.478e+02 rot=1.167e+02 vram_peak=10726MB
+[step  400/500] sds_loss=6707.57 t=200 res=512 N=139898 |grad| xyz=1.800e+03 color=6.608e+01 opac=4.484e+00 scale=6.573e+01 rot=6.425e+01 vram_peak=10726MB
+[step  410/500] sds_loss=7372.97 t=180 res=512 N=139898 |grad| xyz=3.220e+03 color=9.222e+01 opac=4.070e+00 scale=8.697e+01 rot=1.333e+02 vram_peak=10820MB
+[step  420/500] sds_loss=7028.76 t=160 res=512 N=139898 |grad| xyz=6.491e+03 color=2.023e+02 opac=1.027e+01 scale=2.791e+02 rot=2.690e+02 vram_peak=10821MB
+[step  430/500] sds_loss=9827.86 t=140 res=512 N=139898 |grad| xyz=2.093e+04 color=4.789e+02 opac=1.585e+01 scale=7.344e+02 rot=6.633e+02 vram_peak=10821MB
+[step  440/500] sds_loss=7101.48 t=120 res=512 N=139898 |grad| xyz=1.522e+03 color=5.654e+01 opac=2.759e+00 scale=5.941e+01 rot=6.526e+01 vram_peak=10821MB
+[step  450/500] sds_loss=5802.60 t=100 res=512 N=189660 |grad| xyz=1.304e+03 color=4.731e+01 opac=2.212e+00 scale=5.271e+01 rot=4.632e+01 vram_peak=10823MB
+[step  460/500] sds_loss=6153.66 t=80 res=512 N=189660 |grad| xyz=1.485e+03 color=4.162e+01 opac=1.843e+00 scale=4.865e+01 rot=4.879e+01 vram_peak=10946MB
+[step  470/500] sds_loss=6130.98 t=60 res=512 N=189660 |grad| xyz=1.475e+03 color=4.287e+01 opac=1.981e+00 scale=4.975e+01 rot=4.692e+01 vram_peak=10946MB
+[step  480/500] sds_loss=5321.26 t=40 res=512 N=189660 |grad| xyz=1.194e+03 color=3.655e+01 opac=1.787e+00 scale=4.990e+01 rot=4.275e+01 vram_peak=10946MB
+[step  490/500] sds_loss=5875.52 t=20 res=512 N=189660 |grad| xyz=3.293e+03 color=5.980e+01 opac=3.696e+00 scale=1.219e+02 rot=8.571e+01 vram_peak=10946MB
+[step  500/500] sds_loss=6489.83 t=20 res=512 N=248663 |grad| xyz=1.197e+03 color=3.549e+01 opac=2.203e+00 scale=4.795e+01 rot=4.722e+01 vram_peak=10946MB
+[INFO] save model to /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream/a_small_red_mushroom_house/a_small_red_mushroom_house_model.ply.
+[EVIDENCE] summary {"prompt": "a small red mushroom house", "seed": 0, "iters": 500, "guidance": "mvdream", "guidance_scale": 50.0, "sd_model": "MVDream/MVDream sd-v2.1-base-4view", "gpu": "NVIDIA A100-PCIE-40GB", "num_gaussians_final": 248663, "load_model_s": 30.7, "train_s": 89.5, "export_s": 0.8, "render_views_s": 4.2, "total_s": 125.5, "peak_vram_mb": 10946.3, "ply": "a_small_red_mushroom_house_model.ply", "mesh": null, "config_overrides": {"prompt": "a small red mushroom house", "save_path": "a_small_red_mushroom_house", "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream/a_small_red_mushroom_house", "iters": 500, "gui": false, "force_cuda_rast": true, "guidance": "mvdream", "guidance_scale": 50.0, "seed": 0}}

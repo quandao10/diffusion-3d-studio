@@ -1,0 +1,30 @@
+{
+  "prompt": "a ripe pineapple",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "ism",
+  "guidance_scale": 7.5,
+  "sd_model": "Manojb/stable-diffusion-2-1-base",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 331125,
+  "load_model_s": 2.5,
+  "train_s": 108.2,
+  "export_s": 1.0,
+  "render_views_s": 4.0,
+  "total_s": 116.0,
+  "peak_vram_mb": 4440.3,
+  "ply": "a_ripe_pineapple_model.ply",
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a ripe pineapple",
+    "save_path": "a_ripe_pineapple",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/ism/a_ripe_pineapple",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "negative_prompt": "",
+    "guidance": "ism",
+    "guidance_scale": 7.5,
+    "seed": 0
+  }
+}

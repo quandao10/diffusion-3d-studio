@@ -53,7 +53,7 @@ GPU_FREE_UTIL = int(os.environ.get("GPU_FREE_UTIL", 10))  # ... and this utilisa
 
 PROMPT_MAX = 120
 PUBLIC_ITERS = (100, 500)
-PUBLIC_CFG = (10.0, 150.0)
+PUBLIC_CFG = (1.0, 150.0)
 QUEUE_MAX = int(os.environ.get("QUEUE_MAX", 20))
 PER_IP_TOTAL = int(os.environ.get("PER_IP_TOTAL", 0))  # generations per visitor per window (0 = unlimited)
 PER_IP_WINDOW_S = int(os.environ.get("PER_IP_WINDOW_S", 86400))
@@ -232,6 +232,9 @@ def run_job(job, gpu):
             logf.write("$ CUDA_VISIBLE_DEVICES=%s %s\n" % (gpu, " ".join(job["cmd"])))
             logf.flush()
             proc = subprocess.Popen(job["cmd"], cwd=ROOT, env=env, stdout=logf, stderr=subprocess.STDOUT)
+            job["proc"] = proc
+            if job.get("cancel"):
+                proc.terminate()
             try:
                 rc = proc.wait(timeout=JOB_TIMEOUT_S)
             except subprocess.TimeoutExpired:
@@ -242,8 +245,11 @@ def run_job(job, gpu):
         _gpu_cache["t"] = 0  # next dispatch sees a fresh GPU snapshot
         with cond:
             running.pop(job["id"], None)
-            job.update(status="done" if rc == 0 else "failed", returncode=rc, ended=time.time())
+            status = "cancelled" if job.get("cancel") else ("done" if rc == 0 else "failed")
+            job.update(status=status, returncode=rc, ended=time.time(), proc=None)
             cond.notify_all()
+        if job["status"] == "cancelled" and job["kind"] == "generate":
+            shutil.rmtree(job["out"], ignore_errors=True)  # partial result: not kept, not in the gallery
         if job["kind"] == "generate" and not job["admin"]:
             prune_public()
 
@@ -273,11 +279,66 @@ def run_summary(out_dir, rel, name):
 
 
 # ------------------------------------------------------------------ API
+GUIDANCE = ["sds", "csd", "nfsd", "ism", "mvdream"]                     # see scripts/guidance_plus.py
+DEFAULT_GUIDANCE = os.environ.get("DEFAULT_GUIDANCE", "sds")
+CFG_DEFAULT = {"sds": 100.0, "csd": 100.0, "nfsd": 7.5, "ism": 7.5, "mvdream": 50.0}
+
+
+# ------------------------------------------------------------------ ETA model (measured, see evidence/)
+# seconds per SDS step and fixed overhead (model load + snapshots + views/turntable) per method;
+# defaults from smoke tests, replaced at startup by the means in evidence/guidance_comparison.csv
+ETA_MODEL = {"sds": [0.093, 22.0], "csd": [0.10, 22.0], "nfsd": [0.105, 22.0], "ism": [0.215, 22.0], "mvdream": [0.18, 40.0]}
+try:
+    import csv as _csv
+    _rows = list(_csv.DictReader(open(os.path.join(EVIDENCE, "guidance_comparison.csv"))))
+    for _m in ETA_MODEL:
+        _r = [x for x in _rows if x["method"] == _m]
+        if _r:
+            ETA_MODEL[_m] = [round(sum(float(x["train_s"]) for x in _r) / len(_r) / 500, 4),
+                             round(sum(float(x["total_s"]) - float(x["train_s"]) for x in _r) / len(_r), 1)]
+except (FileNotFoundError, KeyError, ValueError):
+    pass
+
+
+def job_duration(job):
+    per_step, overhead = ETA_MODEL.get(job.get("guidance", "sds"), ETA_MODEL["sds"])
+    return overhead + per_step * job.get("iters", 500)
+
+
+def job_remaining(job, now):
+    if job["status"] != "running":
+        return job_duration(job)
+    per_step, overhead = ETA_MODEL.get(job.get("guidance", "sds"), ETA_MODEL["sds"])
+    p = read_json(os.path.join(job["out"], "progress.json")) or {}
+    if p.get("status") == "training":
+        return per_step * max(0, job["iters"] - p.get("step", 0)) + overhead * 0.5
+    return max(5.0, job_duration(job) - (now - job["started"]))
+
+
+def schedule_forecast():
+    """Simulate the FIFO queue on the current job slots -> (start offset per queued job id, offset at which a new job starts)."""
+    now = time.time()
+    slots = [job_remaining(jobs[j], now) for j in running]
+    cap = len(running) + len(idle_gpus())
+    if MAX_PARALLEL:
+        cap = min(cap, MAX_PARALLEL)
+    slots += [0.0] * max(0, cap - len(slots))
+    starts = {}
+    if not slots:  # no usable GPU at all right now: unknown
+        return {j: None for j in queue}, None
+    for jid in list(queue):
+        i = min(range(len(slots)), key=slots.__getitem__)
+        starts[jid] = slots[i]
+        slots[i] += job_duration(jobs[jid])
+    return starts, min(slots)
+
+
 class GenerateReq(BaseModel):
     prompt: str
     seed: int = 0
     iters: int = 500
-    guidance_scale: float = 100.0
+    guidance: str | None = None
+    guidance_scale: float | None = None   # None = the method's default
 
 
 @app.post("/api/generate")
@@ -293,22 +354,27 @@ def generate(r: GenerateReq, request: Request):
         if any(re.search(r"\b" + re.escape(w) + r"\b", low) for w in BLOCKLIST):
             raise HTTPException(400, "That prompt is not allowed on this public demo.")
     seed = max(0, min(int(r.seed), 2**31 - 1))
-    iters, cfg = int(r.iters), float(r.guidance_scale)
+    # multiples of 50: upstream's final prune drops Gaussians with screen radius > 1 px unless the last step densified
+    method = r.guidance or DEFAULT_GUIDANCE
+    if method not in GUIDANCE:
+        raise HTTPException(400, f"guidance must be one of {GUIDANCE}")
+    iters = max(50, int(round(int(r.iters) / 50)) * 50)
+    cfg = float(r.guidance_scale) if r.guidance_scale is not None else CFG_DEFAULT[method]
     if admin:
         iters, cfg = max(50, min(iters, 2000)), max(1.0, min(cfg, 200.0))
-        name = slug(f"{prompt}_s{seed}")
+        name = slug(f"{prompt}_{method}_s{seed}")
         out, rel = os.path.join(RESULTS, name), f"data/results/{name}"
     else:
         iters, cfg = max(PUBLIC_ITERS[0], min(iters, PUBLIC_ITERS[1])), max(PUBLIC_CFG[0], min(cfg, PUBLIC_CFG[1]))
         name = time.strftime("p%Y%m%d_%H%M%S_") + secrets.token_hex(3)
         out, rel = os.path.join(PUBLIC_DIR, name), f"data/results/public/{name}"
     cmd = [sys.executable, "scripts/train_logged.py", "--prompt", prompt, "--name", name, "--out", out,
-           "--seed", str(seed), "--iters", str(iters), "--guidance_scale", str(cfg)]
+           "--seed", str(seed), "--iters", str(iters), "--guidance", method, "--guidance_scale", str(cfg)]
     if not admin:
         cmd.append("--no_mesh")  # public jobs: Gaussians + views only (mesh export would double the GPU time)
     sid = request.headers.get("x-studio-session", "")
     job = dict(id=secrets.token_urlsafe(9), kind="generate", name=name, prompt=prompt, seed=seed, iters=iters,
-               guidance_scale=cfg, out=out, rel=rel, log=os.path.join(out, "training.log"), cmd=cmd,
+               guidance=method, guidance_scale=cfg, out=out, rel=rel, log=os.path.join(out, "training.log"), cmd=cmd,
                session=sid if re.fullmatch(r"[A-Za-z0-9_-]{16,64}", sid) else None)
     return enqueue(job, ip, admin)  # run_job creates `out` when the job starts (rejected requests leave nothing)
 
@@ -341,7 +407,15 @@ def job_view(job):
              waiting_for_gpu=job["status"] == "queued" and (not idle_gpus() or bool(MAX_PARALLEL and len(running) >= MAX_PARALLEL)),
              elapsed_s=round(now - job["started"], 1) if job["started"] else 0.0,
              wait_s=round((job["started"] or now) - job["created"], 1),
-             prompt=job["prompt"], log=tail(job["log"]) if job["status"] != "queued" else [])
+             prompt=job["prompt"], guidance=job.get("guidance"),
+             log=tail(job["log"]) if job["status"] in ("running", "done", "failed") else [])
+    if job["status"] == "queued":
+        starts, _ = schedule_forecast()
+        st0 = starts.get(job["id"])
+        d["eta_start_s"] = None if st0 is None else round(st0)
+        d["eta_finish_s"] = None if st0 is None else round(st0 + job_duration(job))
+    elif job["status"] == "running":
+        d["eta_finish_s"] = round(job_remaining(job, now))
     if not job["admin"]:
         d["log"] = scrub(d["log"])
     if job["kind"] == "generate":
@@ -361,6 +435,37 @@ def get_job(jid: str):
     return job_view(job)
 
 
+@app.post("/api/jobs/{jid}/cancel")
+def cancel_job(jid: str, request: Request):
+    """Stop a queued or running job and release its GPU. Only the submitting session (or the admin) may do this."""
+    _, admin = caller(request)
+    job = jobs.get(jid)
+    if not job:
+        raise HTTPException(404, "unknown job")
+    if not admin and (not job.get("session") or request.headers.get("x-studio-session") != job["session"]):
+        raise HTTPException(403, "Only the session that started this job can stop it.")
+    with cond:
+        if job["status"] == "queued":
+            try:
+                queue.remove(jid)
+            except ValueError:
+                pass
+            job.update(status="cancelled", ended=time.time())
+            cond.notify_all()
+            return {"ok": True, "status": "cancelled"}
+        if job["status"] != "running":
+            return {"ok": True, "status": job["status"]}
+        job["cancel"] = True
+        proc = job.get("proc")
+    if proc and proc.poll() is None:
+        proc.terminate()
+        try:
+            proc.wait(timeout=10)
+        except subprocess.TimeoutExpired:
+            proc.kill()
+    return {"ok": True, "status": "cancelling"}
+
+
 @app.get("/api/jobs/{jid}/metrics")
 def job_metrics(jid: str, since: int = 0):
     job = jobs.get(jid)
@@ -377,6 +482,11 @@ def job_metrics(jid: str, since: int = 0):
     return out
 
 
+def forecast_new():
+    _, start = schedule_forecast()
+    return None if start is None else round(start)
+
+
 @app.get("/api/queue")
 def queue_state():
     pool = gpu_pool()
@@ -386,7 +496,7 @@ def queue_state():
         if MAX_PARALLEL:
             cap = min(cap, MAX_PARALLEL)
         return {"running": len(running), "queued": len(queue), "gpus_total": len(pool), "gpus_idle": len(idle),
-                "capacity": cap, "max_parallel": MAX_PARALLEL}
+                "capacity": cap, "max_parallel": MAX_PARALLEL, "new_job_start_s": forecast_new()}
 
 
 @app.get("/api/job")
@@ -407,7 +517,7 @@ def config(request: Request):
     _, admin = caller(request)
     return {"public": PUBLIC, "admin": admin, "prompt_max": PROMPT_MAX, "iters": PUBLIC_ITERS, "cfg": PUBLIC_CFG,
             "queue_max": QUEUE_MAX, "per_visitor": PER_IP_TOTAL, "window_h": PER_IP_WINDOW_S // 3600,
-            "max_parallel": MAX_PARALLEL}
+            "max_parallel": MAX_PARALLEL, "guidance": GUIDANCE, "default_guidance": DEFAULT_GUIDANCE, "cfg_default": CFG_DEFAULT, "eta_model": ETA_MODEL}
 
 
 def list_runs():

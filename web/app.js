@@ -67,7 +67,7 @@ async function loadRuns() {
     b.className = "run" + (r.name === st.sel?.name ? " sel" : "");
     b.dataset.name = r.name;
     b.innerHTML = `<img alt="" src="${runPath(r)}/views/view_000.png"><div><b title="${esc(r.prompt)}">${r.mine ? "★ " : ""}${esc(r.prompt)}</b><i class="tag ${r.community ? "comm" : "ex"}">${r.mine ? "yours" : r.community ? "community" : "example"}</i>
-      <span>seed ${esc(r.seed)} · ${esc(r.iters)} it · ${esc(r.train_s)}s · ${(r.num_gaussians_final / 1000).toFixed(1)}k G</span></div>`;
+      <span>${esc((r.guidance || "sds").toUpperCase())} · seed ${esc(r.seed)} · ${esc(r.iters)} it · ${esc(r.train_s)}s · ${(r.num_gaussians_final / 1000).toFixed(1)}k G</span></div>`;
     b.onclick = () => selectRun(r.name);
     el.appendChild(b);
   }
@@ -82,6 +82,7 @@ async function selectRun(name) {
   $("#viewname").textContent = `· “${r.prompt}”`;
   $("#hud").textContent = "loading PLY…";
   st.base = await loadPly(`${P}/${r.ply}`);
+  viewer.cam.az = r.front_azimuth || 0;  // MVDream objects face azimuth 90
   setMult(st.mult);
   // training curves
   const txt = await fetch(`${P}/metrics.jsonl`).then((x) => x.text()).catch(() => "");
@@ -160,7 +161,9 @@ function lockGenerate() {
 }
 
 async function generate() {
-  const body = { prompt: $("#prompt").value.trim(), seed: +$("#seed").value, iters: +$("#iters").value, guidance_scale: +$("#cfg").value };
+  const cfg = $("#cfg").value.trim();
+  const body = { prompt: $("#prompt").value.trim(), seed: +$("#seed").value, iters: +$("#iters").value,
+                 guidance: $("#guidance").value, guidance_scale: cfg === "" ? null : +cfg };
   try {
     const r = await postJSON("api/generate", body, { "X-Studio-Session": sessionId() });
     startJob(r.id);
@@ -179,6 +182,14 @@ async function bench() {
   } catch (e) { showError(e); }
 }
 $("#bench").onclick = bench;
+
+$("#stop").onclick = async () => {
+  if (!st.jobId || !confirm("Stop this job and release the GPU?")) return;
+  $("#stop").disabled = true;
+  try { await postJSON(`api/jobs/${st.jobId}/cancel`, {}, { "X-Studio-Session": sessionId() }); }
+  catch (e) { alert(e.message); }
+  finally { $("#stop").disabled = false; }
+};
 
 async function postJSON(url, body, headers = {}) {
   const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", ...headers }, body: JSON.stringify(body) });
@@ -214,6 +225,7 @@ async function poll() {
       try { j = await fetchJSON(`api/jobs/${st.jobId}`); }
       catch { try { sessionStorage.removeItem("studio.job"); } catch {} break; }
       const active = j.status === "queued" || j.status === "running";
+      if (!active) $("#stop").hidden = true;
       lockGenerate();
       $("#bench").disabled = active || !st.cfg.admin;
       $("#log").textContent = j.log.join("\n");
@@ -242,6 +254,13 @@ async function updateGen(j) {
   if (j.status === "failed") status = "failed";
   const b = $("#jobstatus");
   b.textContent = status.replace(/_/g, " "); b.className = "badge " + status;
+  $("#stop").hidden = !(j.status === "queued" || j.status === "running");
+  $("#k-eta").textContent = j.eta_finish_s != null ? `≈ ${clock(j.eta_finish_s)} (${mins(j.eta_finish_s)})` : (j.status === "done" ? "finished" : "–");
+  if (j.status === "cancelled") {
+    $("#joberr").hidden = false; $("#joberr").className = "info";
+    $("#joberr").textContent = "Stopped - the GPU was released. You can start a new job.";
+    return;
+  }
   if (j.status === "queued") {
     $("#jobbar").style.width = "0%";
     $("#k-step").textContent = `#${j.position} in queue`;
@@ -276,22 +295,35 @@ async function updateGen(j) {
   }
 }
 
-// Before submitting: tell the visitor whether their job would start now or wait behind others.
-function showQueueHint(q) {
+// ETA = measured seconds/step x steps + measured overhead for the chosen method (server-side model)
+function runSeconds(method, iters) {
+  const m = st.cfg.eta_model?.[method] || [0.1, 25];
+  return m[1] + m[0] * iters;
+}
+const clock = (sec) => new Date(Date.now() + sec * 1000).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+const mins = (sec) => (sec < 90 ? `${Math.max(1, Math.round(sec))} s` : `${(sec / 60).toFixed(1)} min`);
+
+// Before submitting: tell the visitor whether their job would start now or wait behind others, and when it would finish.
+function showQueueHint(q = st.lastQ) {
+  if (!q) return;
+  st.lastQ = q;
   const h = $("#queuehint"), go = $("#go");
   if (st.polling) { h.hidden = true; return; }  // the visitor's own job box shows their position instead
   const free = q.capacity - q.running;  // job slots open right now = process-free GPUs
+  const method = $("#guidance").value, iters = Math.max(50, Math.round((+$("#iters").value || 500) / 50) * 50);
+  const run = runSeconds(method, iters), wait = q.new_job_start_s;
+  const eta = wait == null ? "" : ` ETA: finishes ≈ ${clock(wait + run)} (in ~${mins(wait + run)}; ${method.toUpperCase()}, ${iters} steps).`;
   h.hidden = false;
   if (free > 0 && q.queued === 0) {
     h.className = "qhint free";
-    h.textContent = `● ${free} GPU${free > 1 ? "s" : ""} free - your job starts right away (about 1 minute).`;
+    h.textContent = `● ${free} GPU${free > 1 ? "s" : ""} free - your job starts right away.${eta}`;
     go.textContent = "Generate 3D on GPU";
   } else {
     const pos = q.queued + 1;
     const rounds = Math.ceil(pos / Math.max(1, q.capacity));
     h.className = "qhint busy";
     h.textContent = q.capacity
-      ? `● All ${q.capacity} available GPU${q.capacity > 1 ? "s are" : " is"} busy, ${q.queued} waiting - yours would be #${pos} in line (about ${Math.max(1, Math.round(rounds * 1.2))} min). It starts automatically when a GPU frees up.`
+      ? `● All ${q.capacity} available GPU${q.capacity > 1 ? "s are" : " is"} busy, ${q.queued} waiting - yours would be #${pos} in line, starting in ~${mins(wait ?? rounds * 70)}.${eta}`
       : `● No GPU is free on the server right now - yours would be #${pos} in line and starts as soon as a GPU frees up.`;
     go.textContent = `Join queue (#${pos})`;
   }
@@ -334,6 +366,11 @@ window.studio = {
     $("#mode").textContent = st.cfg.public ? "live GPU server · public" : "live GPU server"; $("#mode").className = "pill live";
     $("#queue").hidden = false;
     $("#prompt").maxLength = st.cfg.prompt_max;
+    if (st.cfg.default_guidance) $("#guidance").value = st.cfg.default_guidance;
+    const cfgHint = () => ($("#cfg").placeholder = `auto (${st.cfg.cfg_default?.[$("#guidance").value] ?? ""})`);
+    $("#guidance").onchange = () => { cfgHint(); showQueueHint(); };
+    $("#iters").oninput = () => showQueueHint();
+    cfgHint();
     if (!st.cfg.admin) {
       $("#iters").max = st.cfg.iters[1]; $("#iters").min = st.cfg.iters[0];
       $("#bench").disabled = true; $("#bench").title = "run by the owner; measured results are shown below";

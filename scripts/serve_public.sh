@@ -3,7 +3,7 @@
 #   1) server.py with PUBLIC=1 limits, bound to 127.0.0.1 (jobs go to any idle GPU; queue when none is free)
 #   2) a Cloudflare quick tunnel (outbound only, no root/firewall changes) -> https://<random>.trycloudflare.com
 # The URL changes whenever the tunnel restarts; it is written to run/public_url.txt. Stop with scripts/stop_public.sh.
-# Optional env: GPUS=4,5,6,7 (restrict the pool)  MAX_PARALLEL=n  PER_IP_TOTAL=1  PORT=8549
+# Optional env: GPUS=4,5,6,7 (restrict the pool)  MAX_PARALLEL=n  PER_IP_TOTAL=1  DEFAULT_GUIDANCE=mvdream  PORT=8549
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 RUN="$ROOT/run"; mkdir -p "$RUN"
@@ -21,7 +21,7 @@ else
   for p in $(pgrep -f "python server.py --port $PORT" || true); do kill "$p" || true; done
   sleep 1
   cd "$ROOT"
-  PUBLIC=1 setsid nohup python server.py --host 127.0.0.1 --port "$PORT" > "$RUN/server.log" 2>&1 < /dev/null &
+  PUBLIC=1 DEFAULT_GUIDANCE="${DEFAULT_GUIDANCE:-mvdream}" setsid nohup python server.py --host 127.0.0.1 --port "$PORT" > "$RUN/server.log" 2>&1 < /dev/null &
   echo $! > "$RUN/server.pid"
   for _ in $(seq 1 30); do curl -sf "http://127.0.0.1:$PORT/api/config" > /dev/null && break; sleep 1; done
   echo "server up on 127.0.0.1:$PORT (pid $(cat "$RUN/server.pid")): $(curl -s "http://127.0.0.1:$PORT/api/queue")"

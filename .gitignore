@@ -14,3 +14,7 @@ video/voiceover.wav
 video/audio/
 run/
 results/public/
+experiments/smoke/
+experiments/**/*.ply
+experiments/**/progress/
+experiments/**/turntable.*

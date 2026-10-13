@@ -34,8 +34,17 @@
     <div class="row3">
       <label class="field">Seed <input id="seed" type="number" value="0"></label>
       <label class="field">SDS steps <input id="iters" type="number" value="500" min="50" max="2000" step="50"></label>
-      <label class="field">CFG scale <input id="cfg" type="number" value="100" min="1" max="200" step="5"></label>
+      <label class="field">CFG scale <input id="cfg" type="number" placeholder="auto" min="1" max="200" step="0.5"></label>
     </div>
+    <label class="field">Guidance (score distillation)
+      <select id="guidance">
+        <option value="mvdream">MVDream – best quality, multi-view (recommended, ~2 min)</option>
+        <option value="sds">SDS – DreamGaussian baseline, fastest (~1 min)</option>
+        <option value="ism">ISM – interval score matching, LucidDreamer (~2 min)</option>
+        <option value="nfsd">NFSD – noise-free SDS, softer colours (~1 min)</option>
+        <option value="csd">CSD – classifier score distillation (~1 min)</option>
+      </select>
+    </label>
     <button id="go" class="primary">Generate 3D on GPU</button>
     <p id="queuehint" class="qhint" hidden></p>
     <p id="publicnote" class="note" hidden></p>
@@ -44,8 +53,10 @@
     <div id="jobbox" class="job" hidden>
       <div class="jobhead"><span id="jobstatus" class="badge">idle</span><span id="jobname" class="mono dim"></span></div>
       <div class="bar"><div id="jobbar"></div></div>
+      <button id="stop" class="ghost stop" hidden>■ Stop &amp; release GPU</button>
       <p id="joberr" class="err" hidden></p>
       <dl class="kv">
+        <dt>ETA</dt><dd id="k-eta">–</dd>
         <dt>step</dt><dd id="k-step">–</dd>
         <dt>elapsed</dt><dd id="k-elapsed">–</dd>
         <dt>SDS loss</dt><dd id="k-loss">–</dd>

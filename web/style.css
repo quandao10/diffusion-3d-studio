@@ -125,3 +125,5 @@ button.ghost:hover:not(:disabled) { border-color: var(--accent); }
 .run i.tag.ex { background: #2a2e36; color: #c3c2b7; }
 .run i.tag.comm { background: #173a5e; color: #cfe4ff; }
 .run b { display: block; }
+.stop { width: 100%; margin-top: 8px; border-color: #6b2b2b; color: #ffd0d0; }
+.stop:hover:not(:disabled) { border-color: var(--bad) !important; background: #4a1d1d; }

@@ -1,0 +1,60 @@
+[compare] 25 runs on GPUs [5, 6, 7]
+[compare] GPU5 sds      a small red mushroom house     rc=0 68s
+[compare] GPU6 sds      a cute corgi puppy             rc=0 68s
+[compare] GPU7 sds      a blue ceramic teapot          rc=0 68s
+[compare] GPU5 sds      a delicious hamburger          rc=0 66s
+[compare] GPU6 sds      a ripe pineapple               rc=0 67s
+[compare] GPU7 csd      a small red mushroom house     rc=0 70s
+[compare] GPU6 csd      a blue ceramic teapot          rc=0 68s
+[compare] GPU5 csd      a cute corgi puppy             rc=0 69s
+[compare] GPU7 csd      a delicious hamburger          rc=0 69s
+[compare] GPU6 csd      a ripe pineapple               rc=0 68s
+[compare] GPU5 nfsd     a small red mushroom house     rc=0 71s
+[compare] GPU7 nfsd     a cute corgi puppy             rc=0 69s
+[compare] GPU6 nfsd     a blue ceramic teapot          rc=0 72s
+[compare] GPU5 nfsd     a delicious hamburger          rc=0 72s
+[compare] GPU7 nfsd     a ripe pineapple               rc=0 72s
+[compare] GPU6 ism      a small red mushroom house     rc=0 123s
+[compare] GPU7 ism      a blue ceramic teapot          rc=0 123s
+[compare] GPU5 ism      a cute corgi puppy             rc=0 125s
+[compare] GPU6 ism      a delicious hamburger          rc=0 123s
+[compare] GPU7 ism      a ripe pineapple               rc=0 124s
+[compare] GPU5 mvdream  a small red mushroom house     rc=0 134s
+[compare] GPU7 mvdream  a blue ceramic teapot          rc=0 133s
+[compare] GPU6 mvdream  a cute corgi puppy             rc=0 144s
+[compare] GPU5 mvdream  a delicious hamburger          rc=0 135s
+[compare] GPU7 mvdream  a ripe pineapple               rc=0 134s
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+{'method': 'sds', 'prompt': 'a small red mushroom house', 'clip_score': 29.59, 'train_s': 47.2, 'total_s': 57.8, 'gaussians': 307232, 'peak_vram_mb': 4449.5, 'guidance_scale': 100.0}
+{'method': 'sds', 'prompt': 'a cute corgi puppy', 'clip_score': 21.72, 'train_s': 47.5, 'total_s': 58.0, 'gaussians': 306409, 'peak_vram_mb': 4445.9, 'guidance_scale': 100.0}
+{'method': 'sds', 'prompt': 'a blue ceramic teapot', 'clip_score': 26.36, 'train_s': 47.8, 'total_s': 58.3, 'gaussians': 328657, 'peak_vram_mb': 4467.4, 'guidance_scale': 100.0}
+{'method': 'sds', 'prompt': 'a delicious hamburger', 'clip_score': 28.83, 'train_s': 45.9, 'total_s': 56.4, 'gaussians': 280548, 'peak_vram_mb': 4415.1, 'guidance_scale': 100.0}
+{'method': 'sds', 'prompt': 'a ripe pineapple', 'clip_score': 25.42, 'train_s': 46.7, 'total_s': 56.9, 'gaussians': 281015, 'peak_vram_mb': 4413.0, 'guidance_scale': 100.0}
+{'method': 'csd', 'prompt': 'a small red mushroom house', 'clip_score': 25.14, 'train_s': 49.9, 'total_s': 60.4, 'gaussians': 325099, 'peak_vram_mb': 4457.3, 'guidance_scale': 100.0}
+{'method': 'csd', 'prompt': 'a cute corgi puppy', 'clip_score': 20.45, 'train_s': 50.7, 'total_s': 60.0, 'gaussians': 292735, 'peak_vram_mb': 4426.8, 'guidance_scale': 100.0}
+{'method': 'csd', 'prompt': 'a blue ceramic teapot', 'clip_score': 24.38, 'train_s': 50.4, 'total_s': 59.6, 'gaussians': 317824, 'peak_vram_mb': 4453.2, 'guidance_scale': 100.0}
+{'method': 'csd', 'prompt': 'a delicious hamburger', 'clip_score': 28.01, 'train_s': 51.9, 'total_s': 61.1, 'gaussians': 282089, 'peak_vram_mb': 4417.7, 'guidance_scale': 100.0}
+{'method': 'csd', 'prompt': 'a ripe pineapple', 'clip_score': 25.29, 'train_s': 50.2, 'total_s': 58.9, 'gaussians': 303242, 'peak_vram_mb': 4420.0, 'guidance_scale': 100.0}
+{'method': 'nfsd', 'prompt': 'a small red mushroom house', 'clip_score': 24.67, 'train_s': 52.2, 'total_s': 61.4, 'gaussians': 351796, 'peak_vram_mb': 4531.9, 'guidance_scale': 7.5}
+{'method': 'nfsd', 'prompt': 'a cute corgi puppy', 'clip_score': 21.04, 'train_s': 52.2, 'total_s': 60.8, 'gaussians': 309387, 'peak_vram_mb': 4496.9, 'guidance_scale': 7.5}
+{'method': 'nfsd', 'prompt': 'a blue ceramic teapot', 'clip_score': 26.7, 'train_s': 53.6, 'total_s': 63.1, 'gaussians': 352969, 'peak_vram_mb': 4533.0, 'guidance_scale': 7.5}
+{'method': 'nfsd', 'prompt': 'a delicious hamburger', 'clip_score': 28.98, 'train_s': 52.1, 'total_s': 64.1, 'gaussians': 296387, 'peak_vram_mb': 4484.7, 'guidance_scale': 7.5}
+{'method': 'nfsd', 'prompt': 'a ripe pineapple', 'clip_score': 25.88, 'train_s': 52.6, 'total_s': 64.0, 'gaussians': 301652, 'peak_vram_mb': 4485.6, 'guidance_scale': 7.5}
+{'method': 'ism', 'prompt': 'a small red mushroom house', 'clip_score': 27.32, 'train_s': 107.1, 'total_s': 114.5, 'gaussians': 309004, 'peak_vram_mb': 4431.9, 'guidance_scale': 7.5}
+{'method': 'ism', 'prompt': 'a cute corgi puppy', 'clip_score': 23.16, 'train_s': 108.7, 'total_s': 116.4, 'gaussians': 316761, 'peak_vram_mb': 4435.9, 'guidance_scale': 7.5}
+{'method': 'ism', 'prompt': 'a blue ceramic teapot', 'clip_score': 25.1, 'train_s': 106.7, 'total_s': 114.6, 'gaussians': 390779, 'peak_vram_mb': 4484.9, 'guidance_scale': 7.5}
+{'method': 'ism', 'prompt': 'a delicious hamburger', 'clip_score': 28.55, 'train_s': 106.6, 'total_s': 113.6, 'gaussians': 268342, 'peak_vram_mb': 4405.5, 'guidance_scale': 7.5}
+{'method': 'ism', 'prompt': 'a ripe pineapple', 'clip_score': 25.62, 'train_s': 108.2, 'total_s': 116.0, 'gaussians': 331125, 'peak_vram_mb': 4440.3, 'guidance_scale': 7.5}
+{'method': 'mvdream', 'prompt': 'a small red mushroom house', 'clip_score': 26.06, 'train_s': 89.5, 'total_s': 125.5, 'gaussians': 248663, 'peak_vram_mb': 10946.3, 'guidance_scale': 50.0}
+{'method': 'mvdream', 'prompt': 'a cute corgi puppy', 'clip_score': 22.72, 'train_s': 93.7, 'total_s': 133.5, 'gaussians': 253516, 'peak_vram_mb': 10944.4, 'guidance_scale': 50.0}
+{'method': 'mvdream', 'prompt': 'a blue ceramic teapot', 'clip_score': 26.41, 'train_s': 91.1, 'total_s': 125.4, 'gaussians': 238838, 'peak_vram_mb': 10923.2, 'guidance_scale': 50.0}
+{'method': 'mvdream', 'prompt': 'a delicious hamburger', 'clip_score': 27.81, 'train_s': 88.8, 'total_s': 127.0, 'gaussians': 232736, 'peak_vram_mb': 10920.5, 'guidance_scale': 50.0}
+{'method': 'mvdream', 'prompt': 'a ripe pineapple', 'clip_score': 26.68, 'train_s': 89.7, 'total_s': 124.4, 'gaussians': 201744, 'peak_vram_mb': 10839.4, 'guidance_scale': 50.0}
+[compare] per-method mean:
+  sds      CLIP  26.38   train   47.0s   VRAM 4.4 GB
+  csd      CLIP  24.65   train   50.6s   VRAM 4.4 GB
+  nfsd     CLIP  25.45   train   52.5s   VRAM 4.4 GB
+  ism      CLIP  25.95   train  107.5s   VRAM 4.4 GB
+  mvdream  CLIP  25.94   train   90.6s   VRAM 10.7 GB
+[compare] wrote /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/docs_assets/guidance_grid.png

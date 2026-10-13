@@ -28,7 +28,22 @@ import imageio
 from omegaconf import OmegaConf
 
 import guidance.sd_utils as sd_utils
+import main as dg_main
 from main import GUI
+from guidance_plus import GuidancePlus
+
+# record the azimuth of every training camera upstream samples (for view-dependent prompts in GuidancePlus)
+CAMS = []
+_orbit = dg_main.orbit_camera
+
+
+def _recording_orbit(elevation, azimuth, *a, **kw):
+    CAMS.append(azimuth)
+    del CAMS[:-16]
+    return _orbit(elevation, azimuth, *a, **kw)
+
+
+dg_main.orbit_camera = _recording_orbit
 from cam_utils import orbit_camera
 from gs_renderer import MiniCam
 
@@ -49,6 +64,8 @@ class LoggedTrainer(GUI):
         os.makedirs(os.path.join(self.out_dir, "views"), exist_ok=True)
         self.metrics_f = open(os.path.join(self.out_dir, "metrics.jsonl"), "w")
         self.last = {}
+        # azimuth of the object's front: upstream MVDream/ImageDream training treats hor=90 as the front view
+        self.front = 90 if args.guidance == "mvdream" else 0
         super().__init__(opt)
 
     # ---------------------------------------------------------------- helpers
@@ -80,7 +97,7 @@ class LoggedTrainer(GUI):
         return (img * 255).astype(np.uint8)
 
     def snapshot(self, tag):
-        strip = np.concatenate([self.render_view(-15, h, 256) for h in (0, 90, 180, 270)], axis=1)
+        strip = np.concatenate([self.render_view(-15, self.front + h, 256) for h in (0, 90, 180, 270)], axis=1)
         imageio.imwrite(os.path.join(self.out_dir, "progress", f"{tag}.png"), strip)
         imageio.imwrite(os.path.join(self.out_dir, "progress", "latest.png"), strip)
 
@@ -90,9 +107,9 @@ class LoggedTrainer(GUI):
         orig_train_step = sd.train_step
 
         @functools.wraps(orig_train_step)
-        def train_step(pred_rgb, step_ratio=None, **kw):
+        def train_step(pred_rgb, *args, step_ratio=None, **kw):
             kw.setdefault("guidance_scale", self.args.guidance_scale)
-            loss = orig_train_step(pred_rgb, step_ratio=step_ratio, **kw)
+            loss = orig_train_step(pred_rgb, *args, step_ratio=step_ratio, **kw)
             # upstream anneals t deterministically from step_ratio; recompute it for the log
             if step_ratio is not None:
                 t = float(np.clip(np.round((1 - step_ratio) * sd.num_train_timesteps), sd.min_step, sd.max_step))
@@ -133,6 +150,11 @@ class LoggedTrainer(GUI):
 
         t_load = now()
         self.prepare_train()
+        if a.guidance in ("csd", "nfsd", "ism"):
+            # swap only the score-distillation loss; rendering, cameras, densification stay upstream
+            plus = GuidancePlus(self.guidance_sd, a.guidance, a.guidance_scale, view_prompts=a.view_prompts,
+                                ism_inv_steps=a.ism_inv_steps, get_hors=lambda n: CAMS[-n:] if CAMS else None)
+            self.guidance_sd.train_step = plus.train_step
         self.instrument()
         load_s = now() - t_load
         print(f"[EVIDENCE] diffusion guidance model loaded in {load_s:.1f}s ({SD_KEY})", flush=True)
@@ -174,21 +196,21 @@ class LoggedTrainer(GUI):
         # novel views + turntable from the optimised Gaussians
         t_vis = now()
         for h in range(0, 360, 45):
-            imageio.imwrite(os.path.join(self.out_dir, "views", f"view_{h:03d}.png"), self.render_view(-15, h, 512))
-        frames = [self.render_view(-15 + 10 * math.sin(2 * math.pi * k / a.turntable_frames), 360 * k / a.turntable_frames, 512)
+            imageio.imwrite(os.path.join(self.out_dir, "views", f"view_{h:03d}.png"), self.render_view(-15, self.front + h, 512))
+        frames = [self.render_view(-15 + 10 * math.sin(2 * math.pi * k / a.turntable_frames), self.front + 360 * k / a.turntable_frames, 512)
                   for k in range(a.turntable_frames)]
         imageio.mimwrite(os.path.join(self.out_dir, "turntable.mp4"), frames, fps=30, quality=8, macro_block_size=1)
         imageio.mimwrite(os.path.join(self.out_dir, "turntable.gif"), frames[::3], duration=0.1, loop=0)
         vis_s = now() - t_vis
 
         summary = dict(
-            prompt=self.prompt, seed=a.seed, iters=iters, guidance_scale=a.guidance_scale,
-            sd_model=SD_KEY, gpu=torch.cuda.get_device_name(0),
+            prompt=self.prompt, seed=a.seed, iters=iters, guidance=a.guidance, guidance_scale=a.guidance_scale,
+            sd_model=("MVDream/MVDream sd-v2.1-base-4view" if a.guidance == "mvdream" else SD_KEY), gpu=torch.cuda.get_device_name(0),
             num_gaussians_final=int(self.renderer.gaussians.get_xyz.shape[0]),
             load_model_s=round(load_s, 1), train_s=round(train_s, 1), export_s=round(export_s, 1),
             render_views_s=round(vis_s, 1), total_s=round(now() - self.t0, 1),
             peak_vram_mb=round(torch.cuda.max_memory_allocated() / 2**20, 1),
-            ply=f"{self.opt.save_path}_model.ply",
+            ply=f"{self.opt.save_path}_model.ply", front_azimuth=self.front,
             mesh=f"{self.opt.save_path}_mesh.obj" if a.mesh else None,
             config_overrides=self.overrides,
         )
@@ -205,22 +227,42 @@ def main():
     p.add_argument("--negative_prompt", default="")
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--iters", type=int, default=500)
-    p.add_argument("--guidance_scale", type=float, default=100.0)
+    p.add_argument("--guidance", default="sds", choices=["sds", "csd", "nfsd", "ism", "mvdream"],
+                   help="sds = upstream; csd/nfsd/ism = scripts/guidance_plus.py; mvdream = upstream multi-view guidance")
+    p.add_argument("--guidance_scale", type=float, default=None, help="CFG (default per method: 100/100/7.5/7.5/50)")
+    p.add_argument("--no_view_prompts", dest="view_prompts", action="store_false")
+    p.add_argument("--ism_inv_steps", type=int, default=3)
     p.add_argument("--out", default=None)
     p.add_argument("--log_every", type=int, default=10)
     p.add_argument("--snap_every", type=int, default=25)
     p.add_argument("--turntable_frames", type=int, default=120)
     p.add_argument("--no_mesh", dest="mesh", action="store_false")
     a = p.parse_args()
+    if a.guidance_scale is None:
+        a.guidance_scale = {"sds": 100.0, "csd": 100.0, "nfsd": 7.5, "ism": 7.5, "mvdream": 50.0}[a.guidance]
     a.out = a.out or os.path.join(ROOT, "results", a.name)
     os.makedirs(a.out, exist_ok=True)
 
     # patch only the model key passed to upstream's StableDiffusion guidance class
     sd_utils.StableDiffusion = functools.partial(sd_utils.StableDiffusion, hf_key=SD_KEY)
 
-    base = OmegaConf.load(os.path.join(DG_ROOT, "configs", "text.yaml"))
-    overrides = dict(prompt=a.prompt, negative_prompt=a.negative_prompt, save_path=a.name,
+    cfg_file = "text_mv.yaml" if a.guidance == "mvdream" else "text.yaml"
+    if a.guidance == "mvdream":
+        # upstream MVDream guidance loads its DDIM scheduler config from the (now 401) stabilityai repo
+        import guidance.mvdream_utils as mvu
+        from diffusers import DDIMScheduler as _DDIM
+
+        class _Sched:
+            @staticmethod
+            def from_pretrained(key, *args, **kw):
+                return _DDIM.from_pretrained(SD_KEY if key.startswith("stabilityai/stable-diffusion-2-1") else key, *args, **kw)
+        mvu.DDIMScheduler = _Sched
+
+    base = OmegaConf.load(os.path.join(DG_ROOT, "configs", cfg_file))
+    overrides = dict(prompt=a.prompt, save_path=a.name,
                      outdir=a.out, iters=a.iters, gui=False, force_cuda_rast=True)
+    if a.negative_prompt or a.guidance != "mvdream":  # keep text_mv.yaml's negative prompt unless one is given
+        overrides["negative_prompt"] = a.negative_prompt
     opt = OmegaConf.merge(base, OmegaConf.create(overrides))
     OmegaConf.save(opt, os.path.join(a.out, "config_resolved.yaml"))
 
@@ -229,7 +271,7 @@ def main():
     print(f"[EVIDENCE] overrides={overrides} guidance_scale={a.guidance_scale} seed={a.seed}", flush=True)
 
     trainer = LoggedTrainer(opt, a)
-    trainer.overrides = dict(overrides, guidance_scale=a.guidance_scale, seed=a.seed)
+    trainer.overrides = dict(overrides, guidance=a.guidance, guidance_scale=a.guidance_scale, seed=a.seed)
     try:
         trainer.train(opt.iters)
     except Exception as e:

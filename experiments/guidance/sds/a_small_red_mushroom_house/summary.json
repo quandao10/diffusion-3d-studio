@@ -1,0 +1,30 @@
+{
+  "prompt": "a small red mushroom house",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "sds",
+  "guidance_scale": 100.0,
+  "sd_model": "Manojb/stable-diffusion-2-1-base",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 307232,
+  "load_model_s": 5.4,
+  "train_s": 47.2,
+  "export_s": 0.9,
+  "render_views_s": 4.1,
+  "total_s": 57.8,
+  "peak_vram_mb": 4449.5,
+  "ply": "a_small_red_mushroom_house_model.ply",
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a small red mushroom house",
+    "save_path": "a_small_red_mushroom_house",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/sds/a_small_red_mushroom_house",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "negative_prompt": "",
+    "guidance": "sds",
+    "guidance_scale": 100.0,
+    "seed": 0
+  }
+}
