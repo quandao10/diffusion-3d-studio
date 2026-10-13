@@ -47,7 +47,7 @@ RUN = os.path.join(ROOT, "run")
 PUBLIC = os.environ.get("PUBLIC", "0") == "1"
 
 GPUS = [int(g) for g in os.environ["GPUS"].split(",")] if os.environ.get("GPUS") else None  # None = all GPUs
-MAX_PARALLEL = int(os.environ.get("MAX_PARALLEL", 0))
+MAX_PARALLEL = int(os.environ.get("MAX_PARALLEL", 1))  # simultaneous jobs (0 = one per idle GPU)
 GPU_FREE_MB = int(os.environ.get("GPU_FREE_MB", 1000))    # a GPU counts as idle below this memory use ...
 GPU_FREE_UTIL = int(os.environ.get("GPU_FREE_UTIL", 10))  # ... and this utilisation (%)
 
@@ -55,9 +55,9 @@ PROMPT_MAX = 120
 PUBLIC_ITERS = (100, 500)
 PUBLIC_CFG = (10.0, 150.0)
 QUEUE_MAX = int(os.environ.get("QUEUE_MAX", 20))
-PER_IP_TOTAL = int(os.environ.get("PER_IP_TOTAL", 1))
+PER_IP_TOTAL = int(os.environ.get("PER_IP_TOTAL", 0))  # generations per visitor per window (0 = unlimited)
 PER_IP_WINDOW_S = int(os.environ.get("PER_IP_WINDOW_S", 86400))
-KEEP_PUBLIC = int(os.environ.get("KEEP_PUBLIC", 40))
+KEEP_PUBLIC = int(os.environ.get("KEEP_PUBLIC", 150))  # community gallery size (~25 MB per model)
 PRUNE_MIN_AGE_S = int(os.environ.get("PRUNE_MIN_AGE_S", 3600))  # never delete a visitor's run younger than this
 JOB_TIMEOUT_S = 900
 _bl = os.path.join(ROOT, "configs", "blocklist.txt")
@@ -68,6 +68,7 @@ cond = threading.Condition()
 jobs = {}                      # id -> job dict
 queue = collections.deque()    # ids waiting for a GPU
 running = {}                   # job id -> GPU index
+used_sessions = set()          # browser sessions that already submitted their one job
 
 os.makedirs(RUN, exist_ok=True)
 VISITORS = os.path.join(RUN, "visitors.json")  # salted IP hash -> submit timestamps (survives restarts)
@@ -145,18 +146,23 @@ _gpu_lock = threading.Lock()
 
 
 def gpu_pool():
-    """nvidia-smi snapshot of the pool, cached for 2 s (many clients poll this)."""
+    """nvidia-smi snapshot of the pool incl. every process on each GPU (compute + graphics), cached for 2 s."""
+    import xml.etree.ElementTree as ET
+    num = lambda s: int(float(s.split()[0])) if s and s.split()[0].replace(".", "").isdigit() else 0
     with _gpu_lock:
         if time.time() - _gpu_cache["t"] > 2:
-            q = "index,name,memory.used,memory.total,utilization.gpu"
             rows = []
             try:
-                out = subprocess.run(["nvidia-smi", f"--query-gpu={q}", "--format=csv,noheader,nounits"],
-                                     capture_output=True, text=True, timeout=10).stdout.strip()
-                for line in out.splitlines():
-                    i, name, used, total, util = [x.strip() for x in line.split(",")]
-                    if GPUS is None or int(i) in GPUS:
-                        rows.append(dict(index=int(i), name=name, mem_used_mb=int(used), mem_total_mb=int(total), util=int(util)))
+                xml = subprocess.run(["nvidia-smi", "-q", "-x"], capture_output=True, text=True, timeout=15).stdout
+                for i, g in enumerate(ET.fromstring(xml).findall("gpu")):  # XML order == nvidia-smi index order
+                    if GPUS is not None and i not in GPUS:
+                        continue
+                    procs = g.findall("processes/process_info")
+                    rows.append(dict(index=i, name=g.findtext("product_name", "GPU"),
+                                     mem_used_mb=num(g.findtext("fb_memory_usage/used", "0")),
+                                     mem_total_mb=num(g.findtext("fb_memory_usage/total", "0")),
+                                     util=num(g.findtext("utilization/gpu_util", "0")),
+                                     procs=len(procs), proc_types=sorted({p.findtext("type", "?") for p in procs})))
             except Exception:
                 pass
             _gpu_cache.update(t=time.time(), rows=rows)
@@ -164,9 +170,11 @@ def gpu_pool():
 
 
 def idle_gpus():
+    """GPUs with no process of anyone on them (compute or graphics), nearly empty memory and no load."""
     ours = set(running.values())
     return [g["index"] for g in gpu_pool()
-            if g["index"] not in ours and g["mem_used_mb"] < GPU_FREE_MB and g["util"] < GPU_FREE_UTIL]
+            if g["index"] not in ours and g.get("procs", 0) == 0
+            and g["mem_used_mb"] < GPU_FREE_MB and g["util"] < GPU_FREE_UTIL]
 
 
 # ------------------------------------------------------------------ queue + scheduler
@@ -175,14 +183,18 @@ def enqueue(job, ip, admin):
         if not admin:
             key, now = visitor_key(ip), time.time()
             history[key] = [t for t in history[key] if now - t < PER_IP_WINDOW_S]
-            if any(j.get("visitor") == key and j["status"] in ("queued", "running") for j in jobs.values()):
-                raise HTTPException(429, "You already have a job in progress - one job per visitor.")
-            if len(history[key]) >= PER_IP_TOTAL:
+            sid = job.get("session")
+            if not sid:
+                raise HTTPException(400, "Missing session - please reload the page.")
+            if sid in used_sessions:
+                raise HTTPException(429, "One job per session - this session already generated a model. Thanks for trying the studio!")
+            if PER_IP_TOTAL and len(history[key]) >= PER_IP_TOTAL:
                 n = f"{PER_IP_TOTAL} model" + ("s" if PER_IP_TOTAL > 1 else "")
                 raise HTTPException(429, f"Each visitor can generate {n} per {PER_IP_WINDOW_S // 3600} h - "
                                          "thanks for trying the studio! You can still explore the gallery.")
             if len(queue) >= QUEUE_MAX:
                 raise HTTPException(503, "The queue is full right now - please try again in a few minutes.")
+            used_sessions.add(sid)
             history[key].append(now)
             with open(VISITORS, "w") as f:
                 json.dump(history, f)
@@ -296,8 +308,10 @@ def generate(r: GenerateReq, request: Request):
            "--seed", str(seed), "--iters", str(iters), "--guidance_scale", str(cfg)]
     if not admin:
         cmd.append("--no_mesh")  # public jobs: Gaussians + views only (mesh export would double the GPU time)
+    sid = request.headers.get("x-studio-session", "")
     job = dict(id=secrets.token_urlsafe(9), kind="generate", name=name, prompt=prompt, seed=seed, iters=iters,
-               guidance_scale=cfg, out=out, rel=rel, log=os.path.join(out, "training.log"), cmd=cmd)
+               guidance_scale=cfg, out=out, rel=rel, log=os.path.join(out, "training.log"), cmd=cmd,
+               session=sid if re.fullmatch(r"[A-Za-z0-9_-]{16,64}", sid) else None)
     return enqueue(job, ip, admin)  # run_job creates `out` when the job starts (rejected requests leave nothing)
 
 
@@ -326,7 +340,7 @@ def job_view(job):
     now = time.time()
     d = dict(id=job["id"], kind=job["kind"], name=job["name"], status=job["status"], position=position(job["id"]),
              queued=len(queue), rel=job["rel"], returncode=job["returncode"], gpu=job["gpu"],
-             waiting_for_gpu=job["status"] == "queued" and not idle_gpus(),
+             waiting_for_gpu=job["status"] == "queued" and (not idle_gpus() or bool(MAX_PARALLEL and len(running) >= MAX_PARALLEL)),
              elapsed_s=round(now - job["started"], 1) if job["started"] else 0.0,
              wait_s=round((job["started"] or now) - job["created"], 1),
              prompt=job["prompt"], log=tail(job["log"]) if job["status"] != "queued" else [])
@@ -370,7 +384,8 @@ def queue_state():
     pool = gpu_pool()
     idle = idle_gpus()
     with cond:
-        return {"running": len(running), "queued": len(queue), "gpus_total": len(pool), "gpus_idle": len(idle)}
+        return {"running": len(running), "queued": len(queue), "gpus_total": len(pool), "gpus_idle": len(idle),
+                "max_parallel": MAX_PARALLEL}
 
 
 @app.get("/api/job")
@@ -390,18 +405,21 @@ def legacy_job(request: Request):
 def config(request: Request):
     _, admin = caller(request)
     return {"public": PUBLIC, "admin": admin, "prompt_max": PROMPT_MAX, "iters": PUBLIC_ITERS, "cfg": PUBLIC_CFG,
-            "queue_max": QUEUE_MAX, "per_visitor": PER_IP_TOTAL, "window_h": PER_IP_WINDOW_S // 3600}
+            "queue_max": QUEUE_MAX, "per_visitor": PER_IP_TOTAL, "window_h": PER_IP_WINDOW_S // 3600,
+            "max_parallel": MAX_PARALLEL}
 
 
 def list_runs():
+    """Curated example runs + every finished visitor run (community gallery), newest first."""
     runs = []
-    for name in sorted(os.listdir(RESULTS)) if os.path.isdir(RESULTS) else []:
-        if name == "public":
-            continue
-        s = run_summary(os.path.join(RESULTS, name), f"data/results/{name}", name)
-        if s:
-            s["mtime"] = os.path.getmtime(os.path.join(RESULTS, name, "summary.json"))
-            runs.append(s)
+    for base, rel, community in ((RESULTS, "data/results", False), (PUBLIC_DIR, "data/results/public", True)):
+        for name in sorted(os.listdir(base)) if os.path.isdir(base) else []:
+            if name == "public":
+                continue
+            s = run_summary(os.path.join(base, name), f"{rel}/{name}", name)
+            if s:
+                s.update(mtime=os.path.getmtime(os.path.join(base, name, "summary.json")), community=community)
+                runs.append(s)
     return sorted(runs, key=lambda d: -d["mtime"])
 
 

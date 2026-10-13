@@ -8,7 +8,7 @@ const DATA = "data/results";
 const MULTS = [1, 2, 4, 8, 16];
 const GRAD_KEYS = [["xyz", "position"], ["features_dc", "colour"], ["opacity", "opacity"], ["scaling", "scale"], ["rotation", "rotation"]];
 
-const st = { live: false, cfg: {}, runs: [], mine: [], sel: null, base: null, mult: 1, metrics: [], jobId: null, lastSnapStep: -1, polling: false };
+const st = { galleryTick: 0, live: false, cfg: {}, runs: [], mine: [], sel: null, base: null, mult: 1, metrics: [], jobId: null, lastSnapStep: -1, polling: false };
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const runPath = (r) => r.rel || `${DATA}/${r.name}`;
 
@@ -58,7 +58,7 @@ async function fetchJSON(url, opts) {
 
 async function loadRuns() {
   const gallery = st.live ? await fetchJSON("api/runs") : await fetchJSON("data/runs.json").catch(() => []);
-  st.runs = [...st.mine, ...gallery];
+  st.runs = [...st.mine, ...gallery.filter((g) => !st.mine.some((m) => m.name === g.name))];
   const el = $("#runs");
   if (!st.runs.length) { el.innerHTML = `<p class="dim">no runs yet</p>`; return; }
   el.innerHTML = "";
@@ -66,7 +66,7 @@ async function loadRuns() {
     const b = document.createElement("button");
     b.className = "run" + (r.name === st.sel?.name ? " sel" : "");
     b.dataset.name = r.name;
-    b.innerHTML = `<img alt="" src="${runPath(r)}/views/view_000.png"><div><b title="${esc(r.prompt)}">${r.mine ? "★ " : ""}${esc(r.prompt)}</b>
+    b.innerHTML = `<img alt="" src="${runPath(r)}/views/view_000.png"><div><b title="${esc(r.prompt)}">${r.mine ? "★ " : ""}${esc(r.prompt)}</b><i class="tag ${r.community ? "comm" : "ex"}">${r.mine ? "yours" : r.community ? "community" : "example"}</i>
       <span>seed ${esc(r.seed)} · ${esc(r.iters)} it · ${esc(r.train_s)}s · ${(r.num_gaussians_final / 1000).toFixed(1)}k G</span></div>`;
     b.onclick = () => selectRun(r.name);
     el.appendChild(b);
@@ -145,12 +145,32 @@ async function sweep() {
 $("#sweep").onclick = sweep;
 
 // ------------------------------------------------------------------ server jobs (queued; one GPU job at a time)
+// One job per browser session: a random id kept in sessionStorage (new tab/visit = new session).
+function sessionId() {
+  try {
+    let s = sessionStorage.getItem("studio.session");
+    if (!s) { s = Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, "0")).join(""); sessionStorage.setItem("studio.session", s); }
+    return s;
+  } catch { return (st._sid ||= Array.from(crypto.getRandomValues(new Uint8Array(16)), (b) => b.toString(16).padStart(2, "0")).join("")); }
+}
+const sessionUsed = () => { try { return sessionStorage.getItem("studio.used") === "1"; } catch { return !!st._used; } };
+function markSessionUsed() { try { sessionStorage.setItem("studio.used", "1"); } catch { st._used = true; } lockGenerate(); }
+function lockGenerate() {
+  if (!st.cfg.public || st.cfg.admin || !sessionUsed()) return;
+  $("#go").disabled = true;
+  $("#go").textContent = "1 job per session – used ✓";
+}
+
 async function generate() {
   const body = { prompt: $("#prompt").value.trim(), seed: +$("#seed").value, iters: +$("#iters").value, guidance_scale: +$("#cfg").value };
   try {
-    const r = await postJSON("api/generate", body);
+    const r = await postJSON("api/generate", body, { "X-Studio-Session": sessionId() });
+    if (st.cfg.public && !st.cfg.admin) markSessionUsed();
     startJob(r.id);
-  } catch (e) { showError(e); }
+  } catch (e) {
+    if (/one job per session/i.test(e.message)) markSessionUsed();
+    showError(e);
+  }
 }
 $("#go").onclick = generate;
 
@@ -164,8 +184,8 @@ async function bench() {
 }
 $("#bench").onclick = bench;
 
-async function postJSON(url, body) {
-  const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+async function postJSON(url, body, headers = {}) {
+  const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", ...headers }, body: JSON.stringify(body) });
   const d = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(d.detail || `${r.status}`);
   return d;
@@ -215,7 +235,7 @@ async function poll() {
       }
       await sleep(1000);
     }
-  } finally { st.polling = false; }
+  } finally { st.polling = false; lockGenerate(); }
 }
 
 async function updateGen(j) {
@@ -233,7 +253,7 @@ async function updateGen(j) {
     $("#joberr").hidden = false;
     $("#joberr").className = "info";
     $("#joberr").textContent = j.waiting_for_gpu
-      ? `All GPUs are busy right now. You are #${j.position} in line - your job starts automatically as soon as a GPU frees up (keep this page open).`
+      ? `The GPU is busy with another visitor's job. You are #${j.position} in line (about ${j.position} min) - your job starts automatically, keep this page open.`
       : `Starting on a free GPU…`;
     return;
   }
@@ -260,13 +280,42 @@ async function updateGen(j) {
   }
 }
 
+// Before submitting: tell the visitor whether their job would start now or wait behind others.
+function showQueueHint(q) {
+  const h = $("#queuehint"), go = $("#go");
+  if (st.polling) { h.hidden = true; return; }  // the visitor's own job box shows their position instead
+  if (st.cfg.public && !st.cfg.admin && sessionUsed()) {
+    h.hidden = false; h.className = "qhint free";
+    h.textContent = "This session's job is used. Every generated model stays in the Community gallery below - click any to render it.";
+    lockGenerate();
+    return;
+  }
+  const full = q.max_parallel ? q.running >= q.max_parallel : q.gpus_idle === 0;
+  const ahead = q.queued + (full ? q.running : 0);
+  h.hidden = false;
+  if (!full && q.queued === 0) {
+    h.className = "qhint free";
+    h.textContent = "● GPU is free - your job starts right away (about 1 minute).";
+    go.textContent = "Generate 3D on GPU";
+  } else {
+    const pos = q.queued + 1;
+    h.className = "qhint busy";
+    h.textContent = `● ${q.running} job running, ${q.queued} waiting - yours would be #${pos} in line (about ${Math.max(1, Math.round(ahead * 1.2))} min wait). It starts automatically.`;
+    go.textContent = `Join queue (#${pos})`;
+  }
+}
+
 async function pollQueue() {
   for (;;) {
     try {
       const q = await fetchJSON("api/queue");
-      $("#queue").textContent = `${q.gpus_idle}/${q.gpus_total} GPUs free · ${q.running} running · ${q.queued} waiting`;
+      $("#queue").textContent = q.max_parallel
+        ? `${q.running}/${q.max_parallel} job running · ${q.queued} waiting`
+        : `${q.gpus_idle}/${q.gpus_total} GPUs free · ${q.running} running · ${q.queued} waiting`;
+      showQueueHint(q);
     } catch { /* ignore */ }
     await sleep(3000);
+    if (++st.galleryTick % 10 === 0 && !st.polling) loadRuns().catch(() => {});  // pick up new community models (~30 s)
   }
 }
 
@@ -299,10 +348,13 @@ window.studio = {
       $("#iters").max = st.cfg.iters[1]; $("#iters").min = st.cfg.iters[0];
       $("#bench").disabled = true; $("#bench").title = "run by the owner; measured results are shown below";
       $("#publicnote").hidden = false;
-      $("#publicnote").textContent = `Public demo: each visitor can generate ${st.cfg.per_visitor} model per ${st.cfg.window_h} h (about 1 minute on a free A100; if all GPUs are busy you wait in a queue). Max ${st.cfg.iters[1]} SDS steps, no mesh export. Your result is only shown to you.`;
+      const slots = st.cfg.max_parallel ? `${st.cfg.max_parallel} job${st.cfg.max_parallel > 1 ? "s" : ""} at a time` : "one job per free GPU";
+      const quota = st.cfg.per_visitor ? ` Each visitor can generate ${st.cfg.per_visitor} model per ${st.cfg.window_h} h.` : "";
+      $("#publicnote").textContent = `Public demo: the server runs ${slots} on an A100 (about 1 minute each); other prompts wait in a queue and start automatically.${quota} One job per session, max ${st.cfg.iters[1]} SDS steps, no mesh export. Every finished model is added to the public gallery below.`;
     }
     pollSystem();
     pollQueue();
+    lockGenerate();
   } catch {
     $("#mode").textContent = "static build (pre-generated)"; $("#mode").className = "pill static";
     $("#go").disabled = $("#bench").disabled = true; $("#offline").hidden = false;

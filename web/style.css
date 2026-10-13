@@ -118,3 +118,10 @@ button.ghost:hover:not(:disabled) { border-color: var(--accent); }
 .err { color: #ffd0d0; background: #4a1d1d; border-radius: 6px; padding: 6px 8px; font-size: 12px; margin: 8px 0 0; }
 .badge.queued, .badge.starting { background: #2a2e36; color: #c3c2b7; }
 .info { color: #cfe4ff; background: #173a5e; border-radius: 6px; padding: 6px 8px; font-size: 12px; margin: 8px 0 0; }
+.qhint { font-size: 12.5px; border-radius: 6px; padding: 6px 8px; margin: 8px 0 0; }
+.qhint.free { color: #bff0da; background: #123d2d; }
+.qhint.busy { color: #f5dca6; background: #4a3a10; }
+.run i.tag { font-style: normal; font-size: 10.5px; padding: 0 6px; border-radius: 999px; margin-top: 3px; display: inline-block; }
+.run i.tag.ex { background: #2a2e36; color: #c3c2b7; }
+.run i.tag.comm { background: #173a5e; color: #cfe4ff; }
+.run b { display: block; }

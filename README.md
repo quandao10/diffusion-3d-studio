@@ -76,12 +76,16 @@ bash scripts/serve_public.sh     # server (PUBLIC=1, 127.0.0.1 only) + Cloudflar
 bash scripts/stop_public.sh      # stop both
 ```
 
-* **GPU scheduling:** every job is sent to an idle GPU on the machine (memory < 1 GB and utilisation < 10 %, not already
-  running one of our jobs), so several visitors run in parallel. When all GPUs are busy the job waits in a FIFO queue and
-  the visitor sees “All GPUs are busy – you are #N in line”. `GPUS=4,5,6,7` restricts the pool, `MAX_PARALLEL=n` caps it.
-* **Visitor limits:** 1 generation per visitor per 24 h (salted hash of the IP, `run/visitors.json`), one active job at
-  a time, prompts ≤ 120 characters plus a word blocklist (`configs/blocklist.txt`), ≤ 500 SDS steps, no mesh export
-  (~1 min per job). Visitors' results go to `results/public/` and are shown only to them; the server prunes old ones.
+* **Open access, limited jobs:** anyone can open the site. **One job runs at a time** (`MAX_PARALLEL=1`, on an idle GPU:
+  no process of anyone on it, compute or graphics, plus memory < 1 GB and utilisation < 10 %); other prompts wait in a FIFO queue. Before submitting, visitors see whether the
+  GPU is free or how many jobs are ahead (“Join queue (#N)”); after submitting they see their position until it starts.
+  `MAX_PARALLEL=0` = one job per idle GPU, `GPUS=4,5,6,7` restricts the pool.
+* **One job per browser session** (random id in `sessionStorage`, sent as `X-Studio-Session`), no per-IP limits (so a
+  class on one campus network is not blocked). Prompts ≤ 120 characters plus a word blocklist (`configs/blocklist.txt`),
+  ≤ 500 SDS steps, no mesh export (~1 min per job). Queue capped at 20.
+* **Community gallery:** every finished visitor model is saved to `results/public/` and listed in the gallery for all
+  visitors (tagged “community”), so anyone can render it without re-running; the newest 150 are kept.
+  `python scripts/export_static.py --with-community` also bakes them into the static GitHub Pages demo.
 * **Owner (admin):** requests from localhost without the tunnel header (e.g. via `ssh -L 8549:127.0.0.1:8549`) keep
   full settings, the CUDA stress test, and are not rate limited.
 * The quick-tunnel URL changes whenever the tunnel restarts; it is written to `run/public_url.txt`.

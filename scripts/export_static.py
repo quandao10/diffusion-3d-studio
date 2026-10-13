@@ -2,7 +2,8 @@
 real outputs of finished GPU runs (Gaussian PLY, snapshots, metrics, benchmark CSVs). Generation itself needs the
 local GPU server; the static page says so.
 
-usage: python scripts/export_static.py [run names...]   (default: every results/<name>/summary.json)
+usage: python scripts/export_static.py [run names...] [--with-community]
+       (default: every results/<name>/summary.json; --with-community also adds visitors' models from results/public/)
 """
 import csv, json, os, shutil, subprocess, sys
 
@@ -24,13 +25,19 @@ def compact_ply(src, dst):
 
 
 def main():
-    names = sys.argv[1:] or sorted(n for n in os.listdir(RES) if os.path.exists(os.path.join(RES, n, "summary.json")))
+    args = [a for a in sys.argv[1:] if not a.startswith("--")]
+    with_community = "--with-community" in sys.argv  # also bake visitors' models (results/public/) into the static demo
+    names = args or sorted(n for n in os.listdir(RES) if os.path.exists(os.path.join(RES, n, "summary.json")))
+    items = [(n, n, False) for n in names]
+    pub = os.path.join(RES, "public")
+    if with_community and os.path.isdir(pub):
+        items += [(f"public/{n}", n, True) for n in sorted(os.listdir(pub)) if os.path.exists(os.path.join(pub, n, "summary.json"))]
     if os.path.exists(OUT):
         shutil.rmtree(OUT)
     shutil.copytree(os.path.join(ROOT, "web"), OUT)
     runs = []
-    for n in names:
-        src, dst = os.path.join(RES, n), os.path.join(OUT, "data", "results", n)
+    for relname, n, community in items:
+        src, dst = os.path.join(RES, relname), os.path.join(OUT, "data", "results", relname)
         os.makedirs(os.path.join(dst, "progress"))
         s = json.load(open(os.path.join(src, "summary.json")))
         s.pop("config_overrides", None)
@@ -42,7 +49,7 @@ def main():
         for f in os.listdir(os.path.join(src, "progress")):
             if f != "latest.png":
                 shutil.copy(os.path.join(src, "progress", f), os.path.join(dst, "progress"))
-        s["name"] = n
+        s.update(name=n, rel=f"data/results/{relname}", community=community)
         s["has_benchmark"] = os.path.exists(os.path.join(src, "benchmark.csv"))
         s["mtime"] = os.path.getmtime(os.path.join(src, "summary.json"))
         runs.append(s)

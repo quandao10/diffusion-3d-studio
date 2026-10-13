@@ -37,6 +37,7 @@
       <label class="field">CFG scale <input id="cfg" type="number" value="100" min="1" max="200" step="5"></label>
     </div>
     <button id="go" class="primary">Generate 3D on GPU</button>
+    <p id="queuehint" class="qhint" hidden></p>
     <p id="publicnote" class="note" hidden></p>
     <p id="offline" class="note" hidden>Static build: generation needs the local GPU server (<code>python server.py</code>). Pre-generated runs below are real outputs of that server.</p>
 
@@ -56,7 +57,7 @@
       </dl>
     </div>
 
-    <h3>Generated runs</h3>
+    <h3>Gallery – click any model to render it</h3>
     <div id="runs" class="runs"><p class="dim">no runs yet</p></div>
   </section>
 
