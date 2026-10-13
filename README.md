@@ -8,7 +8,7 @@ novel-view rendering (CUDA rasterizer + my own WebGL2 Gaussian-splatting viewer)
 
 | | |
 |---|---|
-| Demo video (2:57) | `video/demo.mp4` (screen capture of the live studio: MVDream generation, queue/ETA/stop, guidance comparison, stress test; recorded by `scripts/record_demo2.py`) → upload to YouTube/Vimeo: **TODO link** |
+| Demo video (2:57) | `video/demo.mp4` (screen capture of the live studio: MVDream generation, queue/ETA/stop, guidance comparison, stress test; recorded by `scripts/record_demo2.py`) → **YouTube: https://www.youtube.com/watch?v=UGFzpFrmWcE** |
 | Static web demo (GitHub Pages, read-only) | https://quandao10.github.io/diffusion-3d-studio/ (built from `docs/`) |
 | Live studio (generation) | local NVIDIA GPU: `GPU=0 python server.py` → http://127.0.0.1:8549 |
 | Report | `report/Assignment_3_Final.pdf` |
