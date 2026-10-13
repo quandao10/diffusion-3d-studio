@@ -1,0 +1,16 @@
+[compare] 5 runs on GPUs [5, 6, 7]
+[compare] GPU7 mvdream  a blue ceramic teapot          rc=0 205s
+[compare] GPU5 mvdream  a small red mushroom house     rc=0 207s
+[compare] GPU6 mvdream  a cute corgi puppy             rc=0 209s
+[compare] GPU5 mvdream  a ripe pineapple               rc=0 194s
+[compare] GPU7 mvdream  a delicious hamburger          rc=0 197s
+/research/cbim/vast/qd66/miniconda3/envs/dreamgaussian/lib/python3.10/site-packages/huggingface_hub/file_download.py:1142: FutureWarning: `resume_download` is deprecated and will be removed in version 1.0.0. Downloads always resume when possible. If you want to force a new download, use `force_download=True`.
+  warnings.warn(
+{'method': 'mvdream_it800', 'iters': 800, 'prompt': 'a small red mushroom house', 'clip_score': 26.59, 'train_s': 156.2, 'total_s': 197.3, 'gaussians': 483659, 'peak_vram_mb': 11940.7, 'guidance_scale': 50.0}
+{'method': 'mvdream_it800', 'iters': 800, 'prompt': 'a cute corgi puppy', 'clip_score': 23.61, 'train_s': 159.9, 'total_s': 200.0, 'gaussians': 461009, 'peak_vram_mb': 11810.7, 'guidance_scale': 50.0}
+{'method': 'mvdream_it800', 'iters': 800, 'prompt': 'a blue ceramic teapot', 'clip_score': 23.96, 'train_s': 154.2, 'total_s': 195.7, 'gaussians': 455372, 'peak_vram_mb': 11727.6, 'guidance_scale': 50.0}
+{'method': 'mvdream_it800', 'iters': 800, 'prompt': 'a delicious hamburger', 'clip_score': 28.61, 'train_s': 152.1, 'total_s': 186.4, 'gaussians': 370297, 'peak_vram_mb': 11557.6, 'guidance_scale': 50.0}
+{'method': 'mvdream_it800', 'iters': 800, 'prompt': 'a ripe pineapple', 'clip_score': 26.91, 'train_s': 151.7, 'total_s': 185.5, 'gaussians': 354279, 'peak_vram_mb': 11449.8, 'guidance_scale': 50.0}
+[compare] per-method mean:
+  mvdream  CLIP  25.94   train  154.8s   VRAM 11.7 GB
+[compare] wrote /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/docs_assets/guidance_grid_it800.png

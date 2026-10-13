@@ -1,0 +1,30 @@
+{
+  "prompt": "a cute corgi puppy",
+  "seed": 0,
+  "iters": 800,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 461009,
+  "load_model_s": 31.7,
+  "train_s": 159.9,
+  "export_s": 3.3,
+  "render_views_s": 4.8,
+  "total_s": 200.0,
+  "peak_vram_mb": 11810.7,
+  "ply": "a_cute_corgi_puppy_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a cute corgi puppy",
+    "save_path": "a_cute_corgi_puppy",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream_it800/a_cute_corgi_puppy",
+    "iters": 800,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  }
+}

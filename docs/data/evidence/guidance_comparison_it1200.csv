@@ -1,0 +1,6 @@
+method,iters,prompt,clip_score,train_s,total_s,gaussians,peak_vram_mb,guidance_scale
+mvdream_it1200,1200,a small red mushroom house,21.44,243.4,285.9,1172836,13236.1,50.0
+mvdream_it1200,1200,a cute corgi puppy,19.13,251.4,294.9,1185965,13016.1,50.0
+mvdream_it1200,1200,a blue ceramic teapot,19.22,242.4,286.9,1166336,13038.6,50.0
+mvdream_it1200,1200,a delicious hamburger,29.8,238.9,272.4,972015,12603.8,50.0
+mvdream_it1200,1200,a ripe pineapple,26.55,239.6,276.1,1122651,12722.4,50.0

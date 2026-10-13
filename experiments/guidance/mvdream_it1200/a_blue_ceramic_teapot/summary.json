@@ -1,0 +1,30 @@
+{
+  "prompt": "a blue ceramic teapot",
+  "seed": 0,
+  "iters": 1200,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 1166336,
+  "load_model_s": 30.5,
+  "train_s": 242.4,
+  "export_s": 8.4,
+  "render_views_s": 5.2,
+  "total_s": 286.9,
+  "peak_vram_mb": 13038.6,
+  "ply": "a_blue_ceramic_teapot_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a blue ceramic teapot",
+    "save_path": "a_blue_ceramic_teapot",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream_it1200/a_blue_ceramic_teapot",
+    "iters": 1200,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  }
+}

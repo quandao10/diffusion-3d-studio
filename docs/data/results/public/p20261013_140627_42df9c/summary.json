@@ -1,0 +1,28 @@
+{
+  "prompt": "a small red car",
+  "seed": 0,
+  "iters": 500,
+  "guidance_scale": 100.0,
+  "sd_model": "Manojb/stable-diffusion-2-1-base",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 321804,
+  "load_model_s": 2.0,
+  "train_s": 46.6,
+  "export_s": 1.0,
+  "render_views_s": 7.3,
+  "total_s": 57.1,
+  "peak_vram_mb": 4461.1,
+  "ply": "p20261013_140627_42df9c_model.ply",
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a small red car",
+    "negative_prompt": "",
+    "save_path": "p20261013_140627_42df9c",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261013_140627_42df9c",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance_scale": 100.0,
+    "seed": 0
+  }
+}

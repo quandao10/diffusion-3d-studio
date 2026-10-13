@@ -8,7 +8,7 @@ novel-view rendering (CUDA rasterizer + my own WebGL2 Gaussian-splatting viewer)
 
 | | |
 |---|---|
-| Demo video (2–3 min) | `video/demo.mp4` → upload to YouTube/Vimeo: **TODO link** |
+| Demo video (2:57) | `video/demo.mp4` (screen capture of the live studio: MVDream generation, queue/ETA/stop, guidance comparison, stress test; recorded by `scripts/record_demo2.py`) → upload to YouTube/Vimeo: **TODO link** |
 | Static web demo (GitHub Pages, read-only) | https://quandao10.github.io/diffusion-3d-studio/ (built from `docs/`) |
 | Live studio (generation) | local NVIDIA GPU: `GPU=0 python server.py` → http://127.0.0.1:8549 |
 | Report | `report/Assignment_3_Final.pdf` |
@@ -91,6 +91,31 @@ bash scripts/stop_public.sh      # stop both
 * **Owner (admin):** requests from localhost without the tunnel header (e.g. via `ssh -L 8549:127.0.0.1:8549`) keep
   full settings, the CUDA stress test, and are not rate limited.
 * The quick-tunnel URL changes whenever the tunnel restarts; it is written to `run/public_url.txt`.
+
+## Improving the algorithm: score-distillation variants (measured)
+
+`scripts/train_logged.py --guidance {sds,csd,nfsd,ism,mvdream}` swaps only the distillation loss; rendering, cameras
+and densification stay upstream. CSD / NFSD / ISM are implemented in `scripts/guidance_plus.py` on upstream's frozen
+SD 2.1 (with view-dependent prompts); MVDream uses upstream's own multi-view guidance (`configs/text_mv.yaml`,
+`MVDream/MVDream sd-v2.1-base-4view`). VSD (ProlificDreamer) was not added: it trains a LoRA during optimisation and
+takes hours; ISM (LucidDreamer) is the fast alternative that targets the same over-smoothing/over-saturation issues.
+
+Same 5 prompts, seed 0, 500 steps, one process-free A100 per run (`python scripts/compare_guidance.py`). CLIP score =
+ViT-L/14 cosine similarity × 100 between the prompt and 8 views (`evidence/guidance_comparison*.csv`).
+
+| method | CLIP | SDS time | total | peak VRAM | visual verdict (`docs_assets/guidance_grid.png`) |
+|---|---|---|---|---|---|
+| SDS (upstream, CFG 100) | 26.38 | 47.0 s | 57.5 s | 4.4 GB | blotchy, over-saturated; corgi has a face on its back (Janus) |
+| CSD (CFG 100) | 24.65 | 50.6 s | 60.0 s | 4.4 GB | noisy, speckled |
+| NFSD (CFG 7.5) | 25.45 | 52.5 s | 62.7 s | 4.4 GB | natural colours but blurry |
+| ISM (CFG 7.5) | 25.95 | 107.5 s | 115.0 s | 4.4 GB | Janus fixed on the corgi, off colours |
+| **MVDream (CFG 50)** | 25.94 | 90.6 s | 127.2 s | 10.7 GB | **clearly best: coherent 3D, no Janus, sharp textures** → default |
+
+CLIP barely separates the methods (it rewards SDS's saturation), so the choice is made visually. **Step count for MVDream**
+(`docs_assets/mvdream_steps.png`): 300 steps 26.37 CLIP / 86 s total (clean, softer), **500 steps sharpest (default and
+visitor maximum)**, 800 steps 25.94 / 193 s (over-saturated, objects swell), 1200 steps 23.23 / 283 s (blown out).
+
+![guidance grid](docs_assets/guidance_grid.png)
 
 ## Verified results (A100-PCIE-40GB, 500 SDS steps, CFG 100, seed 0)
 

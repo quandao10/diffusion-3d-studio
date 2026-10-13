@@ -18,3 +18,9 @@ experiments/smoke/
 experiments/**/*.ply
 experiments/**/progress/
 experiments/**/turntable.*
+video/demo_v1_first_version.mp4
+video_v2/frames/
+video_v2/frames.txt
+video_v2/audio/
+video_v2/voiceover.wav
+video_v2/demo.mp4

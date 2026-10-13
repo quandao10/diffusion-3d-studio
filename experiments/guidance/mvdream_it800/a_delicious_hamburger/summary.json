@@ -1,0 +1,30 @@
+{
+  "prompt": "a delicious hamburger",
+  "seed": 0,
+  "iters": 800,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 370297,
+  "load_model_s": 28.7,
+  "train_s": 152.1,
+  "export_s": 1.1,
+  "render_views_s": 4.3,
+  "total_s": 186.4,
+  "peak_vram_mb": 11557.6,
+  "ply": "a_delicious_hamburger_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a delicious hamburger",
+    "save_path": "a_delicious_hamburger",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream_it800/a_delicious_hamburger",
+    "iters": 800,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  }
+}

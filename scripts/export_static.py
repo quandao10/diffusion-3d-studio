@@ -57,6 +57,9 @@ def main():
     json.dump(runs, open(os.path.join(OUT, "data", "runs.json"), "w"), indent=1)
     os.makedirs(os.path.join(OUT, "data", "evidence"))
     shutil.copy(os.path.join(ROOT, "evidence", "performance.csv"), os.path.join(OUT, "data", "evidence"))
+    for f in os.listdir(os.path.join(ROOT, "evidence")):
+        if f.startswith("guidance_comparison") and f.endswith(".csv"):
+            shutil.copy(os.path.join(ROOT, "evidence", f), os.path.join(OUT, "data", "evidence"))
     gpu = subprocess.run(["nvidia-smi", "-i", os.environ.get("GPU", "4"), "--query-gpu=name", "--format=csv,noheader"],
                          capture_output=True, text=True).stdout.strip() or "NVIDIA GPU"
     json.dump({"name": gpu}, open(os.path.join(OUT, "data", "system.json"), "w"))

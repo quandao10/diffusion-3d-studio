@@ -351,6 +351,33 @@ async function pollSystem() {
   }
 }
 
+// ------------------------------------------------------------------ guidance comparison (evidence CSVs)
+const VERDICT = { sds: "blotchy, Janus corgi", csd: "noisy", nfsd: "natural colours, blurry", ism: "no Janus, off colours", mvdream: "best: coherent, sharp" };
+async function csvRows(url) {
+  const t = await fetch(url).then((r) => (r.ok ? r.text() : "")).catch(() => "");
+  const [head, ...lines] = t.trim().split(/\r?\n/);
+  if (!head) return [];
+  const k = head.split(",");
+  return lines.map((l) => Object.fromEntries(l.split(",").map((v, i) => [k[i], v])));
+}
+const avg = (rows, key) => rows.reduce((a, r) => a + +r[key], 0) / rows.length;
+async function loadComparison() {
+  const rows = await csvRows("data/evidence/guidance_comparison.csv");
+  if (!rows.length) return;
+  $("#t-algo tbody").innerHTML = ["sds", "csd", "nfsd", "ism", "mvdream"].map((m) => {
+    const r = rows.filter((x) => x.method === m);
+    if (!r.length) return "";
+    return `<tr class="${m === "mvdream" ? "best" : ""}"><td>${m.toUpperCase()}</td><td>${avg(r, "clip_score").toFixed(2)}</td><td>${avg(r, "train_s").toFixed(0)} s</td><td>${avg(r, "total_s").toFixed(0)} s</td><td>${(Math.max(...r.map((x) => +x.peak_vram_mb)) / 1024).toFixed(1)} GB</td><td>${VERDICT[m]}</td></tr>`;
+  }).join("");
+  const steps = [[300, "_it300", "clean, softer"], [500, "", "sharpest (default, cap)"], [800, "_it800", "over-saturated"], [1200, "_it1200", "blown out"]];
+  const out = [];
+  for (const [n, suf, v] of steps) {
+    const r = suf ? await csvRows(`data/evidence/guidance_comparison${suf}.csv`) : rows.filter((x) => x.method === "mvdream");
+    if (r.length) out.push(`<tr class="${n === 500 ? "best" : ""}"><td>${n}</td><td>${avg(r, "clip_score").toFixed(2)}</td><td>${avg(r, "total_s").toFixed(0)} s</td><td>${v}</td></tr>`);
+  }
+  $("#t-steps tbody").innerHTML = out.join("");
+}
+
 // ------------------------------------------------------------------ video-narration helpers
 window.studio = {
   viewer, st, generate, bench, sweep, setMult, selectRun, loadRuns,
@@ -390,6 +417,7 @@ window.studio = {
       $("#gpu").textContent = `generated on ${sys.name}`;
     } catch { $("#gpu").textContent = "GPU: offline"; }
   }
+  loadComparison();
   await loadRuns();
   if (st.runs.length) await selectRun(st.runs[0].name);
   else { drawMetrics(); showBench([]); }

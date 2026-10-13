@@ -40,3 +40,13 @@ Loading model from cache file: /research/cbim/vast/qd66/.cache/huggingface/hub/m
 [step  200/300] sds_loss=11871.02 t=333 res=512 N=39742 |grad| xyz=1.764e+03 color=8.755e+01 opac=6.914e+00 scale=6.510e+01 rot=4.500e+01 vram_peak=10517MB
 [step  210/300] sds_loss=24280.98 t=300 res=512 N=39742 |grad| xyz=2.165e+03 color=1.339e+02 opac=8.829e+00 scale=8.081e+01 rot=6.010e+01 vram_peak=10548MB
 [step  220/300] sds_loss=16056.74 t=267 res=512 N=39742 |grad| xyz=3.398e+03 color=1.997e+02 opac=1.099e+01 scale=1.372e+02 rot=9.690e+01 vram_peak=10548MB
+[step  230/300] sds_loss=12961.81 t=233 res=512 N=39742 |grad| xyz=1.703e+03 color=1.008e+02 opac=6.355e+00 scale=7.366e+01 rot=6.421e+01 vram_peak=10548MB
+[step  240/300] sds_loss=9692.24 t=200 res=512 N=39742 |grad| xyz=1.907e+03 color=9.538e+01 opac=6.876e+00 scale=8.557e+01 rot=9.572e+01 vram_peak=10548MB
+[step  250/300] sds_loss=10579.36 t=167 res=512 N=55345 |grad| xyz=1.765e+03 color=1.287e+02 opac=1.155e+01 scale=8.262e+01 rot=6.598e+01 vram_peak=10549MB
+[step  260/300] sds_loss=19238.95 t=133 res=512 N=55345 |grad| xyz=2.791e+03 color=1.455e+02 opac=8.814e+00 scale=9.548e+01 rot=8.056e+01 vram_peak=10589MB
+[step  270/300] sds_loss=9339.53 t=100 res=512 N=55345 |grad| xyz=2.317e+03 color=1.995e+02 opac=7.824e+00 scale=7.371e+01 rot=6.895e+01 vram_peak=10589MB
+[step  280/300] sds_loss=9540.16 t=67 res=512 N=55345 |grad| xyz=4.138e+03 color=1.181e+02 opac=9.166e+00 scale=7.397e+01 rot=7.270e+01 vram_peak=10590MB
+[step  290/300] sds_loss=7666.88 t=33 res=512 N=55345 |grad| xyz=1.489e+03 color=9.902e+01 opac=6.861e+00 scale=5.172e+01 rot=4.559e+01 vram_peak=10590MB
+[step  300/300] sds_loss=7696.45 t=20 res=512 N=74933 |grad| xyz=1.599e+03 color=1.172e+02 opac=4.542e+00 scale=5.524e+01 rot=5.442e+01 vram_peak=10590MB
+[INFO] save model to /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream_it300/a_cute_corgi_puppy/a_cute_corgi_puppy_model.ply.
+[EVIDENCE] summary {"prompt": "a cute corgi puppy", "seed": 0, "iters": 300, "guidance": "mvdream", "guidance_scale": 50.0, "sd_model": "MVDream/MVDream sd-v2.1-base-4view", "gpu": "NVIDIA A100-PCIE-40GB", "num_gaussians_final": 74933, "load_model_s": 30.4, "train_s": 55.0, "export_s": 0.2, "render_views_s": 3.8, "total_s": 89.7, "peak_vram_mb": 10590.3, "ply": "a_cute_corgi_puppy_model.ply", "front_azimuth": 90, "mesh": null, "config_overrides": {"prompt": "a cute corgi puppy", "save_path": "a_cute_corgi_puppy", "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream_it300/a_cute_corgi_puppy", "iters": 300, "gui": false, "force_cuda_rast": true, "guidance": "mvdream", "guidance_scale": 50.0, "seed": 0}}

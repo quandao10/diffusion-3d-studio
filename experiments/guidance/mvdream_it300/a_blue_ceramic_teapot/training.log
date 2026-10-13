@@ -40,3 +40,13 @@ Loading model from cache file: /research/cbim/vast/qd66/.cache/huggingface/hub/m
 [step  200/300] sds_loss=7495.70 t=333 res=512 N=41359 |grad| xyz=1.202e+03 color=7.257e+01 opac=7.967e+00 scale=4.800e+01 rot=2.971e+01 vram_peak=10520MB
 [step  210/300] sds_loss=12209.54 t=300 res=512 N=41359 |grad| xyz=2.297e+03 color=9.506e+01 opac=1.862e+01 scale=7.267e+01 rot=5.778e+01 vram_peak=10557MB
 [step  220/300] sds_loss=11132.02 t=267 res=512 N=41359 |grad| xyz=2.206e+03 color=1.204e+02 opac=1.645e+01 scale=1.102e+02 rot=5.609e+01 vram_peak=10557MB
+[step  230/300] sds_loss=13206.02 t=233 res=512 N=41359 |grad| xyz=2.418e+03 color=1.217e+02 opac=1.537e+01 scale=8.327e+01 rot=5.404e+01 vram_peak=10557MB
+[step  240/300] sds_loss=9413.71 t=200 res=512 N=41359 |grad| xyz=2.364e+03 color=1.188e+02 opac=1.017e+01 scale=7.727e+01 rot=4.863e+01 vram_peak=10557MB
+[step  250/300] sds_loss=9546.46 t=167 res=512 N=58474 |grad| xyz=1.711e+03 color=8.838e+01 opac=8.452e+00 scale=6.995e+01 rot=4.432e+01 vram_peak=10557MB
+[step  260/300] sds_loss=12350.46 t=133 res=512 N=58474 |grad| xyz=3.094e+03 color=1.652e+02 opac=1.606e+01 scale=1.150e+02 rot=6.468e+01 vram_peak=10599MB
+[step  270/300] sds_loss=12034.92 t=100 res=512 N=58474 |grad| xyz=2.237e+03 color=1.029e+02 opac=9.859e+00 scale=7.551e+01 rot=4.931e+01 vram_peak=10599MB
+[step  280/300] sds_loss=8757.74 t=67 res=512 N=58474 |grad| xyz=2.194e+03 color=8.227e+01 opac=6.993e+00 scale=7.298e+01 rot=7.282e+01 vram_peak=10600MB
+[step  290/300] sds_loss=7436.22 t=33 res=512 N=58474 |grad| xyz=3.806e+03 color=1.492e+02 opac=1.745e+01 scale=1.422e+02 rot=1.024e+02 vram_peak=10600MB
+[step  300/300] sds_loss=7851.34 t=20 res=512 N=79860 |grad| xyz=1.390e+03 color=5.845e+01 opac=5.362e+00 scale=6.300e+01 rot=4.585e+01 vram_peak=10601MB
+[INFO] save model to /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream_it300/a_blue_ceramic_teapot/a_blue_ceramic_teapot_model.ply.
+[EVIDENCE] summary {"prompt": "a blue ceramic teapot", "seed": 0, "iters": 300, "guidance": "mvdream", "guidance_scale": 50.0, "sd_model": "MVDream/MVDream sd-v2.1-base-4view", "gpu": "NVIDIA A100-PCIE-40GB", "num_gaussians_final": 79860, "load_model_s": 30.3, "train_s": 54.9, "export_s": 0.2, "render_views_s": 3.8, "total_s": 89.6, "peak_vram_mb": 10601.0, "ply": "a_blue_ceramic_teapot_model.ply", "front_azimuth": 90, "mesh": null, "config_overrides": {"prompt": "a blue ceramic teapot", "save_path": "a_blue_ceramic_teapot", "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream_it300/a_blue_ceramic_teapot", "iters": 300, "gui": false, "force_cuda_rast": true, "guidance": "mvdream", "guidance_scale": 50.0, "seed": 0}}

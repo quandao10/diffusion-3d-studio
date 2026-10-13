@@ -1,26 +1,26 @@
-method,prompt,clip_score,train_s,total_s,gaussians,peak_vram_mb,guidance_scale
-sds,a small red mushroom house,29.59,47.2,57.8,307232,4449.5,100.0
-sds,a cute corgi puppy,21.72,47.5,58.0,306409,4445.9,100.0
-sds,a blue ceramic teapot,26.36,47.8,58.3,328657,4467.4,100.0
-sds,a delicious hamburger,28.83,45.9,56.4,280548,4415.1,100.0
-sds,a ripe pineapple,25.42,46.7,56.9,281015,4413.0,100.0
-csd,a small red mushroom house,25.14,49.9,60.4,325099,4457.3,100.0
-csd,a cute corgi puppy,20.45,50.7,60.0,292735,4426.8,100.0
-csd,a blue ceramic teapot,24.38,50.4,59.6,317824,4453.2,100.0
-csd,a delicious hamburger,28.01,51.9,61.1,282089,4417.7,100.0
-csd,a ripe pineapple,25.29,50.2,58.9,303242,4420.0,100.0
-nfsd,a small red mushroom house,24.67,52.2,61.4,351796,4531.9,7.5
-nfsd,a cute corgi puppy,21.04,52.2,60.8,309387,4496.9,7.5
-nfsd,a blue ceramic teapot,26.7,53.6,63.1,352969,4533.0,7.5
-nfsd,a delicious hamburger,28.98,52.1,64.1,296387,4484.7,7.5
-nfsd,a ripe pineapple,25.88,52.6,64.0,301652,4485.6,7.5
-ism,a small red mushroom house,27.32,107.1,114.5,309004,4431.9,7.5
-ism,a cute corgi puppy,23.16,108.7,116.4,316761,4435.9,7.5
-ism,a blue ceramic teapot,25.1,106.7,114.6,390779,4484.9,7.5
-ism,a delicious hamburger,28.55,106.6,113.6,268342,4405.5,7.5
-ism,a ripe pineapple,25.62,108.2,116.0,331125,4440.3,7.5
-mvdream,a small red mushroom house,26.06,89.5,125.5,248663,10946.3,50.0
-mvdream,a cute corgi puppy,22.72,93.7,133.5,253516,10944.4,50.0
-mvdream,a blue ceramic teapot,26.41,91.1,125.4,238838,10923.2,50.0
-mvdream,a delicious hamburger,27.81,88.8,127.0,232736,10920.5,50.0
-mvdream,a ripe pineapple,26.68,89.7,124.4,201744,10839.4,50.0
+method,iters,prompt,clip_score,train_s,total_s,gaussians,peak_vram_mb,guidance_scale
+sds,500,a small red mushroom house,29.59,47.2,57.8,307232,4449.5,100.0
+sds,500,a cute corgi puppy,21.72,47.5,58.0,306409,4445.9,100.0
+sds,500,a blue ceramic teapot,26.36,47.8,58.3,328657,4467.4,100.0
+sds,500,a delicious hamburger,28.83,45.9,56.4,280548,4415.1,100.0
+sds,500,a ripe pineapple,25.42,46.7,56.9,281015,4413.0,100.0
+csd,500,a small red mushroom house,25.14,49.9,60.4,325099,4457.3,100.0
+csd,500,a cute corgi puppy,20.45,50.7,60.0,292735,4426.8,100.0
+csd,500,a blue ceramic teapot,24.38,50.4,59.6,317824,4453.2,100.0
+csd,500,a delicious hamburger,28.01,51.9,61.1,282089,4417.7,100.0
+csd,500,a ripe pineapple,25.29,50.2,58.9,303242,4420.0,100.0
+nfsd,500,a small red mushroom house,24.67,52.2,61.4,351796,4531.9,7.5
+nfsd,500,a cute corgi puppy,21.04,52.2,60.8,309387,4496.9,7.5
+nfsd,500,a blue ceramic teapot,26.7,53.6,63.1,352969,4533.0,7.5
+nfsd,500,a delicious hamburger,28.98,52.1,64.1,296387,4484.7,7.5
+nfsd,500,a ripe pineapple,25.88,52.6,64.0,301652,4485.6,7.5
+ism,500,a small red mushroom house,27.32,107.1,114.5,309004,4431.9,7.5
+ism,500,a cute corgi puppy,23.16,108.7,116.4,316761,4435.9,7.5
+ism,500,a blue ceramic teapot,25.1,106.7,114.6,390779,4484.9,7.5
+ism,500,a delicious hamburger,28.55,106.6,113.6,268342,4405.5,7.5
+ism,500,a ripe pineapple,25.62,108.2,116.0,331125,4440.3,7.5
+mvdream,500,a small red mushroom house,26.06,89.5,125.5,248663,10946.3,50.0
+mvdream,500,a cute corgi puppy,22.72,93.7,133.5,253516,10944.4,50.0
+mvdream,500,a blue ceramic teapot,26.41,91.1,125.4,238838,10923.2,50.0
+mvdream,500,a delicious hamburger,27.81,88.8,127.0,232736,10920.5,50.0
+mvdream,500,a ripe pineapple,26.68,89.7,124.4,201744,10839.4,50.0

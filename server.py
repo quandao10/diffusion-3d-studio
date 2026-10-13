@@ -339,6 +339,7 @@ class GenerateReq(BaseModel):
     iters: int = 500
     guidance: str | None = None
     guidance_scale: float | None = None   # None = the method's default
+    mesh: bool = False                    # textured-mesh export (admin only; adds ~1 min)
 
 
 @app.post("/api/generate")
@@ -370,8 +371,8 @@ def generate(r: GenerateReq, request: Request):
         out, rel = os.path.join(PUBLIC_DIR, name), f"data/results/public/{name}"
     cmd = [sys.executable, "scripts/train_logged.py", "--prompt", prompt, "--name", name, "--out", out,
            "--seed", str(seed), "--iters", str(iters), "--guidance", method, "--guidance_scale", str(cfg)]
-    if not admin:
-        cmd.append("--no_mesh")  # public jobs: Gaussians + views only (mesh export would double the GPU time)
+    if not (admin and r.mesh):
+        cmd.append("--no_mesh")  # web jobs: Gaussians + views only (mesh export would double the GPU time)
     sid = request.headers.get("x-studio-session", "")
     job = dict(id=secrets.token_urlsafe(9), kind="generate", name=name, prompt=prompt, seed=seed, iters=iters,
                guidance=method, guidance_scale=cfg, out=out, rel=rel, log=os.path.join(out, "training.log"), cmd=cmd,

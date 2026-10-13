@@ -1,0 +1,51 @@
+input: null
+prompt: a ripe pineapple
+negative_prompt: ugly, bad anatomy, blurry, pixelated obscure, unnatural colors, poor
+  lighting, dull, and unclear, cropped, lowres, low quality, artifacts, duplicate,
+  morbid, mutilated, poorly drawn face, deformed, dehydrated, bad proportions
+mesh: null
+elevation: 0
+ref_size: 256
+density_thresh: 1
+outdir: /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/experiments/guidance/mvdream_it1200/a_ripe_pineapple
+mesh_format: obj
+save_path: a_ripe_pineapple
+mvdream: true
+imagedream: false
+stable_zero123: false
+lambda_sd: 1
+lambda_zero123: 0
+warmup_rgb_loss: true
+batch_size: 1
+iters: 1200
+anneal_timestep: true
+iters_refine: 50
+radius: 2.5
+fovy: 49.1
+min_ver: -30
+max_ver: 30
+load: null
+train_geo: false
+invert_bg_prob: 0.5
+gui: false
+force_cuda_rast: true
+H: 800
+W: 800
+num_pts: 5000
+sh_degree: 0
+position_lr_init: 0.001
+position_lr_final: 2.0e-05
+position_lr_delay_mult: 0.02
+position_lr_max_steps: 300
+feature_lr: 0.01
+opacity_lr: 0.05
+scaling_lr: 0.005
+rotation_lr: 0.005
+percent_dense: 0.01
+density_start_iter: 0
+density_end_iter: 3000
+densification_interval: 50
+opacity_reset_interval: 700
+densify_grad_threshold: 0.01
+geom_lr: 0.0001
+texture_lr: 0.2

@@ -1,0 +1,15 @@
+[rec] intro @ 1791918058.5
+[rec] controls @ 1791918073.7
+[rec] submit @ 1791918084.4
+[rec] loading @ 1791918092.8
+[rec] train1 @ 1791918125.4
+[rec] train2 @ 1791918135.7
+[rec] ff_train @ 1791918143.5
+[rec] viewer @ 1791918226.0
+[rec] stop @ 1791918235.6
+[rec] gallery @ 1791918250.8
+[rec] algo @ 1791918259.4
+[rec] steps @ 1791918277.5
+[rec] stress @ 1791918285.2
+[rec] outro @ 1791918314.9
+[rec] wrote /research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/video_v2/demo.mp4  duration 177.3s  frames 5645  timeline [('intro', 1.46, 14.47), ('controls', 16.65, 10.03), ('submit', 27.33, 7.83), ('loading', 35.82, 5.22), ('train1', 41.26, 9.6), ('train2', 51.52, 7.15), ('ff_train', 59.32, 3.02), ('viewer', 73.58, 6.22), ('stop', 83.15, 7.9), ('gallery', 98.31, 6.78), ('algo', 106.95, 16.2), ('steps', 125.05, 5.83), ('stress', 132.73, 16.95), ('outro', 162.44, 12.65)]

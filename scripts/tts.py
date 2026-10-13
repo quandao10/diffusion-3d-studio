@@ -3,12 +3,14 @@ import json, os, sys
 import numpy as np
 import soundfile as sf
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from demo_script import fill_stress
+import importlib
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT = os.path.join(ROOT, "video", "audio")
+SCRIPT = os.environ.get("SCRIPT", "demo_script")          # demo_script2 = final studio video
+OUT = os.path.join(ROOT, os.environ.get("VIDEO_DIR", "video"), "audio")
 os.makedirs(OUT, exist_ok=True)
-scenes = fill_stress(os.path.join(ROOT, "evidence", "performance.csv"))
+mod = importlib.import_module(SCRIPT)
+scenes = mod.fill_stress(os.path.join(ROOT, "evidence", "performance.csv")) if hasattr(mod, "fill_stress") else mod.SCENES
 
 from kokoro import KPipeline
 pipe = KPipeline(lang_code="a")

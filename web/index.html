@@ -33,7 +33,7 @@
     </label>
     <div class="row3">
       <label class="field">Seed <input id="seed" type="number" value="0"></label>
-      <label class="field">SDS steps <input id="iters" type="number" value="500" min="50" max="2000" step="50"></label>
+      <label class="field">Steps (500 = best) <input id="iters" type="number" value="500" min="100" max="500" step="50" title="Measured: 300 is softer, 500 is sharpest, 800+ over-saturates (see evidence/)"></label>
       <label class="field">CFG scale <input id="cfg" type="number" placeholder="auto" min="1" max="200" step="0.5"></label>
     </div>
     <label class="field">Guidance (score distillation)
@@ -128,9 +128,25 @@
     </div>
   </section>
 
+  <!-- Algorithm comparison -->
+  <section class="card algo" aria-labelledby="h-algo">
+    <h2 id="h-algo"><span class="num">5</span> Improving DreamGaussian: guidance comparison (measured)</h2>
+    <p class="dim small">Same 5 prompts, seed 0, 500 steps, one free A100 per run. CLIP = ViT-L/14 similarity between prompt and 8 views (×100).
+      CSD / NFSD / ISM are added on the same frozen SD 2.1 (<code>scripts/guidance_plus.py</code>); MVDream is upstream's multi-view guidance.</p>
+    <div class="two">
+      <div>
+        <table class="tbl mono" id="t-algo"><thead><tr><th>guidance</th><th>CLIP</th><th>SDS time</th><th>total</th><th>VRAM</th><th>verdict</th></tr></thead><tbody></tbody></table>
+        <h3>MVDream step count</h3>
+        <table class="tbl mono" id="t-steps"><thead><tr><th>steps</th><th>CLIP</th><th>total</th><th>verdict</th></tr></thead><tbody></tbody></table>
+      </div>
+      <figure class="fig"><img src="assets/mvdream_steps.png" alt="MVDream at 300, 500, 800 and 1200 steps"><figcaption>MVDream at 300 / 500 / 800 / 1200 steps: 500 is sharpest, more steps over-saturate.</figcaption></figure>
+    </div>
+    <figure class="fig"><img src="assets/guidance_grid.png" alt="front and back views for each guidance method"><figcaption>Front | back view per method. SDS gives the corgi a second face (Janus); MVDream is coherent and sharp.</figcaption></figure>
+  </section>
+
   <!-- How it works -->
   <section class="card how" aria-labelledby="h-how">
-    <h2 id="h-how"><span class="num">5</span> What is running</h2>
+    <h2 id="h-how"><span class="num">6</span> What is running</h2>
     <ol class="pipe">
       <li><b>Text prompt y</b><span>encoded once by the frozen SD-2.1-base text encoder</span></li>
       <li><b>3D Gaussians θ</b><span>5k random blob → positions, scales, rotations, opacity, colour</span></li>
