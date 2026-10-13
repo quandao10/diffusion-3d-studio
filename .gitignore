@@ -12,3 +12,5 @@ __pycache__/
 video/take1_too_long.mp4
 video/voiceover.wav
 video/audio/
+run/
+results/public/

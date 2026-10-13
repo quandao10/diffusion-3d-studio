@@ -8,7 +8,9 @@ const DATA = "data/results";
 const MULTS = [1, 2, 4, 8, 16];
 const GRAD_KEYS = [["xyz", "position"], ["features_dc", "colour"], ["opacity", "opacity"], ["scaling", "scale"], ["rotation", "rotation"]];
 
-const st = { live: false, runs: [], sel: null, base: null, mult: 1, metrics: [], jobName: null, lastSnapStep: -1, polling: false };
+const st = { live: false, cfg: {}, runs: [], mine: [], sel: null, base: null, mult: 1, metrics: [], jobId: null, lastSnapStep: -1, polling: false };
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+const runPath = (r) => r.rel || `${DATA}/${r.name}`;
 
 // ------------------------------------------------------------------ viewer
 let stats = {};
@@ -55,7 +57,8 @@ async function fetchJSON(url, opts) {
 }
 
 async function loadRuns() {
-  st.runs = st.live ? await fetchJSON("api/runs") : await fetchJSON("data/runs.json").catch(() => []);
+  const gallery = st.live ? await fetchJSON("api/runs") : await fetchJSON("data/runs.json").catch(() => []);
+  st.runs = [...st.mine, ...gallery];
   const el = $("#runs");
   if (!st.runs.length) { el.innerHTML = `<p class="dim">no runs yet</p>`; return; }
   el.innerHTML = "";
@@ -63,8 +66,8 @@ async function loadRuns() {
     const b = document.createElement("button");
     b.className = "run" + (r.name === st.sel?.name ? " sel" : "");
     b.dataset.name = r.name;
-    b.innerHTML = `<img alt="" src="${DATA}/${r.name}/views/view_000.png"><div><b title="${r.prompt}">${r.prompt}</b>
-      <span>seed ${r.seed} · ${r.iters} it · ${r.train_s}s · ${(r.num_gaussians_final / 1000).toFixed(1)}k G</span></div>`;
+    b.innerHTML = `<img alt="" src="${runPath(r)}/views/view_000.png"><div><b title="${esc(r.prompt)}">${r.mine ? "★ " : ""}${esc(r.prompt)}</b>
+      <span>seed ${esc(r.seed)} · ${esc(r.iters)} it · ${esc(r.train_s)}s · ${(r.num_gaussians_final / 1000).toFixed(1)}k G</span></div>`;
     b.onclick = () => selectRun(r.name);
     el.appendChild(b);
   }
@@ -74,13 +77,14 @@ async function selectRun(name) {
   const r = st.runs.find((x) => x.name === name);
   if (!r) return;
   st.sel = r;
+  const P = runPath(r);
   document.querySelectorAll(".run").forEach((b) => b.classList.toggle("sel", b.dataset.name === name));
   $("#viewname").textContent = `· “${r.prompt}”`;
   $("#hud").textContent = "loading PLY…";
-  st.base = await loadPly(`${DATA}/${name}/${r.ply}`);
+  st.base = await loadPly(`${P}/${r.ply}`);
   setMult(st.mult);
   // training curves
-  const txt = await fetch(`${DATA}/${name}/metrics.jsonl`).then((x) => x.text()).catch(() => "");
+  const txt = await fetch(`${P}/metrics.jsonl`).then((x) => x.text()).catch(() => "");
   st.metrics = txt.split("\n").filter(Boolean).map((l) => JSON.parse(l));
   drawMetrics();
   // snapshot scrubber
@@ -90,13 +94,13 @@ async function selectRun(name) {
   $("#scrubwrap").hidden = false;
   const sc = $("#scrub");
   sc.max = frames.length - 1; sc.value = frames.length - 1;
-  sc.oninput = () => { $("#snap").src = `${DATA}/${name}/progress/${frames[sc.value]}.png`; $("#scrubv").textContent = frames[sc.value].replace("_", " "); };
+  sc.oninput = () => { $("#snap").src = `${P}/progress/${frames[sc.value]}.png`; $("#scrubv").textContent = frames[sc.value].replace("_", " "); };
   sc.oninput();
   await loadBench(r);
 }
 
 async function loadBench(r) {
-  let url = r?.has_benchmark ? `${DATA}/${r.name}/benchmark.csv` : "data/evidence/performance.csv";
+  let url = r?.has_benchmark ? `${runPath(r)}/benchmark.csv` : "data/evidence/performance.csv";
   const txt = await fetch(url).then((x) => (x.ok ? x.text() : "")).catch(() => "");
   const [head, ...lines] = txt.trim().split(/\r?\n/);
   if (!head) return showBench([]);
@@ -106,7 +110,7 @@ async function loadBench(r) {
 
 function showBench(rows) {
   const tb = $("#t-bench tbody");
-  tb.innerHTML = rows.map((r) => `<tr><td>${r.setting}</td><td>${r.resolution}</td><td>${(+r.gaussians).toLocaleString()}</td><td>${(+r.fps).toFixed(1)}</td><td>${(+r.peak_vram_mb).toFixed(0)}</td><td class="dim">${String(r.notes).split(";").pop().trim()}</td></tr>`).join("");
+  tb.innerHTML = rows.map((r) => `<tr><td>${r.setting}</td><td>${r.resolution}</td><td>${(+r.gaussians).toLocaleString()}</td><td>${(+r.fps).toFixed(1)}</td><td>${(+r.peak_vram_mb).toFixed(0)}</td><td class="dim">${esc(String(r.notes ?? "").split(";").pop().trim())}</td></tr>`).join("");
   const tip = (r) => `${r.setting} ${r.resolution}px, ${(+r.gaussians).toLocaleString()} G\n${(+r.fps).toFixed(1)} FPS, ${(+r.peak_vram_mb).toFixed(0)} MB peak`;
   cBres.set(rows.filter((r) => r.setting === "resolution").map((r) => ({ label: `${r.resolution}²`, value: +r.fps, tip: tip(r) })));
   cBn.set(rows.filter((r) => r.setting === "gaussians").map((r) => ({ label: fmtN(+r.gaussians), value: +r.fps, tip: tip(r) })));
@@ -140,43 +144,73 @@ async function sweep() {
 }
 $("#sweep").onclick = sweep;
 
-// ------------------------------------------------------------------ server jobs
+// ------------------------------------------------------------------ server jobs (queued; one GPU job at a time)
 async function generate() {
   const body = { prompt: $("#prompt").value.trim(), seed: +$("#seed").value, iters: +$("#iters").value, guidance_scale: +$("#cfg").value };
   try {
-    const r = await fetchJSON("api/generate", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
-    st.jobName = r.name; st.metrics = []; st.lastSnapStep = -1; drawMetrics();
-    $("#log").textContent = "";
-    poll();
-  } catch (e) { alert(e.message); }
+    const r = await postJSON("api/generate", body);
+    startJob(r.id);
+  } catch (e) { showError(e); }
 }
 $("#go").onclick = generate;
 
 async function bench() {
   if (!st.sel) return alert("select a run first");
   try {
-    await fetchJSON("api/benchmark", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ name: st.sel.name, quick: false }) });
+    const r = await postJSON("api/benchmark", { name: st.sel.name, quick: false });
     showBench([]);
-    poll();
-  } catch (e) { alert(e.message); }
+    startJob(r.id);
+  } catch (e) { showError(e); }
 }
 $("#bench").onclick = bench;
 
+async function postJSON(url, body) {
+  const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+  const d = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(d.detail || `${r.status}`);
+  return d;
+}
+
+function showError(e) {
+  $("#jobbox").hidden = false;
+  const b = $("#jobstatus");
+  b.textContent = "not started"; b.className = "badge failed";
+  $("#jobname").textContent = "";
+  $("#k-step").textContent = "–";
+  $("#joberr").hidden = false; $("#joberr").className = "err";
+  $("#joberr").textContent = e.message;
+}
+
+function startJob(id) {
+  st.jobId = id; st.metrics = []; st.lastSnapStep = -1; drawMetrics();
+  $("#log").textContent = "";
+  $("#joberr").hidden = true;
+  try { localStorage.setItem("studio.job", id); } catch { /* storage unavailable */ }
+  poll();
+}
+
 async function poll() {
-  if (st.polling) return;
+  if (st.polling || !st.jobId) return;
   st.polling = true;
   try {
     for (;;) {
-      const j = await fetchJSON("api/job");
-      if (!j.kind) break;
-      $("#go").disabled = $("#bench").disabled = j.active;
+      let j;
+      try { j = await fetchJSON(`api/jobs/${st.jobId}`); }
+      catch { try { localStorage.removeItem("studio.job"); } catch {} break; }
+      const active = j.status === "queued" || j.status === "running";
+      $("#go").disabled = active;
+      $("#bench").disabled = active || !st.cfg.admin;
       $("#log").textContent = j.log.join("\n");
       $("#log").scrollTop = 1e9;
-      if (j.kind === "generate") updateGen(j);
-      else if (j.rows) { showBench(j.rows); $("#jobstatus").textContent = j.active ? "benchmark" : "bench done"; }
-      if (!j.active) {
-        if (j.kind === "generate" && j.returncode === 0) { await loadRuns(); await selectRun(j.name); }
-        if (j.kind === "benchmark" && j.returncode === 0) { await loadRuns(); st.sel = st.runs.find((r) => r.name === j.name); await loadBench(st.sel); }
+      if (j.kind === "generate") await updateGen(j);
+      else if (j.rows) { showBench(j.rows); $("#jobbox").hidden = false; $("#jobstatus").textContent = active ? "benchmark" : "bench done"; }
+      if (!active) {
+        try { localStorage.removeItem("studio.job"); } catch {}
+        if (j.kind === "generate" && j.status === "done" && j.run) {
+          if (!st.mine.some((r) => r.name === j.run.name)) st.mine.unshift({ ...j.run, mine: true });
+          await loadRuns(); await selectRun(j.run.name);
+        }
+        if (j.kind === "benchmark" && j.status === "done") { await loadRuns(); st.sel = st.runs.find((r) => r.name === j.name); await loadBench(st.sel); }
         break;
       }
       await sleep(1000);
@@ -187,10 +221,26 @@ async function poll() {
 async function updateGen(j) {
   const p = j.progress;
   $("#jobbox").hidden = false;
-  $("#jobname").textContent = j.name;
-  const status = p?.status || (j.active ? "starting" : j.returncode === 0 ? "done" : "failed");
+  $("#jobname").textContent = j.prompt ? `“${j.prompt}”` : j.name;
+  let status = j.status === "queued" ? "queued" : p?.status || (j.status === "running" ? "starting" : j.status);
+  if (j.status === "failed") status = "failed";
   const b = $("#jobstatus");
   b.textContent = status.replace(/_/g, " "); b.className = "badge " + status;
+  if (j.status === "queued") {
+    $("#jobbar").style.width = "0%";
+    $("#k-step").textContent = `#${j.position} in queue`;
+    $("#k-elapsed").textContent = `waiting ${j.wait_s.toFixed(0)} s`;
+    $("#joberr").hidden = false;
+    $("#joberr").className = "info";
+    $("#joberr").textContent = j.waiting_for_gpu
+      ? `All GPUs are busy right now. You are #${j.position} in line - your job starts automatically as soon as a GPU frees up (keep this page open).`
+      : `Starting on a free GPU…`;
+    return;
+  }
+  $("#joberr").className = "err";
+  if (j.status === "running") $("#joberr").hidden = true;
+  $("#jobname").textContent = (j.prompt ? `“${j.prompt}”` : j.name) + (j.gpu != null ? ` · GPU ${j.gpu}` : "");
+  if (j.status === "failed") { $("#joberr").hidden = false; $("#joberr").textContent = "The job failed - see the log below."; }
   if (!p) return;
   $("#jobbar").style.width = `${(100 * p.step) / p.iters}%`;
   $("#k-step").textContent = `${p.step} / ${p.iters}`;
@@ -201,12 +251,22 @@ async function updateGen(j) {
   $("#k-n").textContent = p.num_gaussians?.toLocaleString() ?? "–";
   $("#k-vram").textContent = `${(p.peak_vram_mb / 1024).toFixed(2)} GB`;
   $("#k-gxyz").textContent = p.grad_norm ? p.grad_norm.xyz.toExponential(2) : "–";
-  const more = await fetchJSON(`api/metrics/${j.name}?since=${st.metrics.length}`).catch(() => []);
+  const more = await fetchJSON(`api/jobs/${j.id}/metrics?since=${st.metrics.length}`).catch(() => []);
   if (more.length) { st.metrics.push(...more); drawMetrics(); }
   if (p.step !== st.lastSnapStep && (p.step % 25 === 0 || p.status !== "training")) {
     st.lastSnapStep = p.step;
-    $("#snap").src = `${DATA}/${j.name}/progress/latest.png?v=${p.step}-${p.status}`;
+    $("#snap").src = `${j.rel}/progress/latest.png?v=${p.step}-${p.status}`;
     $("#scrubv").textContent = `live · step ${p.step}`;
+  }
+}
+
+async function pollQueue() {
+  for (;;) {
+    try {
+      const q = await fetchJSON("api/queue");
+      $("#queue").textContent = `${q.gpus_idle}/${q.gpus_total} GPUs free · ${q.running} running · ${q.queued} waiting`;
+    } catch { /* ignore */ }
+    await sleep(3000);
   }
 }
 
@@ -214,7 +274,7 @@ async function pollSystem() {
   for (;;) {
     try {
       const s = await fetchJSON("api/system");
-      $("#gpu").textContent = `${s.host} · GPU ${s.gpu_index} ${s.name.replace("NVIDIA ", "")} · ${(s.mem_used_mb / 1024).toFixed(1)}/${(s.mem_total_mb / 1024).toFixed(0)} GB · ${s.util}% · ${s.power_w.toFixed(0)} W`;
+      $("#gpu").textContent = `${s.host} · ${s.gpus_total}× ${s.name.replace("NVIDIA ", "")}`;
     } catch { /* ignore */ }
     await sleep(2000);
   }
@@ -230,10 +290,19 @@ window.studio = {
 // ------------------------------------------------------------------ boot
 (async () => {
   try {
-    await fetchJSON("api/system");
+    st.cfg = await fetchJSON("api/config");
     st.live = true;
-    $("#mode").textContent = "live GPU server"; $("#mode").className = "pill live";
+    $("#mode").textContent = st.cfg.public ? "live GPU server · public" : "live GPU server"; $("#mode").className = "pill live";
+    $("#queue").hidden = false;
+    $("#prompt").maxLength = st.cfg.prompt_max;
+    if (!st.cfg.admin) {
+      $("#iters").max = st.cfg.iters[1]; $("#iters").min = st.cfg.iters[0];
+      $("#bench").disabled = true; $("#bench").title = "run by the owner; measured results are shown below";
+      $("#publicnote").hidden = false;
+      $("#publicnote").textContent = `Public demo: each visitor can generate ${st.cfg.per_visitor} model per ${st.cfg.window_h} h (about 1 minute on a free A100; if all GPUs are busy you wait in a queue). Max ${st.cfg.iters[1]} SDS steps, no mesh export. Your result is only shown to you.`;
+    }
     pollSystem();
+    pollQueue();
   } catch {
     $("#mode").textContent = "static build (pre-generated)"; $("#mode").className = "pill static";
     $("#go").disabled = $("#bench").disabled = true; $("#offline").hidden = false;
@@ -245,5 +314,9 @@ window.studio = {
   await loadRuns();
   if (st.runs.length) await selectRun(st.runs[0].name);
   else { drawMetrics(); showBench([]); }
-  if (st.live) { const j = await fetchJSON("api/job"); if (j.active) poll(); }
+  if (st.live) {
+    let id = null;
+    try { id = localStorage.getItem("studio.job"); } catch { /* storage unavailable */ }
+    if (id) { st.jobId = id; poll(); }
+  }
 })();

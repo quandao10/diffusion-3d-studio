@@ -1,0 +1,27 @@
+# Words rejected in public prompts (whole-word, case-insensitive). Keeps the shared public demo SFW.
+nude
+nudes
+naked
+nsfw
+porn
+porno
+pornographic
+sex
+sexy
+sexual
+erotic
+hentai
+genitals
+penis
+vagina
+breasts
+boobs
+nipples
+gore
+gory
+decapitated
+dismembered
+corpse
+swastika
+nazi
+kkk

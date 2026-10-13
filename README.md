@@ -69,6 +69,23 @@ GPU=0 python server.py --port 8549      # open http://127.0.0.1:8549  (ssh -L 85
 python scripts/export_static.py         # -> docs/  (Settings → Pages → branch main, folder /docs)
 ```
 
+## Public hosting (anyone can try a prompt)
+
+```bash
+bash scripts/serve_public.sh     # server (PUBLIC=1, 127.0.0.1 only) + Cloudflare quick tunnel; prints https://<random>.trycloudflare.com
+bash scripts/stop_public.sh      # stop both
+```
+
+* **GPU scheduling:** every job is sent to an idle GPU on the machine (memory < 1 GB and utilisation < 10 %, not already
+  running one of our jobs), so several visitors run in parallel. When all GPUs are busy the job waits in a FIFO queue and
+  the visitor sees “All GPUs are busy – you are #N in line”. `GPUS=4,5,6,7` restricts the pool, `MAX_PARALLEL=n` caps it.
+* **Visitor limits:** 1 generation per visitor per 24 h (salted hash of the IP, `run/visitors.json`), one active job at
+  a time, prompts ≤ 120 characters plus a word blocklist (`configs/blocklist.txt`), ≤ 500 SDS steps, no mesh export
+  (~1 min per job). Visitors' results go to `results/public/` and are shown only to them; the server prunes old ones.
+* **Owner (admin):** requests from localhost without the tunnel header (e.g. via `ssh -L 8549:127.0.0.1:8549`) keep
+  full settings, the CUDA stress test, and are not rate limited.
+* The quick-tunnel URL changes whenever the tunnel restarts; it is written to `run/public_url.txt`.
+
 ## Verified results (A100-PCIE-40GB, 500 SDS steps, CFG 100, seed 0)
 
 | prompt | SDS time | total (incl. mesh export) | final #Gaussians | peak VRAM |

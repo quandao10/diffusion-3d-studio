@@ -115,3 +115,6 @@ button.ghost:hover:not(:disabled) { border-color: var(--accent); }
 .caption { position: fixed; left: 50%; bottom: 26px; transform: translateX(-50%); max-width: min(1100px, 92vw); background: rgba(8, 9, 11, 0.92); color: #fff; border: 1px solid #3a3f49; padding: 12px 20px; border-radius: 10px; font-size: 19px; line-height: 1.35; text-align: center; z-index: 100; box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5); }
 .caption small { display: block; font-size: 13px; color: #b7bcc6; margin-top: 3px; }
 .flash { outline: 2px solid var(--accent); outline-offset: 3px; transition: outline-color 0.6s; }
+.err { color: #ffd0d0; background: #4a1d1d; border-radius: 6px; padding: 6px 8px; font-size: 12px; margin: 8px 0 0; }
+.badge.queued, .badge.starting { background: #2a2e36; color: #c3c2b7; }
+.info { color: #cfe4ff; background: #173a5e; border-radius: 6px; padding: 6px 8px; font-size: 12px; margin: 8px 0 0; }

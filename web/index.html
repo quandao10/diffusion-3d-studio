@@ -19,6 +19,7 @@
   </div>
   <div class="status">
     <span id="mode" class="pill">connecting…</span>
+    <span id="queue" class="pill mono" hidden>queue: –</span>
     <span id="gpu" class="pill mono">GPU: –</span>
   </div>
 </header>
@@ -28,7 +29,7 @@
   <section class="card gen" aria-labelledby="h-gen">
     <h2 id="h-gen"><span class="num">1</span> Generate (text → 3D)</h2>
     <label class="field">Prompt
-      <textarea id="prompt" rows="2" spellcheck="false">a small red mushroom house</textarea>
+      <textarea id="prompt" rows="2" spellcheck="false" maxlength="200" placeholder="e.g. a ceramic teapot shaped like a pumpkin">a small red mushroom house</textarea>
     </label>
     <div class="row3">
       <label class="field">Seed <input id="seed" type="number" value="0"></label>
@@ -36,11 +37,13 @@
       <label class="field">CFG scale <input id="cfg" type="number" value="100" min="1" max="200" step="5"></label>
     </div>
     <button id="go" class="primary">Generate 3D on GPU</button>
+    <p id="publicnote" class="note" hidden></p>
     <p id="offline" class="note" hidden>Static build: generation needs the local GPU server (<code>python server.py</code>). Pre-generated runs below are real outputs of that server.</p>
 
     <div id="jobbox" class="job" hidden>
       <div class="jobhead"><span id="jobstatus" class="badge">idle</span><span id="jobname" class="mono dim"></span></div>
       <div class="bar"><div id="jobbar"></div></div>
+      <p id="joberr" class="err" hidden></p>
       <dl class="kv">
         <dt>step</dt><dd id="k-step">–</dd>
         <dt>elapsed</dt><dd id="k-elapsed">–</dd>
