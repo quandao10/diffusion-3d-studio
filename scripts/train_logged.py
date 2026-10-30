@@ -203,6 +203,13 @@ class LoggedTrainer(GUI):
         imageio.mimwrite(os.path.join(self.out_dir, "turntable.gif"), frames[::3], duration=0.1, loop=0)
         vis_s = now() - t_vis
 
+        judge = None
+        if a.judge:  # CLIP judge for the studio (prompt match + 20-way zero-shot guess used by Challenge mode)
+            self.write_progress("judging")
+            views = [self.render_view(-15, self.front + h, 224) for h in range(0, 360, 45)]
+            judge = clip_judge(views, self.prompt, a.target)
+            print("[EVIDENCE] judge " + json.dumps(judge), flush=True)
+
         summary = dict(
             prompt=self.prompt, seed=a.seed, iters=iters, guidance=a.guidance, guidance_scale=a.guidance_scale,
             sd_model=("MVDream/MVDream sd-v2.1-base-4view" if a.guidance == "mvdream" else SD_KEY), gpu=torch.cuda.get_device_name(0),
@@ -213,11 +220,47 @@ class LoggedTrainer(GUI):
             ply=f"{self.opt.save_path}_model.ply", front_azimuth=self.front,
             mesh=f"{self.opt.save_path}_mesh.obj" if a.mesh else None,
             config_overrides=self.overrides,
+            clip_prompt=judge["prompt_clip"] if judge else None, judge=judge,
         )
         with open(os.path.join(self.out_dir, "summary.json"), "w") as f:
             json.dump(summary, f, indent=2)
         self.write_progress("done", **{k: summary[k] for k in ("train_s", "total_s", "num_gaussians_final")})
         print("[EVIDENCE] summary " + json.dumps(summary), flush=True)
+
+
+CLIP_KEY = "openai/clip-vit-large-patch14"
+
+
+@torch.no_grad()
+def clip_judge(views, prompt, target=None):
+    """CLIP ViT-L/14 over 8 rendered views: cosine*100 with the prompt, and a zero-shot guess over the challenge
+    objects (configs/challenge.json): softmax(100*cos) averaged over views. win = target ranked first."""
+    from transformers import CLIPModel, CLIPProcessor
+    from PIL import Image
+    t0 = now()
+    cfg = json.load(open(os.path.join(ROOT, "configs", "challenge.json")))
+    labels = [t["label"] for t in cfg["targets"]]
+    model = CLIPModel.from_pretrained(CLIP_KEY, torch_dtype=torch.float16).cuda().eval()
+    proc = CLIPProcessor.from_pretrained(CLIP_KEY)
+    x = proc(text=[prompt] + [f"a 3D render of {l}" for l in labels], images=[Image.fromarray(v) for v in views],
+             return_tensors="pt", padding=True).to("cuda")
+    x["pixel_values"] = x["pixel_values"].half()
+    out = model(**x)
+    im = out.image_embeds / out.image_embeds.norm(dim=-1, keepdim=True)
+    tx = out.text_embeds / out.text_embeds.norm(dim=-1, keepdim=True)
+    sim = (im @ tx.T).float()
+    prob = (100 * sim[:, 1:]).softmax(-1).mean(0)
+    order = prob.argsort(descending=True).tolist()
+    res = dict(prompt_clip=round(float(sim[:, 0].mean() * 100), 2),
+               top=[dict(label=labels[i], p=round(float(prob[i]), 3)) for i in order[:5]], judge_s=None)
+    if target:
+        ti = labels.index(target) if target in labels else None
+        if ti is not None:
+            res.update(target=target, target_p=round(float(prob[ti]), 3), target_rank=order.index(ti) + 1, win=order[0] == ti)
+    del model
+    torch.cuda.empty_cache()
+    res["judge_s"] = round(now() - t0, 1)
+    return res
 
 
 def main():
@@ -237,6 +280,8 @@ def main():
     p.add_argument("--snap_every", type=int, default=25)
     p.add_argument("--turntable_frames", type=int, default=120)
     p.add_argument("--no_mesh", dest="mesh", action="store_false")
+    p.add_argument("--judge", action="store_true", help="score the result with the CLIP judge (prompt match + zero-shot guess)")
+    p.add_argument("--target", default=None, help="Challenge-mode target label from configs/challenge.json")
     a = p.parse_args()
     if a.guidance_scale is None:
         a.guidance_scale = {"sds": 100.0, "csd": 100.0, "nfsd": 7.5, "ism": 7.5, "mvdream": 50.0}[a.guidance]
@@ -257,6 +302,17 @@ def main():
             def from_pretrained(key, *args, **kw):
                 return _DDIM.from_pretrained(SD_KEY if key.startswith("stabilityai/stable-diffusion-2-1") else key, *args, **kw)
         mvu.DDIMScheduler = _Sched
+        # MVDream's build_model always asks the Hub for its checkpoint; use the cached file so jobs never block online
+        import glob
+        # project copy first (weights/ survives cache clean-ups), then the HF cache
+        _ck = [p for p in [os.path.join(ROOT, "weights", "mvdream", "sd-v2.1-base-4view.pt")] if os.path.exists(p)] or \
+            sorted(glob.glob(os.path.expanduser("~/.cache/huggingface/hub/models--MVDream--MVDream/snapshots/*/sd-v2.1-base-4view.pt")))
+        if _ck:
+            _build = mvu.build_model
+
+            def _build_cached(name, ckpt_path=None, **kw):  # upstream passes ckpt_path=None explicitly
+                return _build(name, ckpt_path=ckpt_path or _ck[-1], **kw)
+            mvu.build_model = _build_cached
 
     base = OmegaConf.load(os.path.join(DG_ROOT, "configs", cfg_file))
     overrides = dict(prompt=a.prompt, save_path=a.name,

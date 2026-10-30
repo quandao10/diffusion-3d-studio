@@ -14,10 +14,13 @@
     <div class="logo" aria-hidden="true"></div>
     <div>
       <h1>Interactive Diffusion-Based 3D Generation Studio</h1>
-      <p class="sub">CS 549 · Assignment 3 MVP · Minh Quan Dao (qd66) · Pillars: <b>Procedural Generation</b> + <b>Rendering</b></p>
+      <p class="sub">CS 549 · Alpha build v0.2 (Assignment 4) · Minh Quan Dao (qd66) · Pillars: <b>Procedural Generation</b> + <b>Rendering</b></p>
     </div>
   </div>
   <div class="status">
+    <button id="menuBtn" class="pill btn" title="Main menu (Esc)">☰ Menu</button>
+    <span id="modechip" class="pill">Create</span>
+    <span id="score" class="pill mono" hidden></span>
     <span id="mode" class="pill">connecting…</span>
     <span id="queue" class="pill mono" hidden>queue: –</span>
     <span id="gpu" class="pill mono">GPU: –</span>
@@ -27,7 +30,14 @@
 <main class="grid">
   <!-- 1. Generate -->
   <section class="card gen" aria-labelledby="h-gen">
-    <h2 id="h-gen"><span class="num">1</span> Generate (text → 3D)</h2>
+    <h2 id="h-gen"><span class="num">1</span> <span id="genTitle">Generate (text → 3D)</span></h2>
+    <div id="challengeBox" class="challenge" hidden>
+      <div class="ch-head"><span class="badge ch">CHALLENGE</span><span id="ch-round" class="mono dim"></span></div>
+      <div class="ch-target">Make the judge see <b id="ch-label">–</b></div>
+      <div class="ch-taboo">Don't say: <span id="ch-taboo"></span></div>
+      <p class="dim small">Write a prompt that describes it without those words. When your 3D model is done, a CLIP judge looks at 8 rendered views and guesses which of 20 objects it is. If it guesses yours, you win.</p>
+      <button id="ch-new" class="ghost small">↻ New target</button>
+    </div>
     <label class="field">Prompt
       <textarea id="prompt" rows="2" spellcheck="false" maxlength="200" placeholder="e.g. a ceramic teapot shaped like a pumpkin">a small red mushroom house</textarea>
     </label>
@@ -45,6 +55,7 @@
         <option value="csd">CSD – classifier score distillation (~1 min)</option>
       </select>
     </label>
+    <p id="tabooWarn" class="err" hidden></p>
     <button id="go" class="primary">Generate 3D on GPU</button>
     <p id="queuehint" class="qhint" hidden></p>
     <p id="publicnote" class="note" hidden></p>
@@ -84,7 +95,10 @@
       <label><input type="checkbox" id="rotate" checked> auto-rotate</label>
       <label>splat scale <input type="range" id="scalemod" min="0.05" max="1" step="0.05" value="1"><span id="scalev" class="mono">1.00</span></label>
       <label>background <select id="bg"><option value="1,1,1">white</option><option value="0.07,0.08,0.1">dark</option></select></label>
+      <label>render <select id="rmode"><option value="0">colour</option><option value="1">depth</option><option value="2">Gaussian centres</option></select></label>
       <button id="reset" class="ghost">reset view</button>
+      <button id="shot" class="ghost">📷 Save image</button>
+      <a id="dlply" class="ghost btnlink" download hidden>⬇ .ply</a>
     </div>
     <div class="strip">
       <figure><figcaption>CUDA rasterizer snapshots during SDS optimisation (front · side · back · side)</figcaption>
@@ -158,6 +172,46 @@
     <p class="small"><b>Plan vs. reality:</b> Assignment 2 planned an SDS-guided <i>NeRF</i> (volume rendering). This MVP keeps the same diffusion-guided loop but optimises <i>explicit 3D Gaussians</i> with the official DreamGaussian code (Tang et al., ICLR 2024) for speed and feasibility. VSD and TRELLIS are not implemented.</p>
   </section>
 </main>
+
+<!-- START STATE: main menu -->
+<div id="menu" class="overlay" hidden>
+  <div class="menu-card" role="dialog" aria-labelledby="menuTitle">
+    <div class="logo big" aria-hidden="true"></div>
+    <h1 id="menuTitle">Diffusion 3D Studio</h1>
+    <p class="tagline">Type an idea. Watch a frozen diffusion model sculpt it out of 3D Gaussians. Spin it in real time.</p>
+    <div class="modes">
+      <button class="mode" data-go="create"><b>▶ Create</b><span>Free text-to-3D: pick a guidance method, watch the optimisation live, explore the result.</span></button>
+      <button class="mode" data-go="challenge"><b>🎯 Challenge</b><span>Describe a secret object without naming it. If the CLIP judge recognises your 3D model, you win.</span></button>
+      <button class="mode" data-go="gallery"><b>🖼 Gallery</b><span>Render every model made so far in the browser. No GPU needed.</span></button>
+      <button class="mode" data-go="how"><b>ⓘ How it works</b><span>Pipeline, measured guidance comparison and stress test.</span></button>
+    </div>
+    <p id="menuStatus" class="mono small menu-status"></p>
+    <p id="menuOffline" class="note" hidden>This is the static build: Create and Challenge need the live GPU server. The gallery and viewer work here.</p>
+    <p class="dim small">CS 549 · Minh Quan Dao (qd66) · Alpha v0.2 · Esc = menu</p>
+  </div>
+</div>
+
+<!-- END STATE: result / win / loss -->
+<div id="result" class="overlay" hidden>
+  <div class="result-card" role="dialog" aria-labelledby="r-banner">
+    <div id="r-banner" class="banner"></div>
+    <p id="r-sub" class="dim"></p>
+    <div class="r-body">
+      <img id="r-img" alt="four rendered views of the result">
+      <div>
+        <div id="r-judge" class="judge"></div>
+        <dl id="r-stats" class="kv"></dl>
+      </div>
+    </div>
+    <div class="r-actions">
+      <button id="r-explore" class="primary">Explore in 3D</button>
+      <button id="r-again" class="ghost">Play again</button>
+      <button id="r-retry" class="ghost">Retry this target</button>
+      <a id="r-ply" class="ghost btnlink" download>⬇ .ply</a>
+      <button id="r-menu" class="ghost">Main menu</button>
+    </div>
+  </div>
+</div>
 
 <div id="caption" class="caption" hidden></div>
 <script type="module" src="app.js"></script>

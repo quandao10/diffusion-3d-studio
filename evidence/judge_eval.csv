@@ -1,0 +1,51 @@
+run,prompt,expected,top1,top1_p,expected_p,rank,correct
+experiments/guidance/csd/a_blue_ceramic_teapot,a blue ceramic teapot,a teapot,a teapot,1.0,1.0,1,True
+experiments/guidance/csd/a_cute_corgi_puppy,a cute corgi puppy,a corgi dog,a corgi dog,0.985,0.985,1,True
+experiments/guidance/csd/a_delicious_hamburger,a delicious hamburger,a hamburger,a hamburger,1.0,1.0,1,True
+experiments/guidance/csd/a_ripe_pineapple,a ripe pineapple,a pineapple,a pineapple,1.0,1.0,1,True
+experiments/guidance/csd/a_small_red_mushroom_house,a small red mushroom house,a mushroom,a mushroom,0.997,0.997,1,True
+experiments/guidance/ism/a_blue_ceramic_teapot,a blue ceramic teapot,a teapot,a teapot,1.0,1.0,1,True
+experiments/guidance/ism/a_cute_corgi_puppy,a cute corgi puppy,a corgi dog,a corgi dog,1.0,1.0,1,True
+experiments/guidance/ism/a_delicious_hamburger,a delicious hamburger,a hamburger,a hamburger,1.0,1.0,1,True
+experiments/guidance/ism/a_ripe_pineapple,a ripe pineapple,a pineapple,a pineapple,1.0,1.0,1,True
+experiments/guidance/ism/a_small_red_mushroom_house,a small red mushroom house,a mushroom,a mushroom,0.985,0.985,1,True
+experiments/guidance/mvdream/a_blue_ceramic_teapot,a blue ceramic teapot,a teapot,a teapot,0.911,0.911,1,True
+experiments/guidance/mvdream/a_cute_corgi_puppy,a cute corgi puppy,a corgi dog,a corgi dog,1.0,1.0,1,True
+experiments/guidance/mvdream/a_delicious_hamburger,a delicious hamburger,a hamburger,a hamburger,1.0,1.0,1,True
+experiments/guidance/mvdream/a_ripe_pineapple,a ripe pineapple,a pineapple,a pineapple,1.0,1.0,1,True
+experiments/guidance/mvdream/a_small_red_mushroom_house,a small red mushroom house,a mushroom,a mushroom,0.994,0.994,1,True
+experiments/guidance/mvdream_it1200/a_blue_ceramic_teapot,a blue ceramic teapot,a teapot,a pineapple,0.258,0.178,2,False
+experiments/guidance/mvdream_it1200/a_cute_corgi_puppy,a cute corgi puppy,a corgi dog,a corgi dog,0.913,0.913,1,True
+experiments/guidance/mvdream_it1200/a_delicious_hamburger,a delicious hamburger,a hamburger,a hamburger,0.999,0.999,1,True
+experiments/guidance/mvdream_it1200/a_ripe_pineapple,a ripe pineapple,a pineapple,a pineapple,0.999,0.999,1,True
+experiments/guidance/mvdream_it1200/a_small_red_mushroom_house,a small red mushroom house,a mushroom,a mushroom,0.561,0.561,1,True
+experiments/guidance/mvdream_it300/a_blue_ceramic_teapot,a blue ceramic teapot,a teapot,a teapot,0.95,0.95,1,True
+experiments/guidance/mvdream_it300/a_cute_corgi_puppy,a cute corgi puppy,a corgi dog,a corgi dog,1.0,1.0,1,True
+experiments/guidance/mvdream_it300/a_delicious_hamburger,a delicious hamburger,a hamburger,a hamburger,1.0,1.0,1,True
+experiments/guidance/mvdream_it300/a_ripe_pineapple,a ripe pineapple,a pineapple,a pineapple,1.0,1.0,1,True
+experiments/guidance/mvdream_it300/a_small_red_mushroom_house,a small red mushroom house,a mushroom,a mushroom,0.996,0.996,1,True
+experiments/guidance/mvdream_it800/a_blue_ceramic_teapot,a blue ceramic teapot,a teapot,a teapot,0.713,0.713,1,True
+experiments/guidance/mvdream_it800/a_cute_corgi_puppy,a cute corgi puppy,a corgi dog,a corgi dog,1.0,1.0,1,True
+experiments/guidance/mvdream_it800/a_delicious_hamburger,a delicious hamburger,a hamburger,a hamburger,0.998,0.998,1,True
+experiments/guidance/mvdream_it800/a_ripe_pineapple,a ripe pineapple,a pineapple,a pineapple,1.0,1.0,1,True
+experiments/guidance/mvdream_it800/a_small_red_mushroom_house,a small red mushroom house,a mushroom,a mushroom,0.987,0.987,1,True
+experiments/guidance/nfsd/a_blue_ceramic_teapot,a blue ceramic teapot,a teapot,a teapot,1.0,1.0,1,True
+experiments/guidance/nfsd/a_cute_corgi_puppy,a cute corgi puppy,a corgi dog,a corgi dog,0.978,0.978,1,True
+experiments/guidance/nfsd/a_delicious_hamburger,a delicious hamburger,a hamburger,a hamburger,1.0,1.0,1,True
+experiments/guidance/nfsd/a_ripe_pineapple,a ripe pineapple,a pineapple,a pineapple,0.999,0.999,1,True
+experiments/guidance/nfsd/a_small_red_mushroom_house,a small red mushroom house,a mushroom,a mushroom,0.998,0.998,1,True
+experiments/guidance/sds/a_blue_ceramic_teapot,a blue ceramic teapot,a teapot,a teapot,1.0,1.0,1,True
+experiments/guidance/sds/a_cute_corgi_puppy,a cute corgi puppy,a corgi dog,a corgi dog,0.999,0.999,1,True
+experiments/guidance/sds/a_delicious_hamburger,a delicious hamburger,a hamburger,a hamburger,1.0,1.0,1,True
+experiments/guidance/sds/a_ripe_pineapple,a ripe pineapple,a pineapple,a pineapple,1.0,1.0,1,True
+experiments/guidance/sds/a_small_red_mushroom_house,a small red mushroom house,a mushroom,a mushroom,0.99,0.99,1,True
+results/a_cute_owl_plush_toy_mvdream_s0,a cute owl plush toy,an owl,an owl,0.626,0.626,1,True
+results/a_delicious_hamburger_s0,a delicious hamburger,a hamburger,a hamburger,1.0,1.0,1,True
+results/corgi,a cute corgi puppy,a corgi dog,a corgi dog,0.999,0.999,1,True
+results/mushroom_house,a small red mushroom house,a mushroom,a mushroom,0.992,0.992,1,True
+results/pineapple,a ripe pineapple,a pineapple,a pineapple,1.0,1.0,1,True
+results/public/p20261013_134717_56cd02,a blue ceramic teapot,a teapot,a teapot,1.0,1.0,1,True
+results/public/p20261013_135616_222710,a green cactus in a clay pot,a cactus,a cactus,0.996,0.996,1,True
+results/public/p20261013_140627_42df9c,a small red car,a car,a car,0.904,0.904,1,True
+results/public/p20261013_145133_c5dce8,a small red mushroom house,a mushroom,a mushroom,0.992,0.992,1,True
+results/treasure_chest,a wooden treasure chest,a treasure chest,a treasure chest,0.533,0.533,1,True

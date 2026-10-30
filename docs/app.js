@@ -8,7 +8,7 @@ const DATA = "data/results";
 const MULTS = [1, 2, 4, 8, 16];
 const GRAD_KEYS = [["xyz", "position"], ["features_dc", "colour"], ["opacity", "opacity"], ["scaling", "scale"], ["rotation", "rotation"]];
 
-const st = { galleryTick: 0, live: false, cfg: {}, runs: [], mine: [], sel: null, base: null, mult: 1, metrics: [], jobId: null, lastSnapStep: -1, polling: false };
+const st = { mode: "create", target: null, lastTargetId: null, galleryTick: 0, live: false, cfg: {}, runs: [], mine: [], sel: null, base: null, mult: 1, metrics: [], jobId: null, lastSnapStep: -1, polling: false };
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const runPath = (r) => r.rel || `${DATA}/${r.name}`;
 
@@ -33,6 +33,13 @@ $("#bg").onchange = (e) => {
 };
 $("#reset").onclick = () => Object.assign(viewer.cam, { az: 0, el: 15, r: 2.5 });
 $("#resscale").onchange = (e) => viewer.setResolutionScale(+e.target.value);
+$("#rmode").onchange = (e) => (viewer.mode = +e.target.value);
+$("#shot").onclick = () => {
+  const a = document.createElement("a");
+  a.href = viewer.screenshot();
+  a.download = `${(st.sel?.prompt || "studio").replace(/[^a-z0-9]+/gi, "_").slice(0, 40)}.png`;
+  a.click();
+};
 
 // ------------------------------------------------------------------ charts
 const cLoss = new LineChart($("#c-loss"), { logY: true });
@@ -80,8 +87,14 @@ async function selectRun(name) {
   const P = runPath(r);
   document.querySelectorAll(".run").forEach((b) => b.classList.toggle("sel", b.dataset.name === name));
   $("#viewname").textContent = `· “${r.prompt}”`;
-  $("#hud").textContent = "loading PLY…";
-  st.base = await loadPly(`${P}/${r.ply}`);
+  $("#hud").textContent = "loading model…";
+  try {
+    st.base = await loadPly(`${P}/${r.ply}`);
+  } catch (e) {
+    $("#hud").textContent = "could not load this model (it may have been removed)";
+    return;
+  }
+  $("#dlply").href = `${P}/${r.ply}`; $("#dlply").hidden = false;
   viewer.cam.az = r.front_azimuth || 0;  // MVDream objects face azimuth 90
   setMult(st.mult);
   // training curves
@@ -164,6 +177,11 @@ async function generate() {
   const cfg = $("#cfg").value.trim();
   const body = { prompt: $("#prompt").value.trim(), seed: +$("#seed").value, iters: +$("#iters").value,
                  guidance: $("#guidance").value, guidance_scale: cfg === "" ? null : +cfg };
+  if (!body.prompt) return showError(new Error("Type a prompt first."));
+  if (st.mode === "challenge") {
+    if (tabooHits(body.prompt).length) return checkTaboo();
+    body.target = st.target.id;
+  }
   try {
     const r = await postJSON("api/generate", body, { "X-Studio-Session": sessionId() });
     startJob(r.id);
@@ -210,6 +228,10 @@ function showError(e) {
 
 function startJob(id) {
   st.jobId = id; st.metrics = []; st.lastSnapStep = -1; drawMetrics();
+  // reset the job box so values from the previous job are never shown for the new one
+  for (const k of ["eta", "step", "elapsed", "loss", "t", "res", "n", "vram", "gxyz"]) $(`#k-${k}`).textContent = "–";
+  $("#jobbar").style.width = "0%";
+  $("#jobstatus").textContent = "submitted"; $("#jobstatus").className = "badge starting";
   $("#log").textContent = "";
   $("#joberr").hidden = true;
   try { sessionStorage.setItem("studio.job", id); } catch { /* storage unavailable */ }
@@ -223,7 +245,15 @@ async function poll() {
     for (;;) {
       let j;
       try { j = await fetchJSON(`api/jobs/${st.jobId}`); }
-      catch { try { sessionStorage.removeItem("studio.job"); } catch {} break; }
+      catch (e) {
+        if (/: 404/.test(e.message)) {  // the server restarted and forgot this job: tell the user instead of spinning forever
+          try { sessionStorage.removeItem("studio.job"); } catch {}
+          showError(new Error("The server restarted and this job was lost. Please start it again."));
+          break;
+        }
+        await sleep(3000);  // transient network error: keep trying
+        continue;
+      }
       const active = j.status === "queued" || j.status === "running";
       if (!active) $("#stop").hidden = true;
       lockGenerate();
@@ -238,6 +268,7 @@ async function poll() {
           if (!st.mine.some((r) => r.name === j.run.name)) st.mine.unshift({ ...j.run, mine: true });
           await loadRuns(); await selectRun(j.run.name);
         }
+        if (j.kind === "generate") showResult(j);
         if (j.kind === "benchmark" && j.status === "done") { await loadRuns(); st.sel = st.runs.find((r) => r.name === j.name); await loadBench(st.sel); }
         break;
       }
@@ -275,7 +306,7 @@ async function updateGen(j) {
   $("#joberr").className = "err";
   if (j.status === "running") $("#joberr").hidden = true;
   $("#jobname").textContent = (j.prompt ? `“${j.prompt}”` : j.name) + (j.gpu != null ? ` · GPU ${j.gpu}` : "");
-  if (j.status === "failed") { $("#joberr").hidden = false; $("#joberr").textContent = "The job failed - see the log below."; }
+  if (j.status === "failed") { $("#joberr").hidden = false; $("#joberr").textContent = j.error || "The job failed - see the log below."; }
   if (!p) return;
   $("#jobbar").style.width = `${(100 * p.step) / p.iters}%`;
   $("#k-step").textContent = `${p.step} / ${p.iters}`;
@@ -335,6 +366,7 @@ async function pollQueue() {
       const q = await fetchJSON("api/queue");
       $("#queue").textContent = `max jobs now: ${q.capacity} · running ${q.running} · free GPUs ${q.gpus_idle} · waiting ${q.queued}`;
       showQueueHint(q);
+      if (!$("#menu").hidden) showMenu();
     } catch { /* ignore */ }
     await sleep(3000);
     if (++st.galleryTick % 10 === 0 && !st.polling) loadRuns().catch(() => {});  // pick up new community models (~30 s)
@@ -378,9 +410,122 @@ async function loadComparison() {
   $("#t-steps tbody").innerHTML = out.join("");
 }
 
+// ------------------------------------------------------------------ game loop: START (menu) -> ACTIVE (studio) -> END (result)
+const loadStats = () => { try { return JSON.parse(sessionStorage.getItem("studio.stats")) || { rounds: 0, wins: 0, streak: 0 }; } catch { return { rounds: 0, wins: 0, streak: 0 }; } };
+function saveStats(s) { try { sessionStorage.setItem("studio.stats", JSON.stringify(s)); } catch {} showScore(); }
+function showScore() {
+  const s = loadStats();
+  $("#score").hidden = !s.rounds;
+  $("#score").textContent = `🎯 ${s.wins}/${s.rounds} wins · streak ${s.streak}`;
+  $("#ch-round").textContent = `round ${s.rounds + 1} · ${s.wins} win${s.wins === 1 ? "" : "s"}`;
+}
+
+function showMenu() {
+  $("#result").hidden = true;
+  $("#menu").hidden = false;
+  const q = st.lastQ;
+  const free = q ? q.capacity - q.running : 0;
+  $("#menuStatus").textContent = !st.live ? "" : !q ? "● connecting to the GPU server…"
+    : free > 0 ? `● ${free} GPU${free === 1 ? "" : "s"} free · ${q.queued} waiting · about ${mins(runSeconds(st.cfg.default_guidance || "sds", 500))} per model`
+    : `● All GPUs are busy right now (${q.running} studio job${q.running === 1 ? "" : "s"}, ${q.queued} waiting). You can still play: your job waits in the queue and starts on the next free GPU.`;
+}
+
+function enterMode(m) {
+  $("#menu").hidden = true;
+  if (m === "gallery") { m = "create"; setTimeout(() => { $("#runs").scrollIntoView({ behavior: "smooth", block: "center" }); studio.flash("#runs"); }, 50); }
+  if (m === "how") { setTimeout(() => $(".algo").scrollIntoView({ behavior: "smooth" }), 50); return; }
+  st.mode = m;
+  $("#modechip").textContent = m === "challenge" ? "🎯 Challenge" : "▶ Create";
+  $("#challengeBox").hidden = m !== "challenge";
+  $("#genTitle").textContent = m === "challenge" ? "Challenge: describe it, don't name it" : "Generate (text → 3D)";
+  if (m === "challenge") { if (!st.target) newTarget(); $("#prompt").value = ""; $("#prompt").placeholder = "Describe the object without saying its name…"; }
+  else { $("#prompt").placeholder = "e.g. a ceramic teapot shaped like a pumpkin"; }
+  checkTaboo();
+  showScore();
+  if (m !== "gallery") $("#prompt").focus();
+}
+
+function newTarget() {
+  const list = st.cfg.challenge || [];
+  if (!list.length) return;
+  let t;
+  do { t = list[Math.floor(Math.random() * list.length)]; } while (list.length > 1 && t.id === st.lastTargetId);
+  st.target = t; st.lastTargetId = t.id;
+  $("#ch-label").textContent = t.label;
+  $("#ch-taboo").innerHTML = t.taboo.map((w) => `<i>${esc(w)}</i>`).join("");
+  $("#prompt").value = "";
+  checkTaboo();
+}
+$("#ch-new").onclick = newTarget;
+
+const tabooHits = (text) => (st.mode === "challenge" && st.target
+  ? st.target.taboo.filter((w) => new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(s|es)?\\b`, "i").test(text)) : []);
+function checkTaboo() {
+  const hits = tabooHits($("#prompt").value);
+  $("#tabooWarn").hidden = !hits.length;
+  $("#tabooWarn").textContent = hits.length ? `Challenge rule: you can't say ${hits.map((h) => `“${h}”`).join(", ")}.` : "";
+  if (!st.polling) $("#go").disabled = !!hits.length || !st.live;
+  return hits;
+}
+$("#prompt").addEventListener("input", checkTaboo);
+
+function judgeHTML(jd, targetLabel) {
+  if (!jd?.top) return `<p class="dim small">The CLIP judge was not available for this run.</p>`;
+  const rows = jd.top.map((t) => `<div class="jrow ${t.label === targetLabel ? "hit" : ""}"><span>${esc(t.label.replace(/^an? /, ""))}</span><span class="jb"><i style="width:${Math.max(2, t.p * 100)}%"></i></span><span class="mono">${Math.round(t.p * 100)}%</span></div>`).join("");
+  return `<h4>The judge's guesses (CLIP, 8 views)</h4>${rows}<p class="dim small">Prompt match (CLIP): <b>${jd.prompt_clip}</b> <span class="dim">(good results score about 25–30)</span></p>`;
+}
+
+function showResult(j) {
+  const run = j.run, jd = run?.judge, ch = !!j.target;
+  const tgt = ch ? (st.cfg.challenge || []).find((t) => t.id === j.target) : null;
+  const banner = $("#r-banner"), sub = $("#r-sub");
+  $("#r-retry").hidden = !ch;
+  $("#r-again").textContent = ch ? "Play again (new target)" : "Create another";
+  $("#r-explore").hidden = j.status !== "done";
+  $("#r-ply").hidden = j.status !== "done";
+  if (j.status !== "done") {
+    banner.className = "banner fail";
+    banner.textContent = j.status === "cancelled" ? "⏹ Stopped" : "⚠ Generation failed";
+    sub.textContent = j.status === "cancelled" ? "The job was stopped and its GPU released." : (j.error || "Something went wrong on the GPU server. Please try again.");
+    $("#r-img").hidden = true; $("#r-judge").innerHTML = ""; $("#r-stats").innerHTML = "";
+    if (ch) { const s = loadStats(); s.rounds += 1; s.streak = 0; saveStats(s); }
+  } else {
+    $("#r-img").hidden = false;
+    $("#r-img").src = `${run.rel}/progress/final.png`;
+    $("#r-ply").href = `${run.rel}/${run.ply}`;
+    if (ch) {
+      const win = !!jd?.win, s = loadStats();
+      s.rounds += 1; s.wins += win ? 1 : 0; s.streak = win ? s.streak + 1 : 0; saveStats(s);
+      banner.className = "banner " + (win ? "win" : "loss");
+      banner.textContent = win ? `🏆 You win! The judge saw ${tgt?.label}.` : `✗ Not quite. The judge saw ${jd?.top?.[0]?.label ?? "something else"}.`;
+      sub.textContent = `Target: ${tgt?.label} · your prompt: “${j.prompt}” · ${win ? `rank 1 with ${Math.round((jd.target_p || 0) * 100)}%` : `your target ranked #${jd?.target_rank ?? "?"}`}`;
+    } else {
+      banner.className = "banner ready";
+      banner.textContent = "✓ Your 3D model is ready";
+      sub.textContent = `“${j.prompt}” · it is now in the gallery for everyone to render.`;
+    }
+    $("#r-judge").innerHTML = judgeHTML(jd, tgt?.label);
+    $("#r-stats").innerHTML = `<dt>method</dt><dd>${esc((run.guidance || "sds").toUpperCase())}</dd><dt>steps</dt><dd>${run.iters}</dd>` +
+      `<dt>optimisation</dt><dd>${run.train_s} s</dd><dt>total</dt><dd>${run.total_s} s</dd><dt>Gaussians</dt><dd>${(run.num_gaussians_final || 0).toLocaleString()}</dd>`;
+  }
+  $("#result").hidden = false;
+}
+$("#r-explore").onclick = () => { $("#result").hidden = true; };
+$("#r-again").onclick = () => { $("#result").hidden = true; if (st.mode === "challenge") newTarget(); else $("#prompt").select(); $("#prompt").focus(); };
+$("#r-retry").onclick = () => { $("#result").hidden = true; $("#prompt").focus(); };
+$("#r-menu").onclick = showMenu;
+$("#menuBtn").onclick = showMenu;
+document.querySelectorAll("#menu .mode").forEach((b) => (b.onclick = () => enterMode(b.dataset.go)));
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  if (!$("#result").hidden) $("#result").hidden = true;
+  else if (!$("#menu").hidden) $("#menu").hidden = true;
+  else showMenu();
+});
+
 // ------------------------------------------------------------------ video-narration helpers
 window.studio = {
-  viewer, st, generate, bench, sweep, setMult, selectRun, loadRuns,
+  viewer, st, generate, bench, sweep, setMult, selectRun, loadRuns, showMenu, enterMode, newTarget, showResult,
   caption(text, sub = "") { const c = $("#caption"); c.hidden = !text; c.innerHTML = text + (sub ? `<small>${sub}</small>` : ""); },
   flash(sel) { const e = $(sel); e.classList.add("flash"); setTimeout(() => e.classList.remove("flash"), 2500); },
 };
@@ -412,6 +557,8 @@ window.studio = {
   } catch {
     $("#mode").textContent = "static build (pre-generated)"; $("#mode").className = "pill static";
     $("#go").disabled = $("#bench").disabled = true; $("#offline").hidden = false;
+    $("#menuOffline").hidden = false;
+    document.querySelectorAll('#menu .mode[data-go="create"], #menu .mode[data-go="challenge"]').forEach((b) => (b.disabled = true));
     try {
       const sys = await fetchJSON("data/system.json");
       $("#gpu").textContent = `generated on ${sys.name}`;
@@ -419,11 +566,15 @@ window.studio = {
   }
   loadComparison();
   await loadRuns();
-  if (st.runs.length) await selectRun(st.runs[0].name);
+  // open on a curated MVDream example rather than whatever was generated last
+  const featured = st.runs.find((r) => !r.community && !r.mine && r.guidance === "mvdream") || st.runs[0];
+  if (featured) await selectRun(featured.name);
   else { drawMetrics(); showBench([]); }
+  let resume = null;
   if (st.live) {
-    let id = null;
-    try { id = sessionStorage.getItem("studio.job"); } catch { /* storage unavailable */ }
-    if (id) { st.jobId = id; poll(); }
+    try { resume = sessionStorage.getItem("studio.job"); } catch { /* storage unavailable */ }
+    if (resume) { st.jobId = resume; poll(); }
   }
+  showScore();
+  if (!resume) showMenu();   // START state
 })();

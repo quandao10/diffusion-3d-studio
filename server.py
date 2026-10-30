@@ -60,6 +60,7 @@ PER_IP_WINDOW_S = int(os.environ.get("PER_IP_WINDOW_S", 86400))
 KEEP_PUBLIC = int(os.environ.get("KEEP_PUBLIC", 150))  # community gallery size (~25 MB per model)
 PRUNE_MIN_AGE_S = int(os.environ.get("PRUNE_MIN_AGE_S", 3600))  # never delete a visitor's run younger than this
 JOB_TIMEOUT_S = 900
+STALL_S = int(os.environ.get("STALL_S", 300))  # a running job whose log is silent this long is killed (watchdog)
 _bl = os.path.join(ROOT, "configs", "blocklist.txt")
 BLOCKLIST = [w.strip().lower() for w in open(_bl) if w.strip() and not w.startswith("#")] if os.path.exists(_bl) else []
 
@@ -227,7 +228,9 @@ def run_job(job, gpu):
     rc = -1
     try:
         os.makedirs(job["out"], exist_ok=True)
-        env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu), PYTHONUNBUFFERED="1")
+        # all weights are in the local HF cache: never block on the Hub (its online check stalled jobs for minutes)
+        env = dict(os.environ, CUDA_VISIBLE_DEVICES=str(gpu), PYTHONUNBUFFERED="1",
+                   HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", HF_HUB_DISABLE_PROGRESS_BARS="1")
         with open(job["log"], "w") as logf:
             logf.write("$ CUDA_VISIBLE_DEVICES=%s %s\n" % (gpu, " ".join(job["cmd"])))
             logf.flush()
@@ -246,12 +249,34 @@ def run_job(job, gpu):
         with cond:
             running.pop(job["id"], None)
             status = "cancelled" if job.get("cancel") else ("done" if rc == 0 else "failed")
+            if job.get("stalled"):
+                job["error"] = "The job stopped making progress and was stopped automatically. Please try again."
             job.update(status=status, returncode=rc, ended=time.time(), proc=None)
             cond.notify_all()
         if job["status"] == "cancelled" and job["kind"] == "generate":
             shutil.rmtree(job["out"], ignore_errors=True)  # partial result: not kept, not in the gallery
         if job["kind"] == "generate" and not job["admin"]:
             prune_public()
+
+
+def watchdog():
+    """Fail jobs that stop making progress (no log output for STALL_S) so nothing hangs forever and the GPU is released."""
+    while True:
+        time.sleep(15)
+        now = time.time()
+        for jid in list(running):
+            job = jobs.get(jid)
+            if not job or not job.get("proc"):
+                continue
+            try:
+                last = os.path.getmtime(job["log"])
+            except OSError:
+                last = job["started"] or now
+            if now - max(last, job["started"] or now) > STALL_S and job["proc"].poll() is None:
+                job["stalled"] = True
+                with open(job["log"], "a") as f:
+                    f.write(f"\n[server] no progress for {STALL_S}s - job stopped by the watchdog\n")
+                job["proc"].terminate()
 
 
 def prune_public():
@@ -280,6 +305,22 @@ def run_summary(out_dir, rel, name):
 
 # ------------------------------------------------------------------ API
 GUIDANCE = ["sds", "csd", "nfsd", "ism", "mvdream"]                     # see scripts/guidance_plus.py
+HF_HUB = os.path.expanduser("~/.cache/huggingface/hub")
+
+
+def _hf_has(repo, *files):
+    snaps = os.path.join(HF_HUB, "models--" + repo.replace("/", "--"), "snapshots")
+    return os.path.isdir(snaps) and any(all(os.path.exists(os.path.join(snaps, s, f)) for f in files) for s in os.listdir(snaps))
+
+
+def model_availability():
+    """Which guidance methods can run offline right now (jobs run with HF_HUB_OFFLINE=1, so missing weights fail fast)."""
+    sd = _hf_has("Manojb/stable-diffusion-2-1-base", "model_index.json", "unet/diffusion_pytorch_model.safetensors")
+    mv_ckpt = os.path.exists(os.path.join(ROOT, "weights", "mvdream", "sd-v2.1-base-4view.pt")) or \
+        _hf_has("MVDream/MVDream", "sd-v2.1-base-4view.pt")
+    mv = mv_ckpt and _hf_has("laion/CLIP-ViT-H-14-laion2B-s32B-b79K", "open_clip_pytorch_model.bin")
+    return {"sds": sd, "csd": sd, "nfsd": sd, "ism": sd, "mvdream": mv,
+            "judge": _hf_has("openai/clip-vit-large-patch14", "model.safetensors")}
 DEFAULT_GUIDANCE = os.environ.get("DEFAULT_GUIDANCE", "sds")
 CFG_DEFAULT = {"sds": 100.0, "csd": 100.0, "nfsd": 7.5, "ism": 7.5, "mvdream": 50.0}
 
@@ -300,9 +341,12 @@ except (FileNotFoundError, KeyError, ValueError):
     pass
 
 
+JUDGE_S = 8.0  # CLIP judge after the views (load ViT-L/14 + 8 views)
+
+
 def job_duration(job):
     per_step, overhead = ETA_MODEL.get(job.get("guidance", "sds"), ETA_MODEL["sds"])
-    return overhead + per_step * job.get("iters", 500)
+    return overhead + per_step * job.get("iters", 500) + (JUDGE_S if "--judge" in job.get("cmd", []) else 0)
 
 
 def job_remaining(job, now):
@@ -333,6 +377,16 @@ def schedule_forecast():
     return starts, min(slots)
 
 
+CHALLENGE = json.load(open(os.path.join(ROOT, "configs", "challenge.json")))["targets"]
+TARGETS = {t["id"]: t for t in CHALLENGE}
+
+
+def taboo_hits(prompt, target):
+    """Words of the secret target (or synonyms, incl. plurals) used in a Challenge prompt."""
+    low = prompt.lower()
+    return [w for w in target["taboo"] if re.search(r"\b" + re.escape(w.lower()) + r"(s|es)?\b", low)]
+
+
 class GenerateReq(BaseModel):
     prompt: str
     seed: int = 0
@@ -340,6 +394,7 @@ class GenerateReq(BaseModel):
     guidance: str | None = None
     guidance_scale: float | None = None   # None = the method's default
     mesh: bool = False                    # textured-mesh export (admin only; adds ~1 min)
+    target: str | None = None             # Challenge mode: id of the secret object (configs/challenge.json)
 
 
 @app.post("/api/generate")
@@ -354,11 +409,21 @@ def generate(r: GenerateReq, request: Request):
         low = prompt.lower()
         if any(re.search(r"\b" + re.escape(w) + r"\b", low) for w in BLOCKLIST):
             raise HTTPException(400, "That prompt is not allowed on this public demo.")
+    target = None
+    if r.target is not None:
+        target = TARGETS.get(r.target)
+        if not target:
+            raise HTTPException(400, "Unknown challenge target.")
+        hits = taboo_hits(prompt, target)
+        if hits:
+            raise HTTPException(400, f"Challenge rule: describe it without saying {', '.join(repr(h) for h in hits)}.")
     seed = max(0, min(int(r.seed), 2**31 - 1))
     # multiples of 50: upstream's final prune drops Gaussians with screen radius > 1 px unless the last step densified
     method = r.guidance or DEFAULT_GUIDANCE
     if method not in GUIDANCE:
         raise HTTPException(400, f"guidance must be one of {GUIDANCE}")
+    if not model_availability().get(method):
+        raise HTTPException(503, f"The {method.upper()} model is not available on the server right now - please pick another method.")
     iters = max(50, int(round(int(r.iters) / 50)) * 50)
     cfg = float(r.guidance_scale) if r.guidance_scale is not None else CFG_DEFAULT[method]
     if admin:
@@ -371,11 +436,15 @@ def generate(r: GenerateReq, request: Request):
         out, rel = os.path.join(PUBLIC_DIR, name), f"data/results/public/{name}"
     cmd = [sys.executable, "scripts/train_logged.py", "--prompt", prompt, "--name", name, "--out", out,
            "--seed", str(seed), "--iters", str(iters), "--guidance", method, "--guidance_scale", str(cfg)]
+    if model_availability().get("judge"):
+        cmd.append("--judge")  # CLIP judge: prompt match + zero-shot guess (Challenge win/loss, result screen)
+        if target:
+            cmd += ["--target", target["label"]]
     if not (admin and r.mesh):
         cmd.append("--no_mesh")  # web jobs: Gaussians + views only (mesh export would double the GPU time)
     sid = request.headers.get("x-studio-session", "")
     job = dict(id=secrets.token_urlsafe(9), kind="generate", name=name, prompt=prompt, seed=seed, iters=iters,
-               guidance=method, guidance_scale=cfg, out=out, rel=rel, log=os.path.join(out, "training.log"), cmd=cmd,
+               guidance=method, guidance_scale=cfg, target=target["id"] if target else None, out=out, rel=rel, log=os.path.join(out, "training.log"), cmd=cmd,
                session=sid if re.fullmatch(r"[A-Za-z0-9_-]{16,64}", sid) else None)
     return enqueue(job, ip, admin)  # run_job creates `out` when the job starts (rejected requests leave nothing)
 
@@ -408,7 +477,7 @@ def job_view(job):
              waiting_for_gpu=job["status"] == "queued" and (not idle_gpus() or bool(MAX_PARALLEL and len(running) >= MAX_PARALLEL)),
              elapsed_s=round(now - job["started"], 1) if job["started"] else 0.0,
              wait_s=round((job["started"] or now) - job["created"], 1),
-             prompt=job["prompt"], guidance=job.get("guidance"),
+             prompt=job["prompt"], guidance=job.get("guidance"), target=job.get("target"), error=job.get("error"),
              log=tail(job["log"]) if job["status"] in ("running", "done", "failed") else [])
     if job["status"] == "queued":
         starts, _ = schedule_forecast()
@@ -518,7 +587,9 @@ def config(request: Request):
     _, admin = caller(request)
     return {"public": PUBLIC, "admin": admin, "prompt_max": PROMPT_MAX, "iters": PUBLIC_ITERS, "cfg": PUBLIC_CFG,
             "queue_max": QUEUE_MAX, "per_visitor": PER_IP_TOTAL, "window_h": PER_IP_WINDOW_S // 3600,
-            "max_parallel": MAX_PARALLEL, "guidance": GUIDANCE, "default_guidance": DEFAULT_GUIDANCE, "cfg_default": CFG_DEFAULT, "eta_model": ETA_MODEL}
+            "max_parallel": MAX_PARALLEL, "guidance": GUIDANCE, "default_guidance": DEFAULT_GUIDANCE, "cfg_default": CFG_DEFAULT, "eta_model": ETA_MODEL,
+            "available": model_availability(),
+            "challenge": [{"id": t["id"], "label": t["label"], "taboo": t["taboo"]} for t in CHALLENGE]}
 
 
 def list_runs():
@@ -559,6 +630,7 @@ app.mount("/data/results", StaticFiles(directory=RESULTS), name="results")
 app.mount("/data/evidence", StaticFiles(directory=EVIDENCE), name="evidence")
 app.mount("/", StaticFiles(directory=os.path.join(ROOT, "web")), name="web")
 threading.Thread(target=scheduler, daemon=True).start()
+threading.Thread(target=watchdog, daemon=True).start()
 
 if __name__ == "__main__":
     import uvicorn

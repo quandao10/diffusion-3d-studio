@@ -1,0 +1,25 @@
+{
+  "threshold_note": "win = CLIP zero-shot judge ranks the target first among all labels (8 views averaged)",
+  "targets": [
+    {"id": "teapot", "label": "a teapot", "taboo": ["teapot", "tea pot", "kettle"]},
+    {"id": "corgi", "label": "a corgi dog", "taboo": ["corgi", "dog", "puppy", "pup", "doggy"]},
+    {"id": "owl", "label": "an owl", "taboo": ["owl", "owlet"]},
+    {"id": "pineapple", "label": "a pineapple", "taboo": ["pineapple", "ananas"]},
+    {"id": "hamburger", "label": "a hamburger", "taboo": ["hamburger", "burger", "cheeseburger"]},
+    {"id": "mushroom", "label": "a mushroom", "taboo": ["mushroom", "toadstool", "fungus", "fungi"]},
+    {"id": "duck", "label": "a rubber duck", "taboo": ["duck", "duckie", "ducky", "duckling"]},
+    {"id": "cactus", "label": "a cactus", "taboo": ["cactus", "cacti", "succulent"]},
+    {"id": "guitar", "label": "a guitar", "taboo": ["guitar", "ukulele"]},
+    {"id": "sneaker", "label": "a sneaker shoe", "taboo": ["sneaker", "shoe", "trainer", "trainers"]},
+    {"id": "chest", "label": "a treasure chest", "taboo": ["chest", "treasure", "coffer"]},
+    {"id": "castle", "label": "a castle", "taboo": ["castle", "fortress", "palace", "citadel"]},
+    {"id": "robot", "label": "a robot", "taboo": ["robot", "android", "droid", "cyborg"]},
+    {"id": "donut", "label": "a donut", "taboo": ["donut", "doughnut"]},
+    {"id": "lighthouse", "label": "a lighthouse", "taboo": ["lighthouse", "beacon"]},
+    {"id": "sailboat", "label": "a sailboat", "taboo": ["sailboat", "boat", "yacht", "ship", "sail"]},
+    {"id": "strawberry", "label": "a strawberry", "taboo": ["strawberry", "berry", "berries"]},
+    {"id": "penguin", "label": "a penguin", "taboo": ["penguin"]},
+    {"id": "clock", "label": "an alarm clock", "taboo": ["clock", "alarm", "timepiece"]},
+    {"id": "car", "label": "a car", "taboo": ["car", "automobile", "vehicle", "sedan"]}
+  ]
+}

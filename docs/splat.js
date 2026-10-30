@@ -128,10 +128,16 @@ uniform mat4 u_view;
 uniform vec2 u_viewport;   // pixels
 uniform float u_focal;     // pixels
 uniform float u_scaleMod;  // like upstream GUI "gaussian scale"
+uniform int u_mode;        // 0 colour, 1 depth, 2 Gaussian centres
+uniform vec2 u_depth;      // near/far for the depth colour map
 in vec2 a_corner;          // quad corner in [-2,2]^2
 in uint a_index;           // sorted Gaussian index (instanced)
 out vec4 v_color;
 out vec2 v_pos;
+vec3 depthColor(float k) {   // near = warm yellow -> teal -> far = deep purple
+  vec3 a = vec3(0.99, 0.91, 0.14), b = vec3(0.13, 0.57, 0.55), c = vec3(0.27, 0.0, 0.33);
+  return k < 0.5 ? mix(a, b, k * 2.0) : mix(b, c, k * 2.0 - 1.0);
+}
 void main() {
   ivec2 t0 = ivec2((a_index & 1023u) << 1, a_index >> 10);
   uvec4 c0 = texelFetch(u_tex, t0, 0);
@@ -158,6 +164,8 @@ void main() {
   vec2 d = a_corner.x * min(sqrt(2.0 * l1), 1024.0) * e1 + a_corner.y * min(sqrt(2.0 * l2), 1024.0) * e2;
   uint rgba = c1.w;
   v_color = vec4(float(rgba & 255u), float((rgba >> 8) & 255u), float((rgba >> 16) & 255u), float(rgba >> 24)) / 255.0;
+  if (u_mode == 1) v_color.rgb = depthColor(clamp((z - u_depth.x) / (u_depth.y - u_depth.x), 0.0, 1.0));
+  if (u_mode == 2) { d = a_corner * 0.9; v_color.a = 1.0; }   // ~2 px dot at each Gaussian centre
   v_pos = a_corner;
   gl_Position = vec4(ndc + vec2(d.x, -d.y) * 2.0 / u_viewport, 0.0, 1.0);
 }`;
@@ -188,7 +196,41 @@ export class SplatViewer {
   constructor(canvas, { onStats } = {}) {
     this.canvas = canvas;
     this.onStats = onStats || (() => {});
-    const gl = (this.gl = canvas.getContext("webgl2", { antialias: false, premultipliedAlpha: true, preserveDrawingBuffer: true }));
+    this.initGL();
+    // a lost WebGL context (driver reset, GPU pressure, tab backgrounded) is restored instead of leaving a blank canvas
+    canvas.addEventListener("webglcontextlost", (e) => { e.preventDefault(); this.lost = true; });
+    canvas.addEventListener("webglcontextrestored", () => {
+      this.initGL();
+      this.lost = false;
+      if (this.lastG) this.setGaussians(this.lastG);
+    });
+    this.mode = 0;
+
+    // camera (orbit around origin, DreamGaussian convention: y up, front view looks from +z)
+    this.cam = { az: 0, el: 15, r: 2.5, fovy: 49.1 };
+    this.bg = [1, 1, 1];
+    this.scaleMod = 1;
+    this.resScale = 1;
+    this.autoRotate = 0; // deg/s
+    this.count = 0;
+    this.sortedCount = 0;
+    this.sortMs = 0;
+    this.needsSort = false;
+    this.sorting = false;
+    this.frameTimes = [];
+    this.worker = new Worker(new URL("./sort-worker.js", import.meta.url));
+    this.worker.onmessage = (e) => this.onSorted(e.data);
+    this.installControls();
+    this.resizeObserver = new ResizeObserver(() => this.resize());
+    this.resizeObserver.observe(canvas);
+    this.resize();
+    this.last = performance.now();
+    requestAnimationFrame((t) => this.frame(t));
+  }
+
+  initGL() {
+    const canvas = this.canvas;
+    const gl = (this.gl = this.gl || canvas.getContext("webgl2", { antialias: false, premultipliedAlpha: true, preserveDrawingBuffer: true }));
     if (!gl) throw new Error("WebGL2 not available");
     const prog = (this.prog = gl.createProgram());
     gl.attachShader(prog, compile(gl, gl.VERTEX_SHADER, VS));
@@ -197,7 +239,7 @@ export class SplatViewer {
     if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
     gl.useProgram(prog);
     this.u = {};
-    for (const n of ["u_tex", "u_view", "u_viewport", "u_focal", "u_scaleMod"]) this.u[n] = gl.getUniformLocation(prog, n);
+    for (const n of ["u_tex", "u_view", "u_viewport", "u_focal", "u_scaleMod", "u_mode", "u_depth"]) this.u[n] = gl.getUniformLocation(prog, n);
 
     this.vao = gl.createVertexArray();
     gl.bindVertexArray(this.vao);
@@ -224,33 +266,18 @@ export class SplatViewer {
 
     this.timerExt = gl.getExtension("EXT_disjoint_timer_query_webgl2");
     this.queries = [];
+    this.sortedCount = 0;
     this.gpuMs = null;
     const dbg = gl.getExtension("WEBGL_debug_renderer_info");
     this.glRenderer = dbg ? gl.getParameter(dbg.UNMASKED_RENDERER_WEBGL) : gl.getParameter(gl.RENDERER);
 
-    // camera (orbit around origin, DreamGaussian convention: y up, front view looks from +z)
-    this.cam = { az: 0, el: 15, r: 2.5, fovy: 49.1 };
-    this.bg = [1, 1, 1];
-    this.scaleMod = 1;
-    this.resScale = 1;
-    this.autoRotate = 0; // deg/s
-    this.count = 0;
-    this.sortedCount = 0;
-    this.sortMs = 0;
-    this.needsSort = false;
-    this.sorting = false;
-    this.frameTimes = [];
-    this.worker = new Worker(new URL("./sort-worker.js", import.meta.url));
-    this.worker.onmessage = (e) => this.onSorted(e.data);
-    this.installControls();
-    this.resizeObserver = new ResizeObserver(() => this.resize());
-    this.resizeObserver.observe(canvas);
-    this.resize();
-    this.last = performance.now();
-    requestAnimationFrame((t) => this.frame(t));
   }
 
+  // PNG of the current frame (preserveDrawingBuffer is on)
+  screenshot() { return this.canvas.toDataURL("image/png"); }
+
   setGaussians(g) {
+    this.lastG = g;
     const gl = this.gl;
     const { data, rows } = packTexture(g);
     gl.bindTexture(gl.TEXTURE_2D, this.tex);
@@ -317,6 +344,7 @@ export class SplatViewer {
   }
 
   frame(t) {
+    if (this.lost) { requestAnimationFrame((tt) => this.frame(tt)); return; }
     const dt = Math.min(0.1, (t - this.last) / 1000);
     this.last = t;
     if (this.autoRotate && !this.dragging) this.cam.az = (this.cam.az + this.autoRotate * dt) % 360;
@@ -348,6 +376,8 @@ export class SplatViewer {
       gl.uniform2f(this.u.u_viewport, this.canvas.width, this.canvas.height);
       gl.uniform1f(this.u.u_focal, (0.5 * this.canvas.height) / Math.tan((this.cam.fovy * Math.PI) / 360));
       gl.uniform1f(this.u.u_scaleMod, this.scaleMod);
+      gl.uniform1i(this.u.u_mode, this.mode | 0);
+      gl.uniform2f(this.u.u_depth, this.cam.r - 1.2, this.cam.r + 1.2);
       gl.drawElementsInstanced(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0, this.sortedCount);
       if (q) { gl.endQuery(this.timerExt.TIME_ELAPSED_EXT); this.queries.push(q); }
     }

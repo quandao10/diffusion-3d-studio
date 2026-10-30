@@ -69,6 +69,20 @@ GPU=0 python server.py --port 8549      # open http://127.0.0.1:8549  (ssh -L 85
 python scripts/export_static.py         # -> docs/  (Settings → Pages → branch main, folder /docs)
 ```
 
+## Alpha build v0.2 (Assignment 4): the full loop
+
+* **Start state:** main menu with *Create*, *Challenge*, *Gallery*, *How it works* and live GPU availability.
+* **Active state:** *Create* (free text-to-3D with a method picker, live optimisation monitor, ETA, Stop) or **Challenge**:
+  you get one of 20 secret objects (`configs/challenge.json`) and must describe it **without its taboo words**
+  (checked in the browser and on the server). Your prompt is turned into 3D Gaussians on a free GPU.
+* **End state:** result screen. A CLIP ViT-L/14 judge looks at 8 rendered views and ranks the 20 objects:
+  **win** if your target is ranked first, **loss** otherwise; failures and stops get their own screen. Buttons: *Explore in 3D*,
+  *Play again*, *Retry this target*, *Download .ply*, *Main menu*. The session score and streak are shown in the header.
+* **Rendering:** viewer modes colour / depth / Gaussian centres, PNG screenshot, PLY download, WebGL context-loss recovery.
+* **Stability:** jobs run offline from local weights (`weights/`, HF cache) so they never block on the Hub; a watchdog stops
+  silent jobs after 5 min; the server checks which models are available; lost jobs after a server restart are reported.
+* Judge accuracy on all 50 existing results whose prompt names a target: **49/50 top-1** (`evidence/judge_eval.csv`).
+
 ## Public hosting (anyone can try a prompt)
 
 ```bash
