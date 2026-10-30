@@ -1,0 +1,61 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@page { size: Letter; margin: 0.45in 0.5in; }
+body { font: 9pt/1.3 "DejaVu Sans", Arial, sans-serif; color: #111; }
+h1 { font-size: 14.5pt; margin: 0 0 2px; color: #1b3a5c; } .meta { color: #333; font-size: 8.7pt; margin-bottom: 3px; }
+h2 { font-size: 10.8pt; color: #1b3a5c; margin: 7px 0 3px; border-bottom: 1px solid #c9d6e3; padding-bottom: 1px; }
+h3 { font-size: 9.4pt; margin: 4px 0 1px; }
+p { margin: 2px 0 3px; } ul { margin: 1px 0 3px 15px; padding: 0; } li { margin: 0.5px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 8.2pt; margin: 3px 0; }
+th, td { border: 1px solid #cfd8e2; padding: 2px 4px; text-align: left; vertical-align: top; } th { background: #eef3f8; }
+tr.done td { background: #eaf6ef; } tr.int td { background: #f3f0fb; } tr.buf td { background: #fff4e0; }
+.shots { display: grid; grid-template-columns: 1fr 1.15fr 1fr; gap: 6px; align-items: start; }
+.shots img { width: 100%; border: 1px solid #cfd8e2; border-radius: 4px; } .cap { font-size: 7.6pt; color: #444; margin-top: 1px; }
+code { font-size: 8pt; } a { color: #1a56a8; }
+.loop { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin: 3px 0; }
+.loop div { border: 1px solid #cfd8e2; border-radius: 6px; padding: 4px 6px; background: #f7f9fc; }
+</style></head><body>
+<h1>Assignment 4 — Production Plan &amp; MVP 2.0 (Alpha Build)</h1>
+<div class="meta"><b>Minh Quan Dao (qd66)</b> · Interactive Diffusion-Based 3D Generation Studio · Pillars: <b>Procedural Generation + Rendering</b> · Alpha <b>v0.2.0</b><br>
+<b>Playable build:</b> <a href="https://lips-colon-relate-cingular.trycloudflare.com">live studio (lab A100 server)</a> · <a href="https://quandao10.github.io/diffusion-3d-studio/">static web build</a> (gallery + viewer, no GPU) ·
+<b>Build zip:</b> <a href="https://github.com/quandao10/diffusion-3d-studio/archive/refs/tags/v0.2.0-alpha.zip">v0.2.0-alpha.zip</a> · <b>Source:</b> <a href="https://github.com/quandao10/diffusion-3d-studio">github.com/quandao10/diffusion-3d-studio</a></div>
+
+<h2>1. MVP 2.0: from tech demo to a complete loop</h2>
+<p>Assignment 3 proved the core mechanic: a text prompt optimises 3D Gaussians with gradients from a frozen diffusion model, and the result is rendered in
+real time. The Alpha wraps that mechanic in a game loop with a goal, a judge and a win/loss state:</p>
+<div class="loop">
+<div><b>Start: main menu.</b> Create, Challenge, Gallery and How-it-works, plus a live line showing free GPUs, the queue and the time per model.</div>
+<div><b>Active: the studio.</b> <i>Challenge</i> gives you one of 20 secret objects; you must describe it <b>without its taboo words</b> (checked in the browser and on the server). The model is optimised live with ETA and Stop. <i>Create</i> is free generation.</div>
+<div><b>End: results.</b> A CLIP judge looks at 8 rendered views and ranks the 20 objects: <b>win</b> if it picks your target, <b>loss</b> otherwise. Then <i>Play again / Retry / Explore in 3D / Download .ply / Menu</i>; session score and streak in the HUD.</div></div>
+<p><b>Both pillars are integrated in the loop:</b> procedural generation <i>is</i> the gameplay (your words → diffusion-guided Gaussians), and rendering is how you play and are judged
+(real-time splatting viewer with colour/depth/centre modes; the judge scores rendered views). The judge picks the right object for <b>49/50</b> existing results
+(<code>evidence/judge_eval.csv</code>); its only miss is a genuinely broken model.</p>
+<div class="shots">
+<div><img src="../docs_assets/a4_menu.png"><div class="cap">Start state: main menu.</div></div>
+<div><img src="../docs_assets/a4_challenge.png"><div class="cap">Active state: Challenge target, taboo words, queue/ETA (all GPUs busy at capture).</div></div>
+<div><img src="../docs_assets/a4_result.png"><div class="cap">End state: result screen (layout shown with UI-test judge values).</div></div></div>
+
+<h2>2. Release notes (changes since the Assignment 3 midterm)</h2>
+<h3>New features</h3>
+<ul><li><b>Game loop:</b> main menu (start), Create and Challenge modes (active), result screen with win / loss / failed / stopped states (end); Esc returns to the menu.</li>
+<li><b>Challenge mode:</b> 20 secret objects with taboo lists (<code>configs/challenge.json</code>), live taboo check, <i>New target</i>, session rounds / wins / streak.</li>
+<li><b>CLIP judge in the pipeline:</b> after every job, ViT-L/14 scores 8 views: prompt match plus a 20-way zero-shot guess, shown as bars on the result screen.</li>
+<li><b>Rendering:</b> viewer modes colour / depth / Gaussian centres, PNG screenshot, <code>.ply</code> download; the app opens on a curated MVDream model.</li>
+<li><b>Server:</b> model-availability check (methods whose weights are missing are disabled with a clear message); the ETA includes the judge.</li></ul>
+<h3>Bug fixes</h3>
+<ul><li><b>Jobs could hang for minutes or forever:</b> every job checked the Hugging Face Hub online at load, and a cache clean-up had deleted MVDream's 5.2 GB checkpoint, so jobs silently re-downloaded it. Jobs now run offline (<code>HF_HUB_OFFLINE</code>) from local weights in a project <code>weights/</code> folder; SD now loads in 4.8 s.</li>
+<li><b>Watchdog:</b> a job whose log is silent for 5 min is stopped, its GPU released, and the reason shown to the player.</li>
+<li>After a server restart, the page now reports a lost job instead of polling forever; a removed or broken model no longer leaves "loading…" on screen.</li>
+<li>The job panel showed the previous job's numbers when a new job started; it now resets. The viewer recovers from WebGL context loss instead of going blank.</li></ul>
+<h3>Known issues</h3>
+<ul><li>Jobs only use GPUs with <i>no</i> other process. At release time all 16 lab A100s (homer and hermes) were busy with other training, so the
+live build queues jobs until a GPU frees. A real GPU Challenge round is therefore still to be recorded; the loop is covered by 11 server tests and 14 browser UI tests.</li>
+<li>The CLIP judge can be fooled: it rewards colour and texture, knows only 20 objects, and over-saturated models can be misread.</li>
+<li>MVDream results are still over-saturated for some prompts; the SDS method still makes two-faced objects.</li>
+<li>The quick-tunnel URL changes when the tunnel restarts; the static build cannot generate. "One job per session" relies on <code>sessionStorage</code>, so a new tab counts as a new session.</li></ul>
+
+<h2>3. Weekly production schedule (Fall 2026, weeks counted from Sep 1; final deadline assumed in week 15)</h2>
+<table><tr><th style="width:15%">Week</th><th style="width:42%">Engineering</th><th style="width:22%">Assets / content</th><th>Integration / milestone</th></tr><tr class="done"><td><b>9 · Oct 26–Nov 1</b></td><td><b>Alpha (done):</b> game loop (menu → Create/Challenge → result), CLIP judge, render modes, offline jobs, watchdog</td><td>20 challenge targets + taboo lists; judge calibration on 50 results</td><td>Alpha v0.2 live + tagged (this report)</td></tr><tr class=""><td><b>10 · Nov 2–8</b></td><td>Stage-2 mesh refinement (<code>main2.py</code>) + mesh/Gaussian toggle in the viewer; reserve one GPU for the studio so jobs never wait behind other users</td><td>Reference render per challenge target (MVDream) for the result screen</td><td>Mesh download on the result screen</td></tr><tr class=""><td><b>11 · Nov 9–15</b></td><td>Quality: MVDream + ISM-style deterministic targets; CFG/timestep schedule sweep; judge robustness (prompt ensembles, calibrated threshold)</td><td>Expand Challenge to 40 targets with easy/medium/hard tiers</td><td>Re-run guidance benchmark; difficulty levels live</td></tr><tr class="int"><td><b>12 · Nov 16–22</b></td><td>Persistence: SQLite for jobs, scores and a moderated leaderboard; admin hide/delete for the gallery; stable hosting (named tunnel or CS proxy)</td><td>UI polish: onboarding tips, icons, empty/error states</td><td><b>Integration:</b> leaderboard + moderation + hosting together; classmate play-test</td></tr><tr class=""><td><b>13 · Nov 23–29 (Thanksgiving)</b></td><td>Viewer performance: GPU sort / level of detail, mobile layout; fix play-test issues</td><td>Curate final gallery content</td><td>Play-test feedback triage</td></tr><tr class="int"><td><b>14 · Nov 30–Dec 6</b></td><td><b>Feature freeze (beta):</b> fix the top issues only; load test with parallel players</td><td>Record final demo video</td><td>Release candidate v1.0-rc; final report draft</td></tr><tr class="buf"><td><b>15 · Dec 7–13</b></td><td><b>BUFFER WEEK:</b> bug fixing, documentation and polish only; <b>no new features</b></td><td>Final screenshots</td><td>v1.0 release + final submission</td></tr></table>
+<p><span style="background:#eaf6ef">&nbsp;green&nbsp;</span> = done · <span style="background:#f3f0fb">&nbsp;purple&nbsp;</span> = integration weeks (parts come together in week 12, frozen in week 14) ·
+<span style="background:#fff4e0">&nbsp;orange&nbsp;</span> = buffer week (bug fixes, documentation, polish; no new features).</p>
+<p><b>Run it:</b> <code>bash scripts/setup_env.sh</code>, then <code>bash scripts/serve_public.sh</code> (or <code>python server.py</code> for local use). Linux, NVIDIA GPU with ≥ 12 GB; see the README.</p>
+</body></html>
