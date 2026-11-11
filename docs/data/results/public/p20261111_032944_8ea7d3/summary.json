@@ -1,0 +1,61 @@
+{
+  "prompt": "a spiky tropical fruit with a crown of green leaves",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 247797,
+  "load_model_s": 47.2,
+  "train_s": 89.6,
+  "export_s": 0.7,
+  "render_views_s": 8.1,
+  "total_s": 149.4,
+  "peak_vram_mb": 10937.7,
+  "ply": "p20261111_032944_8ea7d3_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a spiky tropical fruit with a crown of green leaves",
+    "save_path": "p20261111_032944_8ea7d3",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261111_032944_8ea7d3",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 25.69,
+  "judge": {
+    "prompt_clip": 25.69,
+    "top": [
+      {
+        "label": "a cactus",
+        "p": 0.573
+      },
+      {
+        "label": "a pineapple",
+        "p": 0.422
+      },
+      {
+        "label": "a castle",
+        "p": 0.002
+      },
+      {
+        "label": "a rubber duck",
+        "p": 0.001
+      },
+      {
+        "label": "a mushroom",
+        "p": 0.001
+      }
+    ],
+    "judge_s": 3.4,
+    "target": "a pineapple",
+    "target_p": 0.422,
+    "target_rank": 2,
+    "win": false
+  }
+}

@@ -1,4 +1,4 @@
-# Interactive Diffusion-Based 3D Generation Studio — Assignment 3 MVP
+# Interactive Diffusion-Based 3D Generation Studio — Beta v0.3 (Assignment 5)
 
 **CS 549 · Minh Quan Dao (qd66) · Graphics pillars: Procedural Generation + Rendering**
 
@@ -11,7 +11,7 @@ novel-view rendering (CUDA rasterizer + my own WebGL2 Gaussian-splatting viewer)
 | Demo video (2:57) | `video/demo.mp4` (screen capture of the live studio: MVDream generation, queue/ETA/stop, guidance comparison, stress test; recorded by `scripts/record_demo2.py`) → **YouTube: https://www.youtube.com/watch?v=UGFzpFrmWcE** |
 | Static web demo (GitHub Pages, read-only) | https://quandao10.github.io/diffusion-3d-studio/ (built from `docs/`) |
 | Live studio (generation) | local NVIDIA GPU: `GPU=0 python server.py` → http://127.0.0.1:8549 |
-| Report | `report/Assignment_3_Final.pdf` |
+| Reports | `report/Assignment_5_Beta.pdf` (Beta) · `report/Assignment_4_Alpha.pdf` (Alpha) · `report/Assignment_3_Final.pdf` (MVP) |
 
 > **Plan vs. reality.** Assignment 2 specified an SDS-guided **NeRF** (differentiable volume rendering). This MVP keeps
 > the same diffusion-guided loop — frozen 2D diffusion prior, random cameras, differentiable rendering, SDS gradients
@@ -68,6 +68,48 @@ GPU=0 python server.py --port 8549      # open http://127.0.0.1:8549  (ssh -L 85
 # 4) static read-only site for GitHub Pages
 python scripts/export_static.py         # -> docs/  (Settings → Pages → branch main, folder /docs)
 ```
+
+## Beta build v0.3 (Assignment 5): Rendering inside the core loop
+
+The secondary pillar (Rendering) now decides Challenge rounds instead of being a separate viewer:
+
+1. **Describe** the secret object without its taboo words → 2. **Generate** 3D Gaussians on a free GPU (MVDream, 500 steps) and get a
+*preview* verdict from 8 automatic views → 3. **Photo shoot**: light, frame and photograph the model in the real-time renderer (up to 3 photos) →
+4. **Verdict**: the CLIP judge sees *only your photos* (`/api/judge_photos`, ViT-L/14 on the CPU, ~1 s). Win = target ranked first of 20,
+points = 100 × its probability; wins become trophies in the **Exhibition**.
+
+* **Lit Gaussian splatting** (`web/splat.js`): per-Gaussian normal = shortest axis, oriented away from the centre, octahedral-packed into the
+  spare texel channel; wrap diffuse + Blinn specular + rim in the vertex shader; movable key light.
+* **Stage**: gradient backdrop, ground disc and a soft shadow made by projecting Gaussian centres along the light into a blurred opacity grid
+  (recomputed only when the light or the model changes). Backdrops: studio dark, studio light, plain white, plain black.
+* **Exhibition** (menu): trophies, your models and examples side by side (2–8), turned to face the camera, one depth sort, per-model LOD budget.
+* **Stability**: leaving a round mid-shoot keeps the preview verdict; photo judge warmed at server start, size-checked, one judgement per visitor at a time.
+
+Real rounds through the public URL (`scripts/play_rounds.py`, then `scripts/shoot_rounds.py`, which plays the photo shoot in the real UI with
+fixed angles: front, ±35°). Target probability per look, same 3 angles (✗ = judge picked another object):
+
+| target | prompt (no taboo words) | auto preview | raw splats, white | studio dark | studio light |
+|---|---|---|---|---|---|
+| owl | “a round fluffy night bird with big yellow eyes and ear tufts” | 0.76 | 0.80 | 0.97 | 0.93 |
+| pineapple | “a spiky tropical fruit with a crown of green leaves” | 0.42 ✗ | 0.36 ✗ | 0.46 ✗ | 0.22 ✗ |
+| hamburger | “a grilled beef patty sandwich with lettuce, tomato and cheese in a sesame bun” | 1.00 | 1.00 | 1.00 | 1.00 |
+| lighthouse | “a tall red and white striped coastal tower with a lamp room on top” | 0.57 | 0.28 ✗ | 0.69 | 0.79 |
+| penguin | “a black and white flightless antarctic bird standing upright” | 0.66 | 0.91 | 0.70 | 0.66 |
+| donut | “a pink frosted fried ring pastry with rainbow sprinkles” | 0.99 | 1.00 | 0.94 | 0.86 |
+
+Lighting changes the verdict: the lighthouse loses as raw splats on white (judge: castle) and wins when lit. It is not uniformly better, so the
+look is a real choice. Renderer cost (`scripts/bench_beta.py`, headless Chrome WebGL2 on an A100, `evidence/beta_render.csv`):
+
+| setting | Gaussians | FPS (rAF, capped 60) | GPU ms | sort ms |
+|---|---|---|---|---|
+| single model, raw splats | 220,296 | 61 | 6.9 | 4 |
+| single model, studio lighting + stage | 220,296 | 61 | 6.87 | 4 |
+| single model x8 replicas, studio | 1,762,368 | 18 | 51.85 | 30 |
+| exhibition 4 models, studio | 1,100,201 | 56 | 14.08 | 18 |
+| exhibition 8 models, LOD 1.2M | 1,200,000 | 61 | 11.55 | 18 |
+| exhibition 8 models, LOD 2.4M | 2,147,257 | 40 | 20.19 | 34 |
+
+Lighting is per Gaussian and costs nothing measurable; every playable setting stays ≥ 30 FPS. Only the A3 stress case (8 replicas stacked on one spot) drops below it.
 
 ## Alpha build v0.2 (Assignment 4): the full loop
 
@@ -172,16 +214,18 @@ its numbers are reported as indicative only.
 ## Repository layout
 
 ```
-server.py                 studio backend (FastAPI): jobs on the GPU, progress, runs, nvidia-smi
+server.py                 studio backend (FastAPI): jobs on the GPU, progress, runs, nvidia-smi, photo judging
+photo_judge.py            CLIP judge (CPU) for the player's photos (Beta photo shoot)
 web/                      studio front-end: index.html, app.js, splat.js (WebGL2 splatting), sort-worker.js, charts.js
 scripts/                  setup_env.sh, collect_env.sh, run_text_to_3d.sh, train_logged.py, benchmark_renderer.py,
                           render_turntable.sh, export_static.py, record_demo.py, tts.py, demo_script.py, browser.py
 configs/requirements_pinned.txt
-evidence/                 environment.txt, setup logs, performance.csv, benchmark.log, debug/ (failed attempts kept)
+evidence/                 environment.txt, setup logs, performance.csv, benchmark.log, debug/ (failed attempts kept),
+                          beta_rounds.json, beta_shoot.csv, beta_photos/, beta_render.csv (Assignment 5)
 results/<run>/            per-run outputs (large .ply/.obj are git-ignored; compact PLYs ship in docs/)
 docs/                     static GitHub Pages build
 video/                    demo.mp4, voiceover.wav, timeline.json, record.log
-report/                   Assignment_3_Final.pdf + source
+report/                   Assignment_3_Final.pdf, Assignment_4_Alpha.pdf, Assignment_5_Beta.pdf + sources
 ```
 
 ## Credits

@@ -1,0 +1,61 @@
+{
+  "prompt": "a black and white flightless antarctic bird standing upright",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 208019,
+  "load_model_s": 42.8,
+  "train_s": 91.6,
+  "export_s": 0.6,
+  "render_views_s": 6.5,
+  "total_s": 146.5,
+  "peak_vram_mb": 10849.5,
+  "ply": "p20261111_032944_ccdf33_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a black and white flightless antarctic bird standing upright",
+    "save_path": "p20261111_032944_ccdf33",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261111_032944_ccdf33",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 13.77,
+  "judge": {
+    "prompt_clip": 13.77,
+    "top": [
+      {
+        "label": "a penguin",
+        "p": 0.66
+      },
+      {
+        "label": "a rubber duck",
+        "p": 0.126
+      },
+      {
+        "label": "a pineapple",
+        "p": 0.12
+      },
+      {
+        "label": "an owl",
+        "p": 0.078
+      },
+      {
+        "label": "a robot",
+        "p": 0.003
+      }
+    ],
+    "judge_s": 2.9,
+    "target": "a penguin",
+    "target_p": 0.66,
+    "target_rank": 1,
+    "win": true
+  }
+}

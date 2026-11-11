@@ -14,7 +14,7 @@
     <div class="logo" aria-hidden="true"></div>
     <div>
       <h1>Interactive Diffusion-Based 3D Generation Studio</h1>
-      <p class="sub">CS 549 · Alpha build v0.2 (Assignment 4) · Minh Quan Dao (qd66) · Pillars: <b>Procedural Generation</b> + <b>Rendering</b></p>
+      <p class="sub">CS 549 · Beta build v0.3 (Assignment 5) · Minh Quan Dao (qd66) · Pillars: <b>Procedural Generation</b> + <b>Rendering</b></p>
     </div>
   </div>
   <div class="status">
@@ -35,7 +35,7 @@
       <div class="ch-head"><span class="badge ch">CHALLENGE</span><span id="ch-round" class="mono dim"></span></div>
       <div class="ch-target">Make the judge see <b id="ch-label">–</b></div>
       <div class="ch-taboo">Don't say: <span id="ch-taboo"></span></div>
-      <p class="dim small">Write a prompt that describes it without those words. When your 3D model is done, a CLIP judge looks at 8 rendered views and guesses which of 20 objects it is. If it guesses yours, you win.</p>
+      <p class="dim small">Write a prompt that describes it without those words. When your 3D model is done, you get a preview verdict from 8 automatic views, then a <b>photo shoot</b>: light and frame the model yourself, take up to 3 photos, and the CLIP judge guesses which of 20 objects it is from your photos. If it guesses yours, you win points.</p>
       <button id="ch-new" class="ghost small">↻ New target</button>
     </div>
     <label class="field">Prompt
@@ -90,11 +90,32 @@
       <canvas id="gl"></canvas>
       <div class="hud mono" id="hud">no model loaded</div>
       <div class="hint">drag: orbit · wheel: zoom</div>
+      <!-- Beta: photo shoot (Rendering pillar inside the Challenge loop) -->
+      <div id="shoot" class="shoot" hidden>
+        <div class="shoot-head"><b>📸 Photo shoot</b> <span id="shootTarget" class="dim"></span></div>
+        <p class="small">Stage your model for the judge: orbit to the best angle, move the light, pick a backdrop. Take up to 3 photos, then send them. <b>The judge sees only your photos.</b></p>
+        <div class="shoot-row">
+          <button id="snapBtn" class="primary">📷 Take photo</button>
+          <div id="thumbs" class="thumbs"></div>
+        </div>
+        <div class="shoot-row">
+          <button id="submitShots" class="primary" disabled>Send photos to the judge</button>
+          <button id="skipShots" class="ghost">Keep auto-camera verdict</button>
+        </div>
+        <p id="shootMsg" class="small dim"></p>
+      </div>
+    </div>
+    <div class="controls lightrow" id="lightrow">
+      <label title="Lighting from per-Gaussian normals, ground plane and soft shadow"><input type="checkbox" id="studioLook" checked> studio lighting</label>
+      <label>light direction <input type="range" id="lightAz" min="-180" max="180" step="5" value="35"></label>
+      <label>light height <input type="range" id="lightEl" min="12" max="85" step="1" value="50"></label>
+      <label>backdrop <select id="backdrop"><option value="dark">studio dark</option><option value="light">studio light</option><option value="white">plain white</option><option value="black">plain black</option></select></label>
+      <span id="exhibitCtl" hidden><label>objects <select id="exhibitN"><option>2</option><option selected>4</option><option>6</option><option>8</option></select></label>
+        <label>LOD budget <select id="exhibitBudget"><option value="600000">0.6 M</option><option value="1200000" selected>1.2 M</option><option value="2400000">2.4 M</option></select></label></span>
     </div>
     <div class="controls">
       <label><input type="checkbox" id="rotate" checked> auto-rotate</label>
       <label>splat scale <input type="range" id="scalemod" min="0.05" max="1" step="0.05" value="1"><span id="scalev" class="mono">1.00</span></label>
-      <label>background <select id="bg"><option value="1,1,1">white</option><option value="0.07,0.08,0.1">dark</option></select></label>
       <label>render <select id="rmode"><option value="0">colour</option><option value="1">depth</option><option value="2">Gaussian centres</option></select></label>
       <button id="reset" class="ghost">reset view</button>
       <button id="shot" class="ghost">📷 Save image</button>
@@ -181,13 +202,14 @@
     <p class="tagline">Type an idea. Watch a frozen diffusion model sculpt it out of 3D Gaussians. Spin it in real time.</p>
     <div class="modes">
       <button class="mode" data-go="create"><b>▶ Create</b><span>Free text-to-3D: pick a guidance method, watch the optimisation live, explore the result.</span></button>
-      <button class="mode" data-go="challenge"><b>🎯 Challenge</b><span>Describe a secret object without naming it. If the CLIP judge recognises your 3D model, you win.</span></button>
+      <button class="mode" data-go="challenge"><b>🎯 Challenge</b><span>Describe a secret object without naming it, then light and photograph your 3D model. If the CLIP judge recognises it in your photos, you win.</span></button>
+      <button class="mode" data-go="exhibit"><b>🏛 Exhibition</b><span>Your trophies and creations side by side on one lit stage, rendered live with level of detail.</span></button>
       <button class="mode" data-go="gallery"><b>🖼 Gallery</b><span>Render every model made so far in the browser. No GPU needed.</span></button>
       <button class="mode" data-go="how"><b>ⓘ How it works</b><span>Pipeline, measured guidance comparison and stress test.</span></button>
     </div>
     <p id="menuStatus" class="mono small menu-status"></p>
     <p id="menuOffline" class="note" hidden>This is the static build: Create and Challenge need the live GPU server. The gallery and viewer work here.</p>
-    <p class="dim small">CS 549 · Minh Quan Dao (qd66) · Alpha v0.2 · Esc = menu</p>
+    <p class="dim small">CS 549 · Minh Quan Dao (qd66) · Beta v0.3 · Esc = menu</p>
   </div>
 </div>
 
@@ -197,13 +219,15 @@
     <div id="r-banner" class="banner"></div>
     <p id="r-sub" class="dim"></p>
     <div class="r-body">
-      <img id="r-img" alt="four rendered views of the result">
+      <div><img id="r-img" alt="four rendered views of the result"><div id="r-photos" class="r-photos" hidden></div></div>
       <div>
         <div id="r-judge" class="judge"></div>
         <dl id="r-stats" class="kv"></dl>
       </div>
     </div>
     <div class="r-actions">
+      <button id="r-shoot" class="primary" hidden>📸 Start the photo shoot</button>
+      <button id="r-keep" class="ghost" hidden>Keep auto verdict</button>
       <button id="r-explore" class="primary">Explore in 3D</button>
       <button id="r-again" class="ghost">Play again</button>
       <button id="r-retry" class="ghost">Retry this target</button>

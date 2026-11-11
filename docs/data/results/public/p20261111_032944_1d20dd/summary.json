@@ -1,0 +1,61 @@
+{
+  "prompt": "a tall red and white striped coastal tower with a lamp room on top",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 242356,
+  "load_model_s": 48.2,
+  "train_s": 88.9,
+  "export_s": 0.7,
+  "render_views_s": 6.8,
+  "total_s": 149.4,
+  "peak_vram_mb": 10937.1,
+  "ply": "p20261111_032944_1d20dd_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a tall red and white striped coastal tower with a lamp room on top",
+    "save_path": "p20261111_032944_1d20dd",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261111_032944_1d20dd",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 20.0,
+  "judge": {
+    "prompt_clip": 20.0,
+    "top": [
+      {
+        "label": "a lighthouse",
+        "p": 0.569
+      },
+      {
+        "label": "a castle",
+        "p": 0.25
+      },
+      {
+        "label": "a donut",
+        "p": 0.052
+      },
+      {
+        "label": "a teapot",
+        "p": 0.045
+      },
+      {
+        "label": "a treasure chest",
+        "p": 0.043
+      }
+    ],
+    "judge_s": 4.4,
+    "target": "a lighthouse",
+    "target_p": 0.569,
+    "target_rank": 1,
+    "win": true
+  }
+}

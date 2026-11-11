@@ -1,5 +1,335 @@
 [
  {
+  "prompt": "a pink frosted fried ring pastry with rainbow sprinkles",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 211273,
+  "load_model_s": 46.0,
+  "train_s": 90.3,
+  "export_s": 0.6,
+  "render_views_s": 7.2,
+  "total_s": 149.6,
+  "peak_vram_mb": 10868.2,
+  "ply": "p20261111_032944_38dca3_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 28.42,
+  "judge": {
+   "prompt_clip": 28.42,
+   "top": [
+    {
+     "label": "a donut",
+     "p": 0.987
+    },
+    {
+     "label": "a hamburger",
+     "p": 0.009
+    },
+    {
+     "label": "a mushroom",
+     "p": 0.001
+    },
+    {
+     "label": "a sneaker shoe",
+     "p": 0.001
+    },
+    {
+     "label": "a car",
+     "p": 0.0
+    }
+   ],
+   "judge_s": 5.1,
+   "target": "a donut",
+   "target_p": 0.987,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261111_032944_38dca3",
+  "rel": "data/results/public/p20261111_032944_38dca3",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1794385945.9236348
+ },
+ {
+  "prompt": "a tall red and white striped coastal tower with a lamp room on top",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 242356,
+  "load_model_s": 48.2,
+  "train_s": 88.9,
+  "export_s": 0.7,
+  "render_views_s": 6.8,
+  "total_s": 149.4,
+  "peak_vram_mb": 10937.1,
+  "ply": "p20261111_032944_1d20dd_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 20.0,
+  "judge": {
+   "prompt_clip": 20.0,
+   "top": [
+    {
+     "label": "a lighthouse",
+     "p": 0.569
+    },
+    {
+     "label": "a castle",
+     "p": 0.25
+    },
+    {
+     "label": "a donut",
+     "p": 0.052
+    },
+    {
+     "label": "a teapot",
+     "p": 0.045
+    },
+    {
+     "label": "a treasure chest",
+     "p": 0.043
+    }
+   ],
+   "judge_s": 4.4,
+   "target": "a lighthouse",
+   "target_p": 0.569,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261111_032944_1d20dd",
+  "rel": "data/results/public/p20261111_032944_1d20dd",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1794385945.5206318
+ },
+ {
+  "prompt": "a spiky tropical fruit with a crown of green leaves",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 247797,
+  "load_model_s": 47.2,
+  "train_s": 89.6,
+  "export_s": 0.7,
+  "render_views_s": 8.1,
+  "total_s": 149.4,
+  "peak_vram_mb": 10937.7,
+  "ply": "p20261111_032944_8ea7d3_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 25.69,
+  "judge": {
+   "prompt_clip": 25.69,
+   "top": [
+    {
+     "label": "a cactus",
+     "p": 0.573
+    },
+    {
+     "label": "a pineapple",
+     "p": 0.422
+    },
+    {
+     "label": "a castle",
+     "p": 0.002
+    },
+    {
+     "label": "a rubber duck",
+     "p": 0.001
+    },
+    {
+     "label": "a mushroom",
+     "p": 0.001
+    }
+   ],
+   "judge_s": 3.4,
+   "target": "a pineapple",
+   "target_p": 0.422,
+   "target_rank": 2,
+   "win": false
+  },
+  "name": "p20261111_032944_8ea7d3",
+  "rel": "data/results/public/p20261111_032944_8ea7d3",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1794385945.5186317
+ },
+ {
+  "prompt": "a round fluffy night bird with big yellow eyes and ear tufts",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 221955,
+  "load_model_s": 43.7,
+  "train_s": 91.2,
+  "export_s": 0.7,
+  "render_views_s": 6.7,
+  "total_s": 148.8,
+  "peak_vram_mb": 10881.7,
+  "ply": "p20261111_032944_67d44f_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 22.54,
+  "judge": {
+   "prompt_clip": 22.54,
+   "top": [
+    {
+     "label": "an owl",
+     "p": 0.761
+    },
+    {
+     "label": "a pineapple",
+     "p": 0.098
+    },
+    {
+     "label": "a penguin",
+     "p": 0.087
+    },
+    {
+     "label": "a cactus",
+     "p": 0.024
+    },
+    {
+     "label": "a rubber duck",
+     "p": 0.02
+    }
+   ],
+   "judge_s": 4.7,
+   "target": "an owl",
+   "target_p": 0.761,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261111_032944_67d44f",
+  "rel": "data/results/public/p20261111_032944_67d44f",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1794385944.9356275
+ },
+ {
+  "prompt": "a grilled beef patty sandwich with lettuce, tomato and cheese in a sesame bun",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 245230,
+  "load_model_s": 45.1,
+  "train_s": 91.4,
+  "export_s": 0.7,
+  "render_views_s": 6.3,
+  "total_s": 148.7,
+  "peak_vram_mb": 10919.0,
+  "ply": "p20261111_032944_b8636c_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 23.08,
+  "judge": {
+   "prompt_clip": 23.08,
+   "top": [
+    {
+     "label": "a hamburger",
+     "p": 1.0
+    },
+    {
+     "label": "a mushroom",
+     "p": 0.0
+    },
+    {
+     "label": "a car",
+     "p": 0.0
+    },
+    {
+     "label": "a sneaker shoe",
+     "p": 0.0
+    },
+    {
+     "label": "a donut",
+     "p": 0.0
+    }
+   ],
+   "judge_s": 4.7,
+   "target": "a hamburger",
+   "target_p": 1.0,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261111_032944_b8636c",
+  "rel": "data/results/public/p20261111_032944_b8636c",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1794385944.8166265
+ },
+ {
+  "prompt": "a black and white flightless antarctic bird standing upright",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 208019,
+  "load_model_s": 42.8,
+  "train_s": 91.6,
+  "export_s": 0.6,
+  "render_views_s": 6.5,
+  "total_s": 146.5,
+  "peak_vram_mb": 10849.5,
+  "ply": "p20261111_032944_ccdf33_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 13.77,
+  "judge": {
+   "prompt_clip": 13.77,
+   "top": [
+    {
+     "label": "a penguin",
+     "p": 0.66
+    },
+    {
+     "label": "a rubber duck",
+     "p": 0.126
+    },
+    {
+     "label": "a pineapple",
+     "p": 0.12
+    },
+    {
+     "label": "an owl",
+     "p": 0.078
+    },
+    {
+     "label": "a robot",
+     "p": 0.003
+    }
+   ],
+   "judge_s": 2.9,
+   "target": "a penguin",
+   "target_p": 0.66,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261111_032944_ccdf33",
+  "rel": "data/results/public/p20261111_032944_ccdf33",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1794385942.9516122
+ },
+ {
   "prompt": "a cute owl plush toy",
   "seed": 0,
   "iters": 500,

@@ -1,0 +1,61 @@
+{
+  "prompt": "a round fluffy night bird with big yellow eyes and ear tufts",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 221955,
+  "load_model_s": 43.7,
+  "train_s": 91.2,
+  "export_s": 0.7,
+  "render_views_s": 6.7,
+  "total_s": 148.8,
+  "peak_vram_mb": 10881.7,
+  "ply": "p20261111_032944_67d44f_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a round fluffy night bird with big yellow eyes and ear tufts",
+    "save_path": "p20261111_032944_67d44f",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261111_032944_67d44f",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 22.54,
+  "judge": {
+    "prompt_clip": 22.54,
+    "top": [
+      {
+        "label": "an owl",
+        "p": 0.761
+      },
+      {
+        "label": "a pineapple",
+        "p": 0.098
+      },
+      {
+        "label": "a penguin",
+        "p": 0.087
+      },
+      {
+        "label": "a cactus",
+        "p": 0.024
+      },
+      {
+        "label": "a rubber duck",
+        "p": 0.02
+      }
+    ],
+    "judge_s": 4.7,
+    "target": "an owl",
+    "target_p": 0.761,
+    "target_rank": 1,
+    "win": true
+  }
+}

@@ -1,4 +1,4 @@
-import { SplatViewer, loadPly, replicate } from "./splat.js";
+import { SplatViewer, loadPly, replicate, compose } from "./splat.js";
 import { LineChart, BarChart } from "./charts.js";
 
 const $ = (s) => document.querySelector(s);
@@ -21,17 +21,32 @@ const viewer = new SplatViewer($("#gl"), {
     $("#hud").textContent =
       `${s.fps} FPS (rAF)` + (s.gpuMs != null ? `  ·  GPU ${s.gpuMs.toFixed(2)} ms` : "") +
       `\n${s.count.toLocaleString()} Gaussians  ·  ${s.width}×${s.height}` +
-      `\nsort ${s.sortMs.toFixed(0)} ms  ·  ${String(s.renderer).replace(/^ANGLE \((.*)\)$/, "$1").slice(0, 46)}`;
+      `\nsort ${s.sortMs.toFixed(0)} ms  ·  ${String(s.renderer).replace(/^ANGLE \((.*)\)$/, "$1").slice(0, 46)}` +
+      (st.exhibit ? `\nexhibition: ${st.exhibit.k} models · LOD kept ${fmtN(st.exhibit.kept)} of ${fmtN(st.exhibit.of)}` : "");
   },
 });
 viewer.autoRotate = 20;
 $("#rotate").onchange = (e) => (viewer.autoRotate = e.target.checked ? 20 : 0);
 $("#scalemod").oninput = (e) => { viewer.scaleMod = +e.target.value; $("#scalev").textContent = (+e.target.value).toFixed(2); };
-$("#bg").onchange = (e) => {
-  viewer.bg = e.target.value.split(",").map(Number);
-  $(".canvaswrap").style.background = `rgb(${viewer.bg.map((v) => v * 255).join(",")})`;
+// Rendering pillar (Beta): studio lighting from per-Gaussian normals, a ground plane with soft shadow, backdrops
+const BACKDROPS = {
+  dark: { stage: true, theme: { top: [0.17, 0.19, 0.24], bottom: [0.055, 0.062, 0.078], floor: [0.36, 0.39, 0.46] } },
+  light: { stage: true, theme: { top: [0.97, 0.97, 0.98], bottom: [0.80, 0.82, 0.86], floor: [0.93, 0.93, 0.95] } },
+  white: { stage: false, bg: [1, 1, 1] },
+  black: { stage: false, bg: [0.07, 0.08, 0.1] },
 };
-$("#reset").onclick = () => Object.assign(viewer.cam, { az: 0, el: 15, r: 2.5 });
+function setBackdrop(name) {
+  const b = BACKDROPS[name] || BACKDROPS.dark;
+  $("#backdrop").value = name;
+  viewer.stage = b.stage;
+  if (b.theme) viewer.theme = b.theme;
+  if (b.bg) viewer.bg = b.bg;
+}
+function setStudioLook(on) { $("#studioLook").checked = on; viewer.lit = on; }
+$("#studioLook").onchange = (e) => (viewer.lit = e.target.checked);
+$("#backdrop").onchange = (e) => setBackdrop(e.target.value);
+$("#lightAz").oninput = $("#lightEl").oninput = () => viewer.setLight(+$("#lightAz").value, +$("#lightEl").value);
+$("#reset").onclick = () => Object.assign(viewer.cam, { az: st.sel?.front_azimuth || 0, el: 15, r: st.exhibit ? exhibitRadius(st.exhibit.k) : 2.5 });
 $("#resscale").onchange = (e) => viewer.setResolutionScale(+e.target.value);
 $("#rmode").onchange = (e) => (viewer.mode = +e.target.value);
 $("#shot").onclick = () => {
@@ -85,6 +100,7 @@ async function selectRun(name) {
   if (!r) return;
   st.sel = r;
   const P = runPath(r);
+  leaveExhibit();
   document.querySelectorAll(".run").forEach((b) => b.classList.toggle("sel", b.dataset.name === name));
   $("#viewname").textContent = `· “${r.prompt}”`;
   $("#hud").textContent = "loading model…";
@@ -227,6 +243,7 @@ function showError(e) {
 }
 
 function startJob(id) {
+  if (st.round) { finishRound(st.round.auto, "auto"); $("#result").hidden = true; }
   st.jobId = id; st.metrics = []; st.lastSnapStep = -1; drawMetrics();
   // reset the job box so values from the previous job are never shown for the new one
   for (const k of ["eta", "step", "elapsed", "loss", "t", "res", "n", "vram", "gxyz"]) $(`#k-${k}`).textContent = "–";
@@ -411,16 +428,17 @@ async function loadComparison() {
 }
 
 // ------------------------------------------------------------------ game loop: START (menu) -> ACTIVE (studio) -> END (result)
-const loadStats = () => { try { return JSON.parse(sessionStorage.getItem("studio.stats")) || { rounds: 0, wins: 0, streak: 0 }; } catch { return { rounds: 0, wins: 0, streak: 0 }; } };
+const loadStats = () => { const z = { rounds: 0, wins: 0, streak: 0, points: 0 }; try { return { ...z, ...JSON.parse(sessionStorage.getItem("studio.stats")) }; } catch { return z; } };
 function saveStats(s) { try { sessionStorage.setItem("studio.stats", JSON.stringify(s)); } catch {} showScore(); }
 function showScore() {
   const s = loadStats();
   $("#score").hidden = !s.rounds;
-  $("#score").textContent = `🎯 ${s.wins}/${s.rounds} wins · streak ${s.streak}`;
+  $("#score").textContent = `🎯 ${s.points} pts · ${s.wins}/${s.rounds} wins · streak ${s.streak}`;
   $("#ch-round").textContent = `round ${s.rounds + 1} · ${s.wins} win${s.wins === 1 ? "" : "s"}`;
 }
 
 function showMenu() {
+  if (st.round) finishRound(st.round.auto, "auto");   // leaving mid-round keeps the auto-camera verdict
   $("#result").hidden = true;
   $("#menu").hidden = false;
   const q = st.lastQ;
@@ -434,6 +452,7 @@ function enterMode(m) {
   $("#menu").hidden = true;
   if (m === "gallery") { m = "create"; setTimeout(() => { $("#runs").scrollIntoView({ behavior: "smooth", block: "center" }); studio.flash("#runs"); }, 50); }
   if (m === "how") { setTimeout(() => $(".algo").scrollIntoView({ behavior: "smooth" }), 50); return; }
+  if (m === "exhibit") { showExhibit(); setTimeout(() => $(".viewer").scrollIntoView({ behavior: "smooth", block: "start" }), 50); return; }
   st.mode = m;
   $("#modechip").textContent = m === "challenge" ? "🎯 Challenge" : "▶ Create";
   $("#challengeBox").hidden = m !== "challenge";
@@ -450,11 +469,14 @@ function newTarget() {
   if (!list.length) return;
   let t;
   do { t = list[Math.floor(Math.random() * list.length)]; } while (list.length > 1 && t.id === st.lastTargetId);
+  setTarget(t);
+  $("#prompt").value = "";
+  checkTaboo();
+}
+function setTarget(t) {
   st.target = t; st.lastTargetId = t.id;
   $("#ch-label").textContent = t.label;
   $("#ch-taboo").innerHTML = t.taboo.map((w) => `<i>${esc(w)}</i>`).join("");
-  $("#prompt").value = "";
-  checkTaboo();
 }
 $("#ch-new").onclick = newTarget;
 
@@ -469,21 +491,34 @@ function checkTaboo() {
 }
 $("#prompt").addEventListener("input", checkTaboo);
 
-function judgeHTML(jd, targetLabel) {
+function judgeHTML(jd, targetLabel, what = "8 auto-camera views") {
   if (!jd?.top) return `<p class="dim small">The CLIP judge was not available for this run.</p>`;
   const rows = jd.top.map((t) => `<div class="jrow ${t.label === targetLabel ? "hit" : ""}"><span>${esc(t.label.replace(/^an? /, ""))}</span><span class="jb"><i style="width:${Math.max(2, t.p * 100)}%"></i></span><span class="mono">${Math.round(t.p * 100)}%</span></div>`).join("");
-  return `<h4>The judge's guesses (CLIP, 8 views)</h4>${rows}<p class="dim small">Prompt match (CLIP): <b>${jd.prompt_clip}</b> <span class="dim">(good results score about 25–30)</span></p>`;
+  return `<h4>The judge's guesses (CLIP, ${what})</h4>${rows}` +
+    (jd.prompt_clip != null ? `<p class="dim small">Prompt match (CLIP): <b>${jd.prompt_clip}</b> <span class="dim">(good results score about 25–30)</span></p>` : "");
+}
+
+function resultButtons(phase, ch, done) {   // phase: "preview" (photo shoot pending) or "final"
+  $("#r-shoot").hidden = $("#r-keep").hidden = phase !== "preview";
+  $("#r-explore").hidden = phase === "preview" || !done;
+  $("#r-again").hidden = phase === "preview";
+  $("#r-retry").hidden = phase === "preview" || !ch;
+  $("#r-ply").hidden = !done;
+  $("#r-again").textContent = ch ? "Play again (new target)" : "Create another";
+}
+
+function runStatsHTML(run) {
+  return `<dt>method</dt><dd>${esc((run.guidance || "sds").toUpperCase())}</dd><dt>steps</dt><dd>${run.iters}</dd>` +
+    `<dt>optimisation</dt><dd>${run.train_s} s</dd><dt>total</dt><dd>${run.total_s} s</dd><dt>Gaussians</dt><dd>${(run.num_gaussians_final || 0).toLocaleString()}</dd>`;
 }
 
 function showResult(j) {
   const run = j.run, jd = run?.judge, ch = !!j.target;
   const tgt = ch ? (st.cfg.challenge || []).find((t) => t.id === j.target) : null;
   const banner = $("#r-banner"), sub = $("#r-sub");
-  $("#r-retry").hidden = !ch;
-  $("#r-again").textContent = ch ? "Play again (new target)" : "Create another";
-  $("#r-explore").hidden = j.status !== "done";
-  $("#r-ply").hidden = j.status !== "done";
+  $("#r-photos").hidden = true;
   if (j.status !== "done") {
+    resultButtons("final", ch, false);
     banner.className = "banner fail";
     banner.textContent = j.status === "cancelled" ? "⏹ Stopped" : "⚠ Generation failed";
     sub.textContent = j.status === "cancelled" ? "The job was stopped and its GPU released." : (j.error || "Something went wrong on the GPU server. Please try again.");
@@ -493,24 +528,175 @@ function showResult(j) {
     $("#r-img").hidden = false;
     $("#r-img").src = `${run.rel}/progress/final.png`;
     $("#r-ply").href = `${run.rel}/${run.ply}`;
+    $("#r-stats").innerHTML = runStatsHTML(run);
     if (ch) {
-      const win = !!jd?.win, s = loadStats();
-      s.rounds += 1; s.wins += win ? 1 : 0; s.streak = win ? s.streak + 1 : 0; saveStats(s);
-      banner.className = "banner " + (win ? "win" : "loss");
-      banner.textContent = win ? `🏆 You win! The judge saw ${tgt?.label}.` : `✗ Not quite. The judge saw ${jd?.top?.[0]?.label ?? "something else"}.`;
-      sub.textContent = `Target: ${tgt?.label} · your prompt: “${j.prompt}” · ${win ? `rank 1 with ${Math.round((jd.target_p || 0) * 100)}%` : `your target ranked #${jd?.target_rank ?? "?"}`}`;
+      // ACTIVE state continues: the auto-camera verdict is only a preview; the photo shoot decides the round
+      st.round = { j, run, auto: jd, tgt, photos: [] };
+      if (tgt && st.target?.id !== tgt.id) setTarget(tgt);   // the challenge box shows the target being judged
+      resultButtons("preview", true, true);
+      banner.className = "banner ready";
+      banner.textContent = `Model ready. Preview: the judge sees ${jd?.top?.[0]?.label ?? "…"}`;
+      sub.innerHTML = `Target: <b>${esc(tgt?.label)}</b> · your prompt: “${esc(j.prompt)}”. ` +
+        `This guess comes from 8 automatic camera views. <b>The final verdict comes from your own photos</b>: light and frame the model to make the judge see ${esc(tgt?.label)}.`;
+      $("#r-judge").innerHTML = judgeHTML(jd, tgt?.label);
     } else {
+      resultButtons("final", false, true);
       banner.className = "banner ready";
       banner.textContent = "✓ Your 3D model is ready";
-      sub.textContent = `“${j.prompt}” · it is now in the gallery for everyone to render.`;
+      sub.textContent = `“${j.prompt}” · it is now in the gallery and in your exhibition.`;
+      $("#r-judge").innerHTML = judgeHTML(jd, null);
     }
-    $("#r-judge").innerHTML = judgeHTML(jd, tgt?.label);
-    $("#r-stats").innerHTML = `<dt>method</dt><dd>${esc((run.guidance || "sds").toUpperCase())}</dd><dt>steps</dt><dd>${run.iters}</dd>` +
-      `<dt>optimisation</dt><dd>${run.train_s} s</dd><dt>total</dt><dd>${run.total_s} s</dd><dt>Gaussians</dt><dd>${(run.num_gaussians_final || 0).toLocaleString()}</dd>`;
   }
   $("#result").hidden = false;
 }
-$("#r-explore").onclick = () => { $("#result").hidden = true; };
+
+// ------------------------------------------------------------------ photo shoot (Rendering pillar inside the Challenge loop)
+function startShoot() {
+  const r = st.round;
+  if (!r) return;
+  $("#result").hidden = true;
+  if (st.sel?.name !== r.run.name) selectRun(r.run.name);
+  viewer.autoRotate = 0; $("#rotate").checked = false;
+  setStudioLook(true);
+  $("#shootTarget").textContent = `· make the judge see ${r.tgt?.label}`;
+  $("#shootMsg").textContent = "";
+  $("#shoot").hidden = false;
+  drawThumbs();
+  $(".viewer").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// what CLIP sees: a centred square crop of the canvas (its processor centre-crops anyway)
+function capturePhoto(size = 448) {
+  const c = $("#gl"), s = Math.min(c.width, c.height);
+  const o = document.createElement("canvas");
+  o.width = o.height = size;
+  o.getContext("2d").drawImage(c, (c.width - s) / 2, (c.height - s) / 2, s, s, 0, 0, size, size);
+  return o.toDataURL("image/jpeg", 0.9);
+}
+
+function drawThumbs() {
+  const r = st.round, el = $("#thumbs");
+  el.innerHTML = "";
+  for (let i = 0; i < 3; i++) {
+    if (r?.photos[i]) {
+      const im = document.createElement("img");
+      im.src = r.photos[i]; im.title = "click to delete this photo";
+      im.onclick = () => { r.photos.splice(i, 1); drawThumbs(); };
+      el.appendChild(im);
+    } else el.insertAdjacentHTML("beforeend", `<div class="slot"></div>`);
+  }
+  $("#snapBtn").disabled = !r || r.photos.length >= 3;
+  $("#submitShots").disabled = !r || !r.photos.length;
+  $("#submitShots").textContent = r?.photos.length ? `Send ${r.photos.length} photo${r.photos.length > 1 ? "s" : ""} to the judge` : "Send photos to the judge";
+}
+
+$("#snapBtn").onclick = () => {
+  const r = st.round;
+  if (!r || r.photos.length >= 3) return;
+  r.photos.push(capturePhoto());
+  $("#gl").animate([{ filter: "brightness(2.2)" }, { filter: "none" }], { duration: 220 });
+  drawThumbs();
+};
+$("#submitShots").onclick = async () => {
+  const r = st.round;
+  if (!r?.photos.length) return;
+  $("#submitShots").disabled = $("#snapBtn").disabled = $("#skipShots").disabled = true;
+  $("#shootMsg").textContent = "The judge is looking at your photos…";
+  try {
+    const jd = await postJSON("api/judge_photos", { target: r.tgt.id, prompt: r.j.prompt, images: r.photos }, { "X-Studio-Session": sessionId() });
+    finishRound(jd, "photos");
+  } catch (e) {
+    $("#shootMsg").textContent = `Could not judge the photos: ${e.message}. Try again or keep the auto verdict.`;
+    drawThumbs();
+  } finally { $("#skipShots").disabled = false; }
+};
+$("#skipShots").onclick = () => finishRound(st.round?.auto, "auto");
+
+// END state of a Challenge round
+function finishRound(jd, source) {
+  const r = st.round;
+  if (!r) return;
+  st.round = null;
+  $("#shoot").hidden = true;
+  const win = !!jd?.win, s = loadStats();
+  const pts = win ? Math.round(100 * (jd.target_p || 0)) : 0;
+  s.rounds += 1; s.wins += win ? 1 : 0; s.streak = win ? s.streak + 1 : 0; s.points += pts; saveStats(s);
+  if (win) addTrophy(r.run);
+  const banner = $("#r-banner");
+  banner.className = "banner " + (win ? "win" : "loss");
+  banner.textContent = win ? `🏆 You win! +${pts} pts. The judge saw ${r.tgt?.label}.` : `✗ Not quite. The judge saw ${jd?.top?.[0]?.label ?? "something else"}.`;
+  const autoP = r.auto?.target_p, p = jd?.target_p;
+  let cmp = "";
+  if (source === "photos" && autoP != null && p != null) {
+    const d = Math.round(100 * (p - autoP));
+    cmp = ` Auto camera ${Math.round(100 * autoP)}% → your photos ${Math.round(100 * p)}% <span class="delta ${d >= 0 ? "up" : "down"}">(${d >= 0 ? "+" : ""}${d} pts of confidence)</span>.`;
+  }
+  $("#r-sub").innerHTML = `Target: <b>${esc(r.tgt?.label)}</b> · your prompt: “${esc(r.j.prompt)}” · ` +
+    (win ? `rank 1 with ${Math.round(100 * p)}%.` : `your target ranked #${jd?.target_rank ?? "?"}.`) + cmp;
+  if (source === "photos") {
+    $("#r-img").hidden = true;
+    $("#r-photos").hidden = false;
+    $("#r-photos").innerHTML = r.photos.map((u) => `<img src="${u}" alt="your photo">`).join("");
+  }
+  $("#r-judge").innerHTML = judgeHTML(jd, r.tgt?.label, source === "photos" ? `your ${r.photos.length} photo${r.photos.length > 1 ? "s" : ""}` : "8 auto-camera views");
+  resultButtons("final", true, true);
+  $("#result").hidden = false;
+}
+
+// ------------------------------------------------------------------ exhibition: trophies + your models on one lit stage
+const loadTrophies = () => { try { return JSON.parse(sessionStorage.getItem("studio.trophies")) || []; } catch { return []; } };
+function addTrophy(run) {
+  const t = loadTrophies().filter((n) => n !== run.name);
+  t.unshift(run.name);
+  try { sessionStorage.setItem("studio.trophies", JSON.stringify(t.slice(0, 16))); } catch {}
+}
+const plyCache = new Map();
+async function plyOf(r) {
+  const url = `${runPath(r)}/${r.ply}`;
+  if (!plyCache.has(url)) plyCache.set(url, loadPly(url));
+  return plyCache.get(url);
+}
+// fit the row of models in the horizontal field of view (vertical fov 49.1°, 4:3 canvas)
+const exhibitRadius = (k, hw) => (hw ?? (((k <= 4 ? k : Math.ceil(k / 2)) - 1) / 2) * 1.45 + 0.8) / Math.tan((Math.atan(Math.tan((49.1 * Math.PI) / 360) * 4 / 3))) + 0.9;
+
+async function showExhibit() {
+  const k = +$("#exhibitN").value, budget = +$("#exhibitBudget").value;
+  const trophies = loadTrophies();
+  const pick = [], seen = new Set();
+  const add = (r, why) => { if (r && !seen.has(r.name) && pick.length < k) { seen.add(r.name); pick.push({ r, why }); } };
+  trophies.forEach((n) => add(st.runs.find((r) => r.name === n), "trophy"));
+  st.mine.forEach((m) => add(st.runs.find((r) => r.name === m.name), "yours"));
+  st.runs.filter((r) => !r.community && r.guidance === "mvdream").forEach((r) => add(r, "example"));
+  st.runs.filter((r) => !r.community).forEach((r) => add(r, "example"));
+  st.runs.forEach((r) => add(r, "community"));
+  if (!pick.length) return;
+  $("#hud").textContent = `loading ${pick.length} models…`;
+  const gs = await Promise.all(pick.map((p) => plyOf(p.r).catch(() => null)));
+  const items = pick.map((p, i) => ({ ...p, g: gs[i], yaw: -(p.r.front_azimuth || 0) })).filter((x) => x.g);
+  const scene = compose(items, budget);
+  st.exhibit = { k: items.length, kept: scene.count, of: items.reduce((a, x) => a + x.g.count, 0) };
+  st.base = scene; st.sel = null; st.mult = 1;
+  document.querySelectorAll("#mults button").forEach((b) => b.classList.toggle("on", +b.dataset.k === 1));
+  viewer.setGaussians(scene);
+  viewer.target = scene.center;
+  Object.assign(viewer.cam, { az: 0, el: items.length > 4 ? 32 : 14, r: exhibitRadius(items.length, scene.halfWidth) + (items.length > 4 ? 1.3 : 0) });
+  viewer.autoRotate = 0; $("#rotate").checked = false;
+  setStudioLook(true);
+  document.querySelectorAll(".run").forEach((b) => b.classList.remove("sel"));
+  $("#viewname").textContent = `· Exhibition: ${items.map((x) => (x.why === "trophy" ? "🏆 " : x.why === "yours" ? "★ " : "") + x.r.prompt.replace(/^an? /, "")).join("  |  ")}`;
+  $("#exhibitCtl").hidden = false;
+  $("#dlply").hidden = true;
+}
+function leaveExhibit() {
+  if (!st.exhibit) return;
+  st.exhibit = null; viewer.target = [0, 0, 0]; viewer.cam.r = 2.5;
+  $("#exhibitCtl").hidden = true;
+}
+$("#exhibitN").onchange = $("#exhibitBudget").onchange = () => st.exhibit && showExhibit();
+
+$("#r-explore").onclick = () => { $("#result").hidden = true; setStudioLook(true); };
+$("#r-shoot").onclick = startShoot;
+$("#r-keep").onclick = () => finishRound(st.round?.auto, "auto");
 $("#r-again").onclick = () => { $("#result").hidden = true; if (st.mode === "challenge") newTarget(); else $("#prompt").select(); $("#prompt").focus(); };
 $("#r-retry").onclick = () => { $("#result").hidden = true; $("#prompt").focus(); };
 $("#r-menu").onclick = showMenu;
@@ -518,7 +704,7 @@ $("#menuBtn").onclick = showMenu;
 document.querySelectorAll("#menu .mode").forEach((b) => (b.onclick = () => enterMode(b.dataset.go)));
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
-  if (!$("#result").hidden) $("#result").hidden = true;
+  if (!$("#result").hidden) { $("#result").hidden = true; if (st.round) startShoot(); }
   else if (!$("#menu").hidden) $("#menu").hidden = true;
   else showMenu();
 });
@@ -526,6 +712,7 @@ document.addEventListener("keydown", (e) => {
 // ------------------------------------------------------------------ video-narration helpers
 window.studio = {
   viewer, st, generate, bench, sweep, setMult, selectRun, loadRuns, showMenu, enterMode, newTarget, showResult,
+  startShoot, capturePhoto, finishRound, showExhibit, setBackdrop, setStudioLook,
   caption(text, sub = "") { const c = $("#caption"); c.hidden = !text; c.innerHTML = text + (sub ? `<small>${sub}</small>` : ""); },
   flash(sel) { const e = $(sel); e.classList.add("flash"); setTimeout(() => e.classList.remove("flash"), 2500); },
 };
@@ -549,7 +736,7 @@ window.studio = {
       $("#publicnote").hidden = false;
       const slots = st.cfg.max_parallel ? `up to ${st.cfg.max_parallel} job${st.cfg.max_parallel > 1 ? "s" : ""} at a time` : "one job on every GPU that nobody else is using (the count above updates live)";
       const quota = st.cfg.per_visitor ? ` Each visitor can generate ${st.cfg.per_visitor} model per ${st.cfg.window_h} h.` : "";
-      $("#publicnote").textContent = `Public demo: the server runs ${slots} (about 1 minute each on an A100); other prompts wait in a queue and start automatically.${quota} Each session can have one job in progress at a time, max ${st.cfg.iters[1]} SDS steps, no mesh export. Every finished model is added to the public gallery below.`;
+      $("#publicnote").textContent = `Public demo: the server runs ${slots} (about ${mins(runSeconds(st.cfg.default_guidance || "sds", 500))} per model on an A100); other prompts wait in a queue and start automatically.${quota} Each session can have one job in progress at a time, max ${st.cfg.iters[1]} SDS steps, no mesh export. Every finished model is added to the public gallery below.`;
     }
     pollSystem();
     pollQueue();

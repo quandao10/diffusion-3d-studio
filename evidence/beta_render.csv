@@ -1,0 +1,7 @@
+setting,gaussians,canvas,fps_raf,gpu_ms,sort_ms
+"single model, raw splats",220296,810x607,61.0,6.9,4.1
+"single model, studio lighting + stage",220296,810x607,61.0,6.87,4.0
+"single model x8 replicas, studio",1762368,810x607,18.0,51.85,30.1
+"exhibition 4 models, studio",1100201,810x607,56.5,14.08,18.0
+"exhibition 8 models, LOD 1.2M",1200000,810x607,61.0,11.55,18.5
+"exhibition 8 models, LOD 2.4M",2147257,810x607,39.5,20.19,34.4

@@ -12,6 +12,7 @@ jobs run in parallel; when every GPU is busy, jobs wait in a FIFO queue and the 
   GET  /api/runs             curated gallery (results/<name>/summary.json)
   GET  /api/system           GPU pool snapshot (cached nvidia-smi)
   GET  /api/config           limits + whether the caller is admin
+  POST /api/judge_photos     Beta photo shoot: CLIP judge (CPU) scores 1-3 player-rendered photos
 
 Admin = a request from localhost that did not come through the tunnel (no CF-Connecting-IP header), e.g. the owner
 via `ssh -L`. Public visitors (PUBLIC=1): PER_IP_TOTAL generations (default 1) per PER_IP_WINDOW_S (default 24 h),
@@ -592,6 +593,38 @@ def config(request: Request):
             "challenge": [{"id": t["id"], "label": t["label"], "taboo": t["taboo"]} for t in CHALLENGE]}
 
 
+class PhotoReq(BaseModel):
+    target: str | None = None    # Challenge target id; None = just report the judge's guesses
+    prompt: str = ""
+    images: list[str]            # 1-3 PNG/JPEG data URLs rendered by the player's browser
+
+
+_photo_busy = set()
+
+
+@app.post("/api/judge_photos")
+def judge_photos(r: PhotoReq, request: Request):
+    """Beta photo shoot: the CLIP judge scores the player's own staged renders (camera, light, backdrop) on the CPU."""
+    import photo_judge
+    ip, _ = caller(request)
+    if not 1 <= len(r.images) <= 3:
+        raise HTTPException(400, "send 1 to 3 photos")
+    if r.target and r.target not in TARGETS:
+        raise HTTPException(400, "unknown challenge target")
+    if ip in _photo_busy:
+        raise HTTPException(429, "your previous photos are still being judged")
+    try:
+        imgs = [photo_judge.decode(u) for u in r.images]
+    except Exception as e:
+        raise HTTPException(400, f"bad photo: {e}")
+    _photo_busy.add(ip)
+    try:
+        label = TARGETS[r.target]["label"] if r.target else None
+        return photo_judge.judge(imgs, r.prompt[:PROMPT_MAX], label)
+    finally:
+        _photo_busy.discard(ip)
+
+
 def list_runs():
     """Curated example runs + every finished visitor run (community gallery), newest first."""
     runs = []
@@ -631,6 +664,18 @@ app.mount("/data/evidence", StaticFiles(directory=EVIDENCE), name="evidence")
 app.mount("/", StaticFiles(directory=os.path.join(ROOT, "web")), name="web")
 threading.Thread(target=scheduler, daemon=True).start()
 threading.Thread(target=watchdog, daemon=True).start()
+
+
+def _warm_photo_judge():   # load CLIP (CPU) at start so the first photo shoot is judged in ~1 s, not ~6 s
+    try:
+        import photo_judge
+        with photo_judge._lock:
+            photo_judge._load()
+    except Exception as e:
+        print("photo judge unavailable:", e, file=sys.stderr)
+
+
+threading.Thread(target=_warm_photo_judge, daemon=True).start()
 
 if __name__ == "__main__":
     import uvicorn

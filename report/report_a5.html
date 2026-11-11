@@ -1,0 +1,76 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+body { font: 8.7pt/1.28 "DejaVu Sans", Arial, sans-serif; color: #111; margin: 0; }
+h1 { font-size: 14pt; margin: 0 0 2px; color: #1b3a5c; } .meta { color: #333; font-size: 8.4pt; margin-bottom: 2px; }
+h2 { font-size: 10.4pt; color: #1b3a5c; margin: 6px 0 2px; border-bottom: 1px solid #c9d6e3; padding-bottom: 1px; }
+p { margin: 2px 0 3px; } ul { margin: 1px 0 3px 14px; padding: 0; } li { margin: 0.5px 0; }
+table { border-collapse: collapse; width: 100%; font-size: 7.8pt; margin: 3px 0; }
+th, td { border: 1px solid #cfd8e2; padding: 1.5px 4px; text-align: left; vertical-align: top; } th { background: #eef3f8; }
+td.w { background: #eaf6ef; } td.l { background: #fdecea; } td.pr { color: #333; font-style: italic; } tr.sum td { background: #f4f6f9; }
+tr.done td { background: #eaf6ef; } tr.int td { background: #f3f0fb; } tr.buf td { background: #fff4e0; }
+.shots { display: grid; grid-template-columns: 1.25fr 1fr 1fr; gap: 6px; align-items: start; margin: 3px 0; }
+.shots img { width: 100%; border: 1px solid #cfd8e2; border-radius: 4px; } .cap { font-size: 7.3pt; color: #444; }
+code { font-size: 7.8pt; } a { color: #1a56a8; }
+.loop { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; margin: 3px 0; }
+.loop div { border: 1px solid #cfd8e2; border-radius: 6px; padding: 3px 5px; background: #f7f9fc; font-size: 8.1pt; }
+.loop div.new { border-color: #3987e5; background: #eef5ff; }
+</style></head><body>
+<h1>Assignment 5 — Beta Build: Rendering integrated into the core loop</h1>
+<div class="meta"><b>Minh Quan Dao (qd66)</b> · Interactive Diffusion-Based 3D Generation Studio · Pillars: <b>Procedural Generation</b> (core) + <b>Rendering</b> (secondary) · Beta <b>v0.3.0</b><br>
+<b>Play:</b> <a href="https://munich-adsl-blowing-demonstrate.trycloudflare.com">live studio</a> (lab A100 server; quick-tunnel URL) · <a href="https://quandao10.github.io/diffusion-3d-studio/">static build</a> (viewer, gallery, exhibition; no GPU) ·
+<b>Build zip:</b> <a href="https://github.com/quandao10/diffusion-3d-studio/archive/refs/tags/v0.3.0-beta.zip">v0.3.0-beta.zip</a> · <b>Repo:</b> <a href="https://github.com/quandao10/diffusion-3d-studio">github.com/quandao10/diffusion-3d-studio</a> · <a href="https://www.youtube.com/watch?v=UGFzpFrmWcE">A3 video</a></div>
+
+<h2>1. Quick review: pillar 1 (procedural generation) is stable</h2>
+<p>Text → 3D Gaussians optimised by score distillation from a frozen diffusion prior (DreamGaussian; MVDream multi-view guidance by default, 500 steps).
+The A4 game loop is unchanged in structure: <b>menu → Challenge (describe a secret object without its taboo words) → GPU job with queue, ETA, Stop → result</b>.
+For this Beta, 6 real Challenge rounds were played through the public URL at the same time (one per session, MVDream, 6 free A100s):
+all 6 jobs finished, 166–166 s per round from submit to judged model (queue, model load, 500 steps, views, judge);
+the 500 optimisation steps took 89–92 s, the same as a single job in A3 (89–94 s), so parallel players do not slow each other down.
+These rounds fix the A4 known issue “no real GPU Challenge round recorded yet”. Raw data: <code>evidence/beta_rounds.json</code>.</p>
+
+<h2>2. Secondary pillar integration: the player's rendering decides the round</h2>
+<div class="loop">
+<div><b>1 · Describe.</b> Secret target + taboo words; prompt checked in the browser and on the server.</div>
+<div><b>2 · Generate.</b> 3D Gaussians on a free GPU; live loss and ETA. Then a <i>preview</i> verdict from 8 automatic views.</div>
+<div class="new"><b>3 · Photo shoot (new).</b> Light, frame and photograph the model in the real-time renderer; up to 3 photos.</div>
+<div class="new"><b>4 · Verdict.</b> The CLIP judge sees <b>only your photos</b>: win = target ranked 1st of 20; points = 100 × its probability. Wins go to the exhibition.</div></div>
+<ul>
+<li><b>Lit Gaussian splatting.</b> Each Gaussian's normal is its shortest axis (the flat direction of the splat), flipped to point away from the
+object's centre, octahedral-encoded into the spare channel of my packed texture (no extra memory). The vertex shader adds wrap diffuse, Blinn specular and a
+cool rim light from a movable key light, so the cost is per Gaussian, not per pixel.</li>
+<li><b>Stage and soft shadow.</b> Gradient backdrop and a ground disc under the model. The shadow is computed by projecting every Gaussian centre along the light
+onto the floor, accumulating opacity in a 160² grid (256² in the exhibition), blurring it and uploading it as a texture; it is only recomputed when the light or the model changes.</li>
+<li><b>Why it is part of the loop, not a demo:</b> the same model scores differently depending on how it is rendered. Same 3 camera angles per round, 4 looks, judged by the same CLIP judge:</li></ul>
+<table><tr><th>target</th><th>player prompt (no taboo words)</th><th>auto preview (8 views)</th><th>raw, white</th><th>raw, black</th><th>studio dark</th><th>studio light</th></tr><tr><td>owl</td><td class="pr">“a round fluffy night bird with big yellow eyes and ear tufts”</td><td class="w">76%</td><td class="w">80%</td><td class="w">90%</td><td class="w">97%</td><td class="w">93%</td></tr><tr><td>pineapple</td><td class="pr">“a spiky tropical fruit with a crown of green leaves”</td><td class="l">42% ✗</td><td class="l">36% ✗</td><td class="l">48% ✗</td><td class="l">46% ✗</td><td class="l">22% ✗</td></tr><tr><td>hamburger</td><td class="pr">“a grilled beef patty sandwich with lettuce, tomato and cheese in a sesame bun”</td><td class="w">100%</td><td class="w">100%</td><td class="w">100%</td><td class="w">100%</td><td class="w">100%</td></tr><tr><td>lighthouse</td><td class="pr">“a tall red and white striped coastal tower with a lamp room on top”</td><td class="w">57%</td><td class="l">28% ✗</td><td class="w">55%</td><td class="w">69%</td><td class="w">79%</td></tr><tr><td>penguin</td><td class="pr">“a black and white flightless antarctic bird standing upright”</td><td class="w">66%</td><td class="w">91%</td><td class="w">66%</td><td class="w">70%</td><td class="w">66%</td></tr><tr><td>donut</td><td class="pr">“a pink frosted fried ring pastry with rainbow sprinkles”</td><td class="w">99%</td><td class="w">100%</td><td class="w">99%</td><td class="w">94%</td><td class="w">86%</td></tr><tr class="sum"><td colspan="2"><b>wins / mean target probability</b></td><td>5/6 · 0.73</td><td>4/6 · 0.72</td><td>5/6 · 0.76</td><td>5/6 · 0.80</td><td>5/6 · 0.74</td></tr></table>
+<p class="cap">Target probability (✗ = judge picked another object). Photos taken by a scripted player through the real UI (front, ±35°), <code>scripts/shoot_rounds.py</code> → <code>evidence/beta_shoot.csv</code>.
+Studio lighting on the dark stage raised the mean target probability from 0.72 (raw splats on white) to 0.80
+and turned a lighthouse from a loss into a win. It is not always better (a penguin, a donut scored highest raw on white), so the look is a real choice for the player.
+The rounds themselves were played in the studio-light look: 425 pts · 5/6 wins · streak 4.</p>
+<div class="shots">
+<div><img src="../docs_assets/a5_shoot.png"><div class="cap">Photo shoot: studio lighting, light direction and height, backdrop; 3 photo slots.</div></div>
+<div><img src="../docs_assets/a5_final_owl.png"><div class="cap">End state: verdict from the player's photos, points, comparison with the preview.</div></div>
+<div><img src="../docs_assets/a5_exhibit.png"><div class="cap">Exhibition: trophies and examples on one lit stage, one sort, LOD budget.</div></div></div>
+
+<h2>3. Performance: the A2 target (≥ 30 FPS) holds in every playable setting</h2>
+<table><tr><th>setting (headless Chrome, WebGL2, A100)</th><th>Gaussians</th><th>canvas</th><th>FPS (rAF, capped 60)</th><th>GPU ms (splat pass)</th><th>sort ms (worker)</th></tr><tr><td>single model, raw splats</td><td>220,296</td><td>810x607</td><td>61</td><td>6.9</td><td>4</td></tr><tr><td>single model, studio lighting + stage</td><td>220,296</td><td>810x607</td><td>61</td><td>6.87</td><td>4</td></tr><tr><td>single model x8 replicas, studio</td><td>1,762,368</td><td>810x607</td><td>18</td><td>51.85</td><td>30</td></tr><tr><td>exhibition 4 models, studio</td><td>1,100,201</td><td>810x607</td><td>56</td><td>14.08</td><td>18</td></tr><tr><td>exhibition 8 models, LOD 1.2M</td><td>1,200,000</td><td>810x607</td><td>61</td><td>11.55</td><td>18</td></tr><tr><td>exhibition 8 models, LOD 2.4M</td><td>2,147,257</td><td>810x607</td><td>40</td><td>20.19</td><td>34</td></tr></table>
+<p class="cap">Lighting is computed per Gaussian in the vertex shader, so it costs nothing measurable (6.9 → 6.87 ms); the frame is bound by the number of Gaussians.
+Every setting a player can reach stays at ≥ 40 FPS (worst 20.2 ms GPU). The A3 stress case of 8 replicas stacked on one spot
+(1,762,368 Gaussians, heavy overdraw) drops to 18 FPS; this is why the exhibition keeps each model's most opaque Gaussians within an LOD budget
+(default 1.2 M → 61.0 FPS). <code>scripts/bench_beta.py</code> → <code>evidence/beta_render.csv</code>.</p>
+
+<h2>4. Beta release notes</h2>
+<p><b>New features:</b> studio lighting from per-Gaussian normals (toggle, light direction and height); four backdrops (studio dark, studio light, plain white, plain black) with ground plane and soft shadow;
+<b>photo shoot</b> phase in every Challenge round with a CPU CLIP judge endpoint (<code>/api/judge_photos</code>, about 1 s for 3 photos, never takes a GPU);
+points per win and a points total in the HUD; <b>Exhibition</b> menu mode (trophies first, then your models and examples; 2–8 models; LOD budget 0.6/1.2/2.4 M; two rows above 4 models);
+camera target support in the viewer; the result card shows the player's photos and the change against the preview.
+<b>Stability:</b> leaving a round mid-shoot (menu, Esc, new job) keeps the preview verdict instead of losing the round; the photo judge is loaded at server start; photos are size-checked
+and one judgement per visitor runs at a time; the Beta server moved to <i>hermes</i> after <i>homer</i> rebooted.</p>
+<p><b>Known issues:</b> normals from the shortest axis are noisy on fuzzy, blob-like Gaussians, so lighting can look speckled; the shadow uses Gaussian centres only (no self-shadowing);
+the judge can be gamed by backdrop choice (studio dark vs. white changes the score), which is part of the game but makes scores depend on the look;
+the quick-tunnel URL changes when the tunnel restarts; points and trophies live in <code>sessionStorage</code> (lost with the tab) until the SQLite leaderboard in week 12;
+the exhibition downloads every model's full PLY before LOD (about 10–15 MB each).</p>
+
+<h2>5. Updated production schedule (weeks from Sep 1; final deadline in week 15)</h2>
+<table><tr><th style="width:17%">Week</th><th style="width:58%">Engineering / content</th><th>Milestone</th></tr><tr class="done"><td><b>9 · Oct 26–Nov 1</b></td><td>Alpha: game loop, CLIP judge, render modes, offline jobs, watchdog</td><td>Alpha v0.2 (A4)</td></tr><tr class="done"><td><b>10–11 · Nov 2–15</b></td><td><b>Beta (this build):</b> lit splats (normals, wrap diffuse, specular, rim), stage + soft shadow, photo shoot inside the Challenge round, CPU photo judge, exhibition with LOD; real MVDream rounds; render benchmark</td><td>Beta v0.3 live + tagged (this report)</td></tr><tr class="int"><td><b>12 · Nov 16–22</b></td><td>Persistence (SQLite: rounds, points, leaderboard), moderation of the gallery, stable hosting (named tunnel); photo-judge robustness (prompt ensembles, more targets)</td><td><b>Integration:</b> leaderboard + photo points; classmate play-test</td></tr><tr class="eng"><td><b>13 · Nov 23–29 (Thanksgiving)</b></td><td>Fix play-test issues; per-pixel shading option; mobile layout of the photo shoot; GPU sort for very large exhibitions</td><td>Play-test triage</td></tr><tr class="int"><td><b>14 · Nov 30–Dec 6</b></td><td><b>Feature freeze:</b> fix top issues only; load test with parallel players; record final video</td><td>Release candidate v1.0-rc</td></tr><tr class="buf"><td><b>15 · Dec 7–13</b></td><td><b>BUFFER WEEK:</b> bug fixing, documentation and polish only; no new features</td><td>v1.0 + final submission</td></tr></table>
+<p class="cap"><span style="background:#eaf6ef">&nbsp;green&nbsp;</span> done · <span style="background:#f3f0fb">&nbsp;purple&nbsp;</span> integration · <span style="background:#fff4e0">&nbsp;orange&nbsp;</span> buffer week (no new features).
+Run: <code>bash scripts/setup_env.sh</code>, then <code>bash scripts/serve_public.sh</code> (or <code>python server.py</code>); Linux + NVIDIA GPU ≥ 12 GB.</p>
+</body></html>
