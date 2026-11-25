@@ -12,7 +12,11 @@ jobs run in parallel; when every GPU is busy, jobs wait in a FIFO queue and the 
   GET  /api/runs             curated gallery (results/<name>/summary.json)
   GET  /api/system           GPU pool snapshot (cached nvidia-smi)
   GET  /api/config           limits + whether the caller is admin
-  POST /api/judge_photos     Beta photo shoot: CLIP judge (CPU) scores 1-3 player-rendered photos
+  POST /api/judge_photos     Beta photo shoot: CLIP judge (CPU) scores 1-3 player-rendered photos (not recorded)
+  POST /api/rounds           end of a Challenge round: photos (or auto verdict) -> points, stored in run/studio.db
+  GET  /api/leaderboard      top players by points
+  POST /api/telemetry, /api/survey   playtest mode (?playtest=ID): UI events, FPS, errors, post-play questionnaire
+  POST /api/runs/{name}/hide owner-only gallery moderation
 
 Admin = a request from localhost that did not come through the tunnel (no CF-Connecting-IP header), e.g. the owner
 via `ssh -L`. Public visitors (PUBLIC=1): PER_IP_TOTAL generations (default 1) per PER_IP_WINDOW_S (default 24 h),
@@ -39,6 +43,8 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
+
+import store
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 RESULTS = os.path.join(ROOT, "results")
@@ -378,7 +384,8 @@ def schedule_forecast():
     return starts, min(slots)
 
 
-CHALLENGE = json.load(open(os.path.join(ROOT, "configs", "challenge.json")))["targets"]
+_CH = json.load(open(os.path.join(ROOT, "configs", "challenge.json")))
+CHALLENGE, TIERS = _CH["targets"], _CH["tiers"]
 TARGETS = {t["id"]: t for t in CHALLENGE}
 
 
@@ -447,7 +454,10 @@ def generate(r: GenerateReq, request: Request):
     job = dict(id=secrets.token_urlsafe(9), kind="generate", name=name, prompt=prompt, seed=seed, iters=iters,
                guidance=method, guidance_scale=cfg, target=target["id"] if target else None, out=out, rel=rel, log=os.path.join(out, "training.log"), cmd=cmd,
                session=sid if re.fullmatch(r"[A-Za-z0-9_-]{16,64}", sid) else None)
-    return enqueue(job, ip, admin)  # run_job creates `out` when the job starts (rejected requests leave nothing)
+    res = enqueue(job, ip, admin)  # run_job creates `out` when the job starts (rejected requests leave nothing)
+    if target:  # remembered in SQLite so the round can still be scored after a server restart
+        store.add_challenge_job(job, player_id(request))
+    return res
 
 
 class BenchReq(BaseModel):
@@ -590,7 +600,7 @@ def config(request: Request):
             "queue_max": QUEUE_MAX, "per_visitor": PER_IP_TOTAL, "window_h": PER_IP_WINDOW_S // 3600,
             "max_parallel": MAX_PARALLEL, "guidance": GUIDANCE, "default_guidance": DEFAULT_GUIDANCE, "cfg_default": CFG_DEFAULT, "eta_model": ETA_MODEL,
             "available": model_availability(),
-            "challenge": [{"id": t["id"], "label": t["label"], "taboo": t["taboo"]} for t in CHALLENGE]}
+            "challenge": [{"id": t["id"], "label": t["label"], "taboo": t["taboo"], "tier": t["tier"]} for t in CHALLENGE], "tiers": TIERS}
 
 
 class PhotoReq(BaseModel):
@@ -625,12 +635,133 @@ def judge_photos(r: PhotoReq, request: Request):
         _photo_busy.discard(ip)
 
 
+# ------------------------------------------------------------------ rounds, leaderboard, playtest, moderation (v1.0)
+def player_id(request):
+    p = request.headers.get("x-studio-player", "")
+    return p if re.fullmatch(r"[A-Za-z0-9_-]{16,64}", p) else None
+
+
+def clean_nick(nick):
+    n = " ".join(str(nick or "").split())[:16]
+    if not n or not all(c.isprintable() for c in n) or any(re.search(r"\b" + re.escape(w) + r"\b", n.lower()) for w in BLOCKLIST):
+        return "anonymous"
+    return n
+
+
+def round_job(job_id):
+    """(meta, run summary) of a finished Challenge job, from memory or SQLite (survives restarts)."""
+    j = jobs.get(job_id)
+    meta = store.challenge_job(job_id)
+    if j and j.get("target"):
+        if j["status"] != "done":
+            raise HTTPException(409, "this job has not finished")
+        meta = meta or dict(job_id=job_id, target=j["target"], prompt=j["prompt"], out=j["out"], rel=j["rel"], name=j["name"])
+    if not meta:
+        raise HTTPException(404, "unknown Challenge job")
+    run = run_summary(meta["out"], meta["rel"], meta["name"])
+    if not run:
+        raise HTTPException(409, "this job has no finished model")
+    return meta, run
+
+
+class RoundReq(BaseModel):
+    job_id: str
+    nick: str = ""
+    images: list[str] = []       # empty = keep the auto-camera verdict
+
+
+@app.post("/api/rounds")
+def score_round(r: RoundReq, request: Request):
+    """End of a Challenge round: verdict from the player's photos (or the auto-camera preview), points, leaderboard."""
+    import photo_judge
+    meta, run = round_job(r.job_id)
+    done = store.round_of(r.job_id)
+    if done:
+        return dict(done, already=True)
+    t = TARGETS[meta["target"]]
+    auto = run.get("judge") or {}
+    if r.images:
+        if len(r.images) > 3:
+            raise HTTPException(400, "send 1 to 3 photos")
+        ip, _ = caller(request)
+        if ip in _photo_busy:
+            raise HTTPException(429, "your previous photos are still being judged")
+        try:
+            imgs = [photo_judge.decode(u) for u in r.images]
+        except Exception as e:
+            raise HTTPException(400, f"bad photo: {e}")
+        _photo_busy.add(ip)
+        try:
+            jd = photo_judge.judge(imgs, meta["prompt"], t["label"])
+        finally:
+            _photo_busy.discard(ip)
+        source = "photos"
+    else:
+        jd, source = auto, "auto"
+    p = float(jd.get("target_p") or 0)
+    win = bool(jd.get("win"))
+    pts = round(100 * p * TIERS[t["tier"]]["mult"]) if win else 0
+    rec = store.add_round(job_id=r.job_id, player=player_id(request), nick=clean_nick(r.nick), target=t["id"], tier=t["tier"],
+                          prompt=meta["prompt"], source=source, auto_p=auto.get("target_p"), p=p, win=int(win), points=pts, run_rel=run["rel"])
+    return dict(rec, judge=jd, total=store.player_stats(player_id(request)) if player_id(request) else None)
+
+
+@app.get("/api/leaderboard")
+def leaderboard(request: Request):
+    me = player_id(request)
+    rows = store.leaderboard(10)
+    for i, row in enumerate(rows):
+        row["rank"] = i + 1
+        row["me"] = row.pop("player") == me
+    return {"top": rows, "me": store.player_stats(me) if me else None}
+
+
+class TelemetryReq(BaseModel):
+    subject: str
+    session: str = ""
+    events: list[dict]
+
+
+@app.post("/api/telemetry")
+def telemetry(r: TelemetryReq):
+    """Playtest mode only (?playtest=SUBJECT): UI events, FPS samples and errors for the user study."""
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,32}", r.subject) or len(r.events) > 200:
+        raise HTTPException(400, "bad telemetry")
+    store.add_events(r.subject, r.session[:64], r.events)
+    return {"ok": True}
+
+
+class SurveyReq(BaseModel):
+    subject: str
+    session: str = ""
+    answers: dict
+
+
+@app.post("/api/survey")
+def survey(r: SurveyReq):
+    if not re.fullmatch(r"[A-Za-z0-9_-]{1,32}", r.subject):
+        raise HTTPException(400, "bad subject id")
+    store.add_survey(r.subject, r.session[:64], r.answers)
+    return {"ok": True}
+
+
+@app.post("/api/runs/{name}/hide")
+def hide_run(name: str, request: Request, hidden: bool = True):
+    """Gallery moderation (owner only, i.e. localhost without the tunnel)."""
+    _, admin = caller(request)
+    if not admin:
+        raise HTTPException(403, "owner only")
+    store.hide_run(name, hidden)
+    return {"name": name, "hidden": hidden}
+
+
 def list_runs():
     """Curated example runs + every finished visitor run (community gallery), newest first."""
     runs = []
+    hidden = store.hidden_runs()
     for base, rel, community in ((RESULTS, "data/results", False), (PUBLIC_DIR, "data/results/public", True)):
         for name in sorted(os.listdir(base)) if os.path.isdir(base) else []:
-            if name == "public":
+            if name == "public" or name in hidden:
                 continue
             s = run_summary(os.path.join(base, name), f"{rel}/{name}", name)
             if s:

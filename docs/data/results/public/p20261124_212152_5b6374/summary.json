@@ -1,0 +1,61 @@
+{
+  "prompt": "a tall white space launch vehicle with red fins and a pointed nose cone",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 159073,
+  "load_model_s": 28.5,
+  "train_s": 93.0,
+  "export_s": 0.5,
+  "render_views_s": 5.7,
+  "total_s": 129.2,
+  "peak_vram_mb": 10772.8,
+  "ply": "p20261124_212152_5b6374_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a tall white space launch vehicle with red fins and a pointed nose cone",
+    "save_path": "p20261124_212152_5b6374",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261124_212152_5b6374",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 21.17,
+  "judge": {
+    "prompt_clip": 21.17,
+    "top": [
+      {
+        "label": "a rocket",
+        "p": 0.888
+      },
+      {
+        "label": "an umbrella",
+        "p": 0.057
+      },
+      {
+        "label": "a hot air balloon",
+        "p": 0.039
+      },
+      {
+        "label": "a crown",
+        "p": 0.005
+      },
+      {
+        "label": "a windmill",
+        "p": 0.005
+      }
+    ],
+    "judge_s": 1.2,
+    "target": "a rocket",
+    "target_p": 0.888,
+    "target_rank": 1,
+    "win": true
+  }
+}

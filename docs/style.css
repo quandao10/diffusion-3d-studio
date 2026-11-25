@@ -189,3 +189,18 @@ button.ghost:hover:not(:disabled) { border-color: var(--accent); }
 .r-photos[hidden] { display: none; }
 .delta { font-weight: 600; } .delta.up { color: #7be0b5; } .delta.down { color: #ffb4a8; }
 @media (max-width: 720px) { .shoot { left: 6px; right: 6px; bottom: 6px; padding: 6px 8px; } .shoot p { display: none; } .thumbs img, .thumbs .slot { width: 40px; height: 40px; } }
+
+/* ---------- v1.0-rc: tiers, onboarding, leaderboard, playtest */
+.tier { font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 10px; margin-left: 6px; text-transform: uppercase; letter-spacing: 0.04em; }
+.tier.easy { background: #1d3b2c; color: #7be0b5; } .tier.medium { background: #3a331a; color: #f3d37a; } .tier.hard { background: #43201d; color: #ffb4a8; }
+.ch-tools { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.onboard .steps { text-align: left; margin: 10px 0 12px; padding-left: 0; list-style: none; }
+.onboard .steps li { margin: 7px 0; line-height: 1.45; }
+.board td, .board th { text-align: left; } .board tr.me td { background: #1c2633; font-weight: 600; }
+.ptbar { position: fixed; left: 50%; bottom: 10px; transform: translateX(-50%); z-index: 60; background: #2b2140; color: #eee; border: 1px solid #7a5cc7;
+  border-radius: 20px; padding: 6px 12px; font-size: 12px; display: flex; gap: 10px; align-items: center; }
+.ptbar[hidden] { display: none; }
+.survey { text-align: left; max-width: 620px; } .survey textarea, .survey input { width: 100%; box-sizing: border-box; }
+.pulse { animation: pulse 1.4s ease-in-out 3; } @keyframes pulse { 50% { box-shadow: 0 0 0 6px rgba(57, 135, 229, 0.45); } }
+.hidebtn { font-size: 11px; padding: 1px 6px; margin-left: 6px; }
+.onboard input, .survey input, .survey textarea { background: #0e1013; color: inherit; border: 1px solid #3a4250; border-radius: 6px; padding: 7px 9px; font: inherit; }

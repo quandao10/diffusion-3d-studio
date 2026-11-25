@@ -1,0 +1,2793 @@
+[
+{
+"session": "2286da578486c85f",
+"t": 0.0,
+"type": "start",
+"data": {
+"w": 1920,
+"h": 1080,
+"ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 0.67,
+"type": "fps",
+"data": {
+"fps": 1,
+"gpu": null,
+"n": 0,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 1.55,
+"type": "screen",
+"data": {
+"name": "onboarding"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 5.71,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 8.12,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 10.74,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.94,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 12.15,
+"type": "control",
+"data": {
+"id": "obNick",
+"value": "S4 TopScore"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 12.16,
+"type": "click",
+"data": {
+"id": "obGo",
+"cls": "primary",
+"text": "Let's play",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 12.16,
+"type": "screen",
+"data": {
+"name": "challenge"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 12.22,
+"type": "target",
+"data": {
+"id": "frog",
+"tier": "medium"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 15.75,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.49,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 20.77,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.12,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 20.84,
+"type": "click",
+"data": {
+"id": "menuBtn",
+"cls": "pill btn",
+"text": "\u2630 Menu",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 20.84,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 22.12,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 25.15,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 25.82,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.22,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 28.21,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 30.87,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.22,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 31.25,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 34.31,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 35.92,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.14,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 37.4,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 40.46,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 40.95,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.25,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 43.5,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 45.97,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.95,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 46.56,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 49.6,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 50.99,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.45,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 52.65,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 55.7,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 55.99,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.25,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 58.75,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 61.06,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.53,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 61.62,
+"type": "click",
+"data": {
+"id": null,
+"cls": "mode",
+"text": "\ud83c\udfc5 LeaderboardTop players by points. Eve",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 61.62,
+"type": "screen",
+"data": {
+"name": "board"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 66.06,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 5.94,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 70.82,
+"type": "click",
+"data": {
+"id": "boardClose",
+"cls": "ghost",
+"text": "Close",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 70.82,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 71.1,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 6.3,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 71.63,
+"type": "control",
+"data": {
+"id": "ch-tierSel",
+"value": "hard"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 71.63,
+"type": "target",
+"data": {
+"id": "fox",
+"tier": "hard"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 71.98,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 75.38,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 76.17,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.32,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 78.46,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 81.19,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.01,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 81.51,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 86.22,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.35,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 91.25,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.16,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 96.26,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.27,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 101.27,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.93,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 106.27,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.45,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 111.34,
+"type": "fps",
+"data": {
+"fps": 1,
+"gpu": 6.38,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 116.39,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.3,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 121.4,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.83,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 123.78,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 126.41,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.41,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 131.43,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.08,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 135.23,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 136.48,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.22,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 136.89,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 141.54,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.29,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 145.24,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 146.59,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.13,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 147.82,
+"type": "control",
+"data": {
+"id": "prompt",
+"value": "a small wild orange canine with a bushy "
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 147.82,
+"type": "click",
+"data": {
+"id": "go",
+"cls": "primary",
+"text": "Generate 3D on GPU",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 147.88,
+"type": "job_submit",
+"data": {
+"id": "DQe2Vxn0LjQu",
+"mode": "challenge",
+"target": "fox",
+"prompt": "a small wild orange canine with a bushy white-tipped tail, tall pointed ears, black legs and a narrow snout, sitting"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 151.62,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.31,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 156.63,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.75,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 161.66,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.57,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 166.69,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.16,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 171.72,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.25,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 176.76,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.17,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 181.82,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 6.1,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 186.9,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.34,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 191.95,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.96,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 196.98,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.34,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 202.02,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.2,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 207.07,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.46,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 212.13,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.92,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 217.17,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 6.32,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 222.22,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.29,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 227.22,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.05,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 228.37,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "2286da578486c85f",
+"t": 232.25,
+"type": "fps",
+"data": {
+"fps": 14,
+"gpu": 5.96,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 237.28,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 6.44,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 242.29,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 6.13,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 247.32,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 6.2,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 252.35,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 6.36,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 257.35,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 5.99,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 262.37,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 6.29,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 267.38,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.96,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 272.41,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 6.54,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 277.42,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 6.3,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 282.43,
+"type": "fps",
+"data": {
+"fps": 26,
+"gpu": 6.4,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 287.46,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 5.89,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 292.48,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 6.24,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 297.48,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 6.35,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 299.05,
+"type": "job_end",
+"data": {
+"status": "done",
+"target": "fox",
+"auto_p": 0.432,
+"auto_win": false,
+"total_s": 136.5
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 302.53,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 306.92,
+"type": "click",
+"data": {
+"id": "r-shoot",
+"cls": "primary",
+"text": "\ud83d\udcf8 Start the photo shoot",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 306.92,
+"type": "screen",
+"data": {
+"name": "photo_shoot",
+"target": "fox"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 307.59,
+"type": "fps",
+"data": {
+"fps": 14,
+"gpu": 6.53,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 312.61,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 6.46,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 317.64,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.53,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 319.83,
+"type": "control",
+"data": {
+"id": "backdrop",
+"value": "white"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 321.68,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 322.67,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.78,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 327.72,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 5.76,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 331.37,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "2286da578486c85f",
+"t": 332.75,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 2.32,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 337.78,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 2.3,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 342.8,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 2.4,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 342.94,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "2286da578486c85f",
+"t": 344.3,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 344.51,
+"type": "photo",
+"data": {
+"n": 1,
+"az": 176,
+"el": 15,
+"r": 3.73,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 347.84,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.59,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 352.87,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.58,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 357.9,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 5.26,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 358.57,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 362.9,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.66,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 367.95,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.6,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 369.27,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 372.99,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.01,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 378.02,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.99,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 380.59,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 380.81,
+"type": "photo",
+"data": {
+"n": 2,
+"az": 42,
+"el": 11,
+"r": 3.73,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 383.01,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 383.03,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 3.78,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 388.04,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.55,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 393.09,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 3.57,
+"n": 211482,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 393.3,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 393.57,
+"type": "photo",
+"data": {
+"n": 3,
+"az": -4,
+"el": 11,
+"r": 3.73,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 395.17,
+"type": "click",
+"data": {
+"id": "submitShots",
+"cls": "primary",
+"text": "Send 3 photos to the judge",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 397.36,
+"type": "round_end",
+"data": {
+"target": "fox",
+"tier": "hard",
+"source": "photos",
+"p": 0.277,
+"auto_p": 0.432,
+"win": false,
+"points": 0
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 398.14,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 403.14,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 3.47,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 408.19,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.55,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 413.22,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.45,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 414.32,
+"type": "click",
+"data": {
+"id": "r-retry",
+"cls": "ghost",
+"text": "Retry this target",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 418.27,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 3.55,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 423.23,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 423.32,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.33,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 426.28,
+"type": "control",
+"data": {
+"id": "prompt",
+"value": "a slender wild red forest predator with "
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 426.28,
+"type": "click",
+"data": {
+"id": "go",
+"cls": "primary",
+"text": "Generate 3D on GPU",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 426.33,
+"type": "job_submit",
+"data": {
+"id": "a7LFk_vQqiZb",
+"mode": "challenge",
+"target": "fox",
+"prompt": "a slender wild red forest predator with long thin black legs, a very long fluffy tail with a white tip, large black-tipp"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 428.37,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 433.37,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.53,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 438.38,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.55,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 443.38,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 448.39,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.55,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 453.42,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 458.45,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.55,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 463.49,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.54,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 468.51,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.38,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 473.51,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.41,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 478.52,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 483.53,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.55,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 488.55,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.45,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 493.56,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 498.56,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 503.59,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 508.63,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.49,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 513.67,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 518.74,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 3.57,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 523.79,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 3.55,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 528.8,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.34,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 533.84,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 3.41,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 538.87,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 543.9,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.46,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 548.94,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.55,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 553.96,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.43,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 558.99,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.57,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 564.02,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.34,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 569.05,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.56,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 574.08,
+"type": "fps",
+"data": {
+"fps": 12,
+"gpu": 3.57,
+"n": 211482,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 578.47,
+"type": "job_end",
+"data": {
+"status": "done",
+"target": "fox",
+"auto_p": 0.514,
+"auto_win": true,
+"total_s": 140.8
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 579.14,
+"type": "fps",
+"data": {
+"fps": 13,
+"gpu": 5,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 584.2,
+"type": "fps",
+"data": {
+"fps": 13,
+"gpu": 5.18,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 589.24,
+"type": "fps",
+"data": {
+"fps": 13,
+"gpu": 5.32,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 594.26,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.3,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 599.3,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.31,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 604.33,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.24,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 609.35,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.21,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 613.44,
+"type": "click",
+"data": {
+"id": "r-shoot",
+"cls": "primary",
+"text": "\ud83d\udcf8 Start the photo shoot",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 613.44,
+"type": "screen",
+"data": {
+"name": "photo_shoot",
+"target": "fox"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 614.36,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 5.29,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 619.37,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.3,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 624.41,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.19,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 629.44,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.3,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 634.47,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.2,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 636.43,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 639.51,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.25,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 644.55,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.27,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 649.58,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.28,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 654.61,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 3.16,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 659.63,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 3.28,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 659.94,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "2286da578486c85f",
+"t": 664.64,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.27,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 669.68,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 4.4,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 674.69,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.4,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 679.69,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 679.9,
+"type": "photo",
+"data": {
+"n": 1,
+"az": 29,
+"el": 11,
+"r": 3.05,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 679.91,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 4.41,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 681.41,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 684.92,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 4.46,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 689.97,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 4.13,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 694.97,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 12.9,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 700.01,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 4.46,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 701.24,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 701.48,
+"type": "photo",
+"data": {
+"n": 2,
+"az": 43,
+"el": 11,
+"r": 3.05,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 703.52,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 705.02,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.09,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 710.02,
+"type": "fps",
+"data": {
+"fps": 6,
+"gpu": 5.13,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 715.03,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.98,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 720.07,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.98,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 723.29,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 723.5,
+"type": "photo",
+"data": {
+"n": 3,
+"az": 119,
+"el": 26,
+"r": 3.05,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 725.05,
+"type": "click",
+"data": {
+"id": "submitShots",
+"cls": "primary",
+"text": "Send 3 photos to the judge",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 725.1,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.1,
+"n": 172061,
+"mode": "shoot"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 726.35,
+"type": "round_end",
+"data": {
+"target": "fox",
+"tier": "hard",
+"source": "photos",
+"p": 0.291,
+"auto_p": 0.514,
+"win": false,
+"points": 0
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 730.14,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.09,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 735.15,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.08,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 740.18,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.01,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 745.19,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.09,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 750.2,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.08,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 750.91,
+"type": "click",
+"data": {
+"id": "r-menu",
+"cls": "ghost",
+"text": "Main menu",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 750.91,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 752.36,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 752.42,
+"type": "click",
+"data": {
+"id": null,
+"cls": "mode",
+"text": "\ud83c\udfc5 LeaderboardTop players by points. Eve",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 752.42,
+"type": "screen",
+"data": {
+"name": "board"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 755.2,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.08,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 760.22,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.1,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 765.28,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 4.94,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 770.32,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.99,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 774.24,
+"type": "click",
+"data": {
+"id": "boardClose",
+"cls": "ghost",
+"text": "Close",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 774.24,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 775.34,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 5.12,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 775.62,
+"type": "click",
+"data": {
+"id": "ptEnd",
+"cls": "ghost small",
+"text": "Finish & answer 5 questions",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 775.62,
+"type": "screen",
+"data": {
+"name": "survey"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 780.38,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.06,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 785.39,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 5.07,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 790.4,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.08,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 795.4,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 4.91,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 800.42,
+"type": "click",
+"data": {
+"id": "sv1",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 800.42,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.96,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 802.07,
+"type": "control",
+"data": {
+"id": "sv1",
+"value": "The photo shoot actively hurt me. Both r"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 802.08,
+"type": "control",
+"data": {
+"id": "sv2",
+"value": "7"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 803.23,
+"type": "control",
+"data": {
+"id": "sv3",
+"value": "No real lag (renderer 16-21 FPS). The Ph"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 803.24,
+"type": "control",
+"data": {
+"id": "sv4",
+"value": "6"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 805.45,
+"type": "fps",
+"data": {
+"fps": 26,
+"gpu": 5.01,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 810.48,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 5.07,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 815.5,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 5.07,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 820.51,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 5.08,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 822.31,
+"type": "control",
+"data": {
+"id": "sv5",
+"value": "Show the judge's live guess (or at least"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 822.31,
+"type": "click",
+"data": {
+"id": "svSend",
+"cls": "primary",
+"text": "Send answers",
+"disabled": false
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 822.36,
+"type": "survey_sent",
+"data": {}
+},
+{
+"session": "2286da578486c85f",
+"t": 825.51,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 4.92,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 831.36,
+"type": "fps",
+"data": {
+"fps": 1,
+"gpu": 5.07,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 836.37,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 5.08,
+"n": 172061,
+"mode": "view"
+}
+},
+{
+"session": "2286da578486c85f",
+"t": 841.39,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 4.93,
+"n": 172061,
+"mode": "view"
+}
+}
+]

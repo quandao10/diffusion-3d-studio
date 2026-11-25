@@ -1,25 +1,418 @@
 {
-  "threshold_note": "win = CLIP zero-shot judge ranks the target first among all labels (8 views averaged)",
-  "targets": [
-    {"id": "teapot", "label": "a teapot", "taboo": ["teapot", "tea pot", "kettle"]},
-    {"id": "corgi", "label": "a corgi dog", "taboo": ["corgi", "dog", "puppy", "pup", "doggy"]},
-    {"id": "owl", "label": "an owl", "taboo": ["owl", "owlet"]},
-    {"id": "pineapple", "label": "a pineapple", "taboo": ["pineapple", "ananas"]},
-    {"id": "hamburger", "label": "a hamburger", "taboo": ["hamburger", "burger", "cheeseburger"]},
-    {"id": "mushroom", "label": "a mushroom", "taboo": ["mushroom", "toadstool", "fungus", "fungi"]},
-    {"id": "duck", "label": "a rubber duck", "taboo": ["duck", "duckie", "ducky", "duckling"]},
-    {"id": "cactus", "label": "a cactus", "taboo": ["cactus", "cacti", "succulent"]},
-    {"id": "guitar", "label": "a guitar", "taboo": ["guitar", "ukulele"]},
-    {"id": "sneaker", "label": "a sneaker shoe", "taboo": ["sneaker", "shoe", "trainer", "trainers"]},
-    {"id": "chest", "label": "a treasure chest", "taboo": ["chest", "treasure", "coffer"]},
-    {"id": "castle", "label": "a castle", "taboo": ["castle", "fortress", "palace", "citadel"]},
-    {"id": "robot", "label": "a robot", "taboo": ["robot", "android", "droid", "cyborg"]},
-    {"id": "donut", "label": "a donut", "taboo": ["donut", "doughnut"]},
-    {"id": "lighthouse", "label": "a lighthouse", "taboo": ["lighthouse", "beacon"]},
-    {"id": "sailboat", "label": "a sailboat", "taboo": ["sailboat", "boat", "yacht", "ship", "sail"]},
-    {"id": "strawberry", "label": "a strawberry", "taboo": ["strawberry", "berry", "berries"]},
-    {"id": "penguin", "label": "a penguin", "taboo": ["penguin"]},
-    {"id": "clock", "label": "an alarm clock", "taboo": ["clock", "alarm", "timepiece"]},
-    {"id": "car", "label": "a car", "taboo": ["car", "automobile", "vehicle", "sedan"]}
-  ]
+ "threshold_note": "win = CLIP zero-shot judge ranks the target first among all labels (views or photos averaged); points = 100 x target probability x tier multiplier",
+ "targets": [
+  {
+   "id": "teapot",
+   "label": "a teapot",
+   "taboo": [
+    "teapot",
+    "tea pot",
+    "kettle"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "corgi",
+   "label": "a corgi dog",
+   "taboo": [
+    "corgi",
+    "dog",
+    "puppy",
+    "pup",
+    "doggy"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "owl",
+   "label": "an owl",
+   "taboo": [
+    "owl",
+    "owlet"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "pineapple",
+   "label": "a pineapple",
+   "taboo": [
+    "pineapple",
+    "ananas"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "hamburger",
+   "label": "a hamburger",
+   "taboo": [
+    "hamburger",
+    "burger",
+    "cheeseburger"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "mushroom",
+   "label": "a mushroom",
+   "taboo": [
+    "mushroom",
+    "toadstool",
+    "fungus",
+    "fungi"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "duck",
+   "label": "a rubber duck",
+   "taboo": [
+    "duck",
+    "duckie",
+    "ducky",
+    "duckling"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "cactus",
+   "label": "a cactus",
+   "taboo": [
+    "cactus",
+    "cacti",
+    "succulent"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "guitar",
+   "label": "a guitar",
+   "taboo": [
+    "guitar",
+    "ukulele"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "sneaker",
+   "label": "a sneaker shoe",
+   "taboo": [
+    "sneaker",
+    "shoe",
+    "trainer",
+    "trainers"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "chest",
+   "label": "a treasure chest",
+   "taboo": [
+    "chest",
+    "treasure",
+    "coffer"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "castle",
+   "label": "a castle",
+   "taboo": [
+    "castle",
+    "fortress",
+    "palace",
+    "citadel"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "robot",
+   "label": "a robot",
+   "taboo": [
+    "robot",
+    "android",
+    "droid",
+    "cyborg"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "donut",
+   "label": "a donut",
+   "taboo": [
+    "donut",
+    "doughnut"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "lighthouse",
+   "label": "a lighthouse",
+   "taboo": [
+    "lighthouse",
+    "beacon"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "sailboat",
+   "label": "a sailboat",
+   "taboo": [
+    "sailboat",
+    "boat",
+    "yacht",
+    "ship",
+    "sail"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "strawberry",
+   "label": "a strawberry",
+   "taboo": [
+    "strawberry",
+    "berry",
+    "berries"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "penguin",
+   "label": "a penguin",
+   "taboo": [
+    "penguin"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "clock",
+   "label": "an alarm clock",
+   "taboo": [
+    "clock",
+    "alarm",
+    "timepiece"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "car",
+   "label": "a car",
+   "taboo": [
+    "car",
+    "automobile",
+    "vehicle",
+    "sedan"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "umbrella",
+   "label": "an umbrella",
+   "taboo": [
+    "umbrella",
+    "parasol",
+    "brolly"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "bicycle",
+   "label": "a bicycle",
+   "taboo": [
+    "bicycle",
+    "bike",
+    "cycle"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "balloon",
+   "label": "a hot air balloon",
+   "taboo": [
+    "balloon",
+    "hot air",
+    "hot-air"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "snowman",
+   "label": "a snowman",
+   "taboo": [
+    "snowman",
+    "snow man",
+    "snow"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "teddy",
+   "label": "a teddy bear",
+   "taboo": [
+    "teddy",
+    "bear"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "cupcake",
+   "label": "a cupcake",
+   "taboo": [
+    "cupcake",
+    "muffin",
+    "cake"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "pumpkin",
+   "label": "a pumpkin",
+   "taboo": [
+    "pumpkin",
+    "jack-o-lantern",
+    "squash",
+    "gourd"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "banana",
+   "label": "a banana",
+   "taboo": [
+    "banana"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "crown",
+   "label": "a crown",
+   "taboo": [
+    "crown",
+    "tiara",
+    "diadem"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "rocket",
+   "label": "a rocket",
+   "taboo": [
+    "rocket",
+    "spaceship",
+    "missile",
+    "shuttle"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "windmill",
+   "label": "a windmill",
+   "taboo": [
+    "windmill",
+    "wind mill",
+    "mill"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "watermelon",
+   "label": "a watermelon",
+   "taboo": [
+    "watermelon",
+    "melon"
+   ],
+   "tier": "easy"
+  },
+  {
+   "id": "frog",
+   "label": "a frog",
+   "taboo": [
+    "frog",
+    "toad",
+    "tadpole"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "turtle",
+   "label": "a turtle",
+   "taboo": [
+    "turtle",
+    "tortoise",
+    "terrapin"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "elephant",
+   "label": "an elephant",
+   "taboo": [
+    "elephant",
+    "pachyderm",
+    "mammoth"
+   ],
+   "tier": "medium"
+  },
+  {
+   "id": "dragon",
+   "label": "a dragon",
+   "taboo": [
+    "dragon",
+    "wyvern",
+    "drake"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "piano",
+   "label": "a piano",
+   "taboo": [
+    "piano",
+    "keyboard",
+    "grand"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "television",
+   "label": "a television",
+   "taboo": [
+    "television",
+    "tv",
+    "telly",
+    "monitor"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "anchor",
+   "label": "an anchor",
+   "taboo": [
+    "anchor"
+   ],
+   "tier": "hard"
+  },
+  {
+   "id": "fox",
+   "label": "a fox",
+   "taboo": [
+    "fox",
+    "vixen"
+   ],
+   "tier": "hard"
+  }
+ ],
+ "tiers": {
+  "easy": {
+   "mult": 1.0,
+   "note": "distinctive shape and colour"
+  },
+  "medium": {
+   "mult": 1.5,
+   "note": "needs the right silhouette"
+  },
+  "hard": {
+   "mult": 2.0,
+   "note": "thin parts or easily confused with other targets"
+  }
+ }
 }

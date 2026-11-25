@@ -1,0 +1,61 @@
+{
+  "prompt": "a golden royal headpiece with pointed spikes and red jewels, worn by a king",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 275907,
+  "load_model_s": 54.3,
+  "train_s": 93.0,
+  "export_s": 0.9,
+  "render_views_s": 7.2,
+  "total_s": 161.7,
+  "peak_vram_mb": 10967.9,
+  "ply": "p20261124_211717_cb51fb_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a golden royal headpiece with pointed spikes and red jewels, worn by a king",
+    "save_path": "p20261124_211717_cb51fb",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261124_211717_cb51fb",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 20.72,
+  "judge": {
+    "prompt_clip": 20.72,
+    "top": [
+      {
+        "label": "a crown",
+        "p": 0.8
+      },
+      {
+        "label": "a cactus",
+        "p": 0.136
+      },
+      {
+        "label": "a pineapple",
+        "p": 0.025
+      },
+      {
+        "label": "a strawberry",
+        "p": 0.007
+      },
+      {
+        "label": "a teddy bear",
+        "p": 0.003
+      }
+    ],
+    "judge_s": 6.0,
+    "target": "a crown",
+    "target_p": 0.8,
+    "target_rank": 1,
+    "win": true
+  }
+}

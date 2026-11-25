@@ -1,0 +1,61 @@
+{
+  "prompt": "a red two-wheeled pedal vehicle with a metal frame, handlebars, chain and a leather saddle",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 268207,
+  "load_model_s": 52.7,
+  "train_s": 93.7,
+  "export_s": 0.8,
+  "render_views_s": 6.7,
+  "total_s": 160.2,
+  "peak_vram_mb": 10934.4,
+  "ply": "p20261124_211720_7a3267_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a red two-wheeled pedal vehicle with a metal frame, handlebars, chain and a leather saddle",
+    "save_path": "p20261124_211720_7a3267",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261124_211720_7a3267",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 17.4,
+  "judge": {
+    "prompt_clip": 17.4,
+    "top": [
+      {
+        "label": "a bicycle",
+        "p": 0.966
+      },
+      {
+        "label": "a car",
+        "p": 0.019
+      },
+      {
+        "label": "a strawberry",
+        "p": 0.002
+      },
+      {
+        "label": "a robot",
+        "p": 0.002
+      },
+      {
+        "label": "a teddy bear",
+        "p": 0.001
+      }
+    ],
+    "judge_s": 5.8,
+    "target": "a bicycle",
+    "target_p": 0.966,
+    "target_rank": 1,
+    "win": true
+  }
+}

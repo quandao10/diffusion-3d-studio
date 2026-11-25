@@ -1,0 +1,3200 @@
+[
+{
+"session": "9cb5a073726fa5a2",
+"t": 0.0,
+"type": "start",
+"data": {
+"w": 1280,
+"h": 800,
+"ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 0.72,
+"type": "fps",
+"data": {
+"fps": 1,
+"gpu": null,
+"n": 0,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 1.69,
+"type": "screen",
+"data": {
+"name": "onboarding"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 5.72,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.87,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 10.76,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 3.47,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 12.87,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 13.06,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 15.8,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.96,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 16.1,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 19.13,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 20.85,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.76,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 25.86,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 3.74,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 30.89,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 3.76,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 32.4,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 32.56,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 34.04,
+"type": "click",
+"data": {
+"id": "helpBtn",
+"cls": "pill btn",
+"text": "? Help",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 34.04,
+"type": "screen",
+"data": {
+"name": "onboarding"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 35.9,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 5.4,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 40.92,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.2,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 41.08,
+"type": "click",
+"data": {
+"id": "obSkip",
+"cls": "ghost",
+"text": "Just look around",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 41.08,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 43.56,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 45.93,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.35,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 46.6,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 49.62,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 50.96,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 5.07,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 52.66,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 55.7,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 55.96,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.45,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 58.73,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 60.99,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 5.23,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 61.76,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 64.79,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 66.01,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.05,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 67.82,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 70.85,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 71.02,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 5.22,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 73.88,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 76.05,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 4.96,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 76.91,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 79.94,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 81.13,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 5.51,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 82.97,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 86.01,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 86.18,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 4.86,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 89.08,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 91.21,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.54,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 92.11,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 95.16,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 96.27,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.19,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 98.21,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 101.24,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 101.33,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 4.92,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 104.27,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 106.34,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.31,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 107.3,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 110.54,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 110.77,
+"type": "click",
+"data": {
+"id": null,
+"cls": "mode",
+"text": "\ud83d\uddbc GalleryRender every model made so far",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 110.77,
+"type": "screen",
+"data": {
+"name": "gallery"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 112.54,
+"type": "fps",
+"data": {
+"fps": 1,
+"gpu": 5.39,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 117.54,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 5.2,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 119.05,
+"type": "click",
+"data": {
+"id": null,
+"cls": "run",
+"text": "a spiky tropical fruit with a crown of g",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 122.56,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 5.91,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 127.61,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 5.98,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 128.3,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 128.97,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 129.27,
+"type": "click",
+"data": {
+"id": null,
+"cls": "mode",
+"text": "\ud83c\udfc5 LeaderboardTop players by points. Eve",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 129.27,
+"type": "screen",
+"data": {
+"name": "board"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 132.67,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 6.01,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 137.03,
+"type": "click",
+"data": {
+"id": "boardPlay",
+"cls": "primary",
+"text": "Play a Challenge",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 137.03,
+"type": "screen",
+"data": {
+"name": "challenge"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 137.03,
+"type": "target",
+"data": {
+"id": "banana",
+"tier": "easy"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 137.69,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.7,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 142.77,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.8,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 146.07,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 147.8,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 8.31,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 152.84,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 8.13,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 154.01,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 157.88,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 8.08,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 162.44,
+"type": "control",
+"data": {
+"id": "ch-tierSel",
+"value": "hard"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 162.44,
+"type": "target",
+"data": {
+"id": "rocket",
+"tier": "hard"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 162.93,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 8.43,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 167.94,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 8.01,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 172.99,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 8.14,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 178.05,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 8.51,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 183.05,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 8.89,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 188.05,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 7.97,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 193.12,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 7.89,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 198.18,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 8.04,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 203.2,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 7.99,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 206.38,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 208.21,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 7.98,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 213.25,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 8.13,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 218.31,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 8.34,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 223.35,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 8.06,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 228.37,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 8.17,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 233.41,
+"type": "fps",
+"data": {
+"fps": 14,
+"gpu": 8.6,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 238.44,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 8.86,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 243.51,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 8.08,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 248.56,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 7.94,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 249.46,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 253.6,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 8.18,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 258.32,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 258.67,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 7.84,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 260.57,
+"type": "control",
+"data": {
+"id": "prompt",
+"value": "a tall white space launch vehicle with r"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 260.57,
+"type": "click",
+"data": {
+"id": "go",
+"cls": "primary",
+"text": "Generate 3D on GPU",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 260.62,
+"type": "job_submit",
+"data": {
+"id": "2Lc52ScBGccQ",
+"mode": "challenge",
+"target": "rocket",
+"prompt": "a tall white space launch vehicle with red fins and a pointed nose cone"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 263.71,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 7.96,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 268.77,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 8.62,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 273.77,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 8.21,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 278.79,
+"type": "fps",
+"data": {
+"fps": 26,
+"gpu": 7.94,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 283.84,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 7.97,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 288.85,
+"type": "fps",
+"data": {
+"fps": 26,
+"gpu": 7.97,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 293.86,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 8.39,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 298.87,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 8.08,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 303.87,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 8.07,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 308.88,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 8.36,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 313.91,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 7.97,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 318.93,
+"type": "fps",
+"data": {
+"fps": 26,
+"gpu": 8.25,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 319.58,
+"type": "click",
+"data": {
+"id": "stop",
+"cls": "ghost stop",
+"text": "\u25a0 Stop & release GPU",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 321.73,
+"type": "job_end",
+"data": {
+"status": "cancelled",
+"target": "rocket",
+"auto_p": null,
+"auto_win": null,
+"total_s": null
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 323.97,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 8.28,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 329.02,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 8.72,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 331.67,
+"type": "click",
+"data": {
+"id": "r-retry",
+"cls": "ghost",
+"text": "Retry this target",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 334.05,
+"type": "fps",
+"data": {
+"fps": 29,
+"gpu": 8.08,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 339.07,
+"type": "fps",
+"data": {
+"fps": 31,
+"gpu": 7.91,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 342.34,
+"type": "click",
+"data": {
+"id": "go",
+"cls": "primary",
+"text": "Generate 3D on GPU",
+"disabled": false
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 342.38,
+"type": "job_submit",
+"data": {
+"id": "R8Y37Za8H_uS",
+"mode": "challenge",
+"target": "rocket",
+"prompt": "a tall white space launch vehicle with red fins and a pointed nose cone"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 344.08,
+"type": "fps",
+"data": {
+"fps": 27,
+"gpu": 8.16,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 349.09,
+"type": "fps",
+"data": {
+"fps": 29,
+"gpu": 7.93,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 354.13,
+"type": "fps",
+"data": {
+"fps": 27,
+"gpu": 8.05,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 359.16,
+"type": "fps",
+"data": {
+"fps": 28,
+"gpu": 8.06,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 364.18,
+"type": "fps",
+"data": {
+"fps": 28,
+"gpu": 8.38,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 369.2,
+"type": "fps",
+"data": {
+"fps": 28,
+"gpu": 7.96,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 374.23,
+"type": "fps",
+"data": {
+"fps": 29,
+"gpu": 8.28,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 379.23,
+"type": "fps",
+"data": {
+"fps": 26,
+"gpu": 8.22,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 384.26,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 8.76,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 389.31,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 7.97,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 394.35,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 7.96,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "9cb5a073726fa5a2",
+"t": 399.39,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 8.22,
+"n": 247797,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 0.0,
+"type": "start",
+"data": {
+"w": 1280,
+"h": 800,
+"ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 4.56,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 4.18,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 9.58,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 3.84,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 14.0,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 14.63,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 4.04,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 19.63,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.9,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 24.66,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 29.7,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.67,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 34.7,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 4.37,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 39.73,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.99,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 44.77,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.82,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 49.79,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 4,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 54.83,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.86,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 59.85,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 3.91,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 64.89,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 3.77,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 70.36,
+"type": "fps",
+"data": {
+"fps": 1,
+"gpu": 4.28,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 75.39,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.91,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 80.43,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 3.99,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 83.49,
+"type": "job_end",
+"data": {
+"status": "done",
+"target": "rocket",
+"auto_p": 0.888,
+"auto_win": true,
+"total_s": 129.2
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 83.49,
+"type": "target",
+"data": {
+"id": "rocket",
+"tier": "hard"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 85.46,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.55,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 90.47,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.64,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 95.52,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.59,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 100.52,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 2.52,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 101.7,
+"type": "click",
+"data": {
+"id": "r-shoot",
+"cls": "primary",
+"text": "\ud83d\udcf8 Start the photo shoot",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 101.7,
+"type": "screen",
+"data": {
+"name": "photo_shoot",
+"target": "rocket"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 105.57,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 2.5,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 110.6,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 2.51,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 115.61,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 2.4,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 120.63,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.43,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 124.77,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 125.66,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 2.52,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 125.73,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 125.93,
+"type": "photo",
+"data": {
+"n": 1,
+"az": 67,
+"el": 15,
+"r": 2.5,
+"light": [
+35,
+50
+],
+"backdrop": "dark",
+"lit": true
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 130.7,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.58,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 135.75,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.6,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 140.76,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 2.59,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 145.76,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.59,
+"n": 159073,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 146.16,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 146.23,
+"type": "round_end",
+"data": {
+"target": "rocket",
+"tier": "hard",
+"source": "auto",
+"p": 0.888,
+"auto_p": 0.888,
+"win": true,
+"points": 178
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 147.57,
+"type": "click",
+"data": {
+"id": null,
+"cls": "mode",
+"text": "\u25b6 CreateFree text-to-3D: pick a guidance",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 147.57,
+"type": "screen",
+"data": {
+"name": "create"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 150.77,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.53,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 155.79,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.59,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 160.83,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.59,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 165.86,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.48,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 169.88,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 170.89,
+"type": "click",
+"data": {
+"id": null,
+"cls": "mode",
+"text": "\ud83c\udfaf ChallengeDescribe a secret object wit",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 170.89,
+"type": "screen",
+"data": {
+"name": "challenge"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 170.92,
+"type": "fps",
+"data": {
+"fps": 14,
+"gpu": 2.61,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 175.94,
+"type": "fps",
+"data": {
+"fps": 14,
+"gpu": 2.52,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 179.4,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 181.01,
+"type": "fps",
+"data": {
+"fps": 12,
+"gpu": 2.58,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 186.05,
+"type": "fps",
+"data": {
+"fps": 13,
+"gpu": 2.59,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 191.07,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 2.47,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 196.09,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 2.6,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 201.11,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.6,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 202.4,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 203.41,
+"type": "click",
+"data": {
+"id": null,
+"cls": "mode",
+"text": "\ud83c\udfc5 LeaderboardTop players by points. Eve",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 203.41,
+"type": "screen",
+"data": {
+"name": "board"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 206.12,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 2.61,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 211.15,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 2.6,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 211.46,
+"type": "click",
+"data": {
+"id": "boardPlay",
+"cls": "primary",
+"text": "Play a Challenge",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 211.46,
+"type": "screen",
+"data": {
+"name": "challenge"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 216.19,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 2.59,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 218.41,
+"type": "control",
+"data": {
+"id": "ch-tierSel",
+"value": "medium"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 218.41,
+"type": "target",
+"data": {
+"id": "crown",
+"tier": "medium"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 221.2,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.6,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 226.25,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 2.61,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 226.71,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 228.93,
+"type": "control",
+"data": {
+"id": "prompt",
+"value": "a shiny gold king's headwear, a ring wit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 228.93,
+"type": "click",
+"data": {
+"id": "go",
+"cls": "primary",
+"text": "Generate 3D on GPU",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 228.99,
+"type": "job_submit",
+"data": {
+"id": "qViQ7wyDawkG",
+"mode": "challenge",
+"target": "crown",
+"prompt": "a shiny gold king's headwear, a ring with pointed spikes and red gems"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 231.26,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 2.6,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 236.31,
+"type": "fps",
+"data": {
+"fps": 27,
+"gpu": 2.59,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 239.42,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 240.1,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 240.42,
+"type": "click",
+"data": {
+"id": null,
+"cls": "mode",
+"text": "\ud83c\udfdb ExhibitionYour trophies and creations",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 240.42,
+"type": "screen",
+"data": {
+"name": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 241.5,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 2.6,
+"n": 159073,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 246.51,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.79,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 251.54,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 5.76,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 256.58,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.79,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 261.6,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.78,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 266.62,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.8,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 271.67,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.79,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 276.69,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 13.8,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 281.71,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 5.67,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 286.74,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.66,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 291.78,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.73,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 296.8,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.78,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 301.8,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.81,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 306.85,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.78,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 311.85,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.8,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 316.87,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.62,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 321.91,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.78,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 326.93,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.79,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 331.98,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 5.77,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 337.03,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 5.6,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 342.08,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.81,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 347.12,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.78,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 352.15,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 5.81,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 357.2,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.8,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 362.25,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.79,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 367.26,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 5.73,
+"n": 960932,
+"mode": "exhibit"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 372.32,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 7.82,
+"n": 960932,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 373.04,
+"type": "job_end",
+"data": {
+"status": "done",
+"target": "crown",
+"auto_p": 0.989,
+"auto_win": true,
+"total_s": 131.3
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 377.35,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.77,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 382.4,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.77,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 387.44,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.75,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 392.45,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 4.74,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 397.48,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.65,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 402.52,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 4.73,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 407.53,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 4.74,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 412.53,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 4.76,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 412.87,
+"type": "click",
+"data": {
+"id": "r-shoot",
+"cls": "primary",
+"text": "\ud83d\udcf8 Start the photo shoot",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 412.87,
+"type": "screen",
+"data": {
+"name": "photo_shoot",
+"target": "crown"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 417.55,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.81,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 422.57,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 4.73,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 427.57,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 4.81,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 432.59,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 4.75,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 435.67,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 435.83,
+"type": "photo",
+"data": {
+"n": 1,
+"az": 90,
+"el": 14,
+"r": 2.5,
+"light": [
+35,
+50
+],
+"backdrop": "dark",
+"lit": true
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 437.56,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 437.6,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 4.67,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 438.07,
+"type": "control",
+"data": {
+"id": "backdrop",
+"value": "white"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 438.95,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 439.07,
+"type": "photo",
+"data": {
+"n": 2,
+"az": 114,
+"el": 22,
+"r": 2.5,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 440.83,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 441.47,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 442.34,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 442.46,
+"type": "photo",
+"data": {
+"n": 3,
+"az": 82,
+"el": 10,
+"r": 3.05,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 442.64,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 3.73,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 447.66,
+"type": "fps",
+"data": {
+"fps": 45,
+"gpu": 3.83,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 452.68,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 3.98,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 457.69,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 4.2,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 462.34,
+"type": "click",
+"data": {
+"id": "submitShots",
+"cls": "primary",
+"text": "Send 3 photos to the judge",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 462.7,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 3.95,
+"n": 240608,
+"mode": "shoot"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 463.86,
+"type": "round_end",
+"data": {
+"target": "crown",
+"tier": "medium",
+"source": "photos",
+"p": 0.999,
+"auto_p": 0.989,
+"win": true,
+"points": 150
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 467.7,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 4.11,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 472.72,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 3.97,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 477.73,
+"type": "fps",
+"data": {
+"fps": 45,
+"gpu": 4.13,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 482.74,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 3.94,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 486.54,
+"type": "click",
+"data": {
+"id": "r-explore",
+"cls": "primary",
+"text": "Explore in 3D",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 487.75,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 4.02,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 488.09,
+"type": "click",
+"data": {
+"id": "ptEnd",
+"cls": "ghost small",
+"text": "Finish & answer 5 questions",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 488.09,
+"type": "screen",
+"data": {
+"name": "survey"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 492.75,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 4.14,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 497.76,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 3.89,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 502.77,
+"type": "fps",
+"data": {
+"fps": 45,
+"gpu": 3.98,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 507.78,
+"type": "fps",
+"data": {
+"fps": 45,
+"gpu": 3.89,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 512.8,
+"type": "fps",
+"data": {
+"fps": 45,
+"gpu": 4.04,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 516.57,
+"type": "control",
+"data": {
+"id": "sv1",
+"value": "When I left the photo shoot halfway (Esc"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 516.58,
+"type": "control",
+"data": {
+"id": "sv2",
+"value": "6"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 516.59,
+"type": "control",
+"data": {
+"id": "sv3",
+"value": "After Stop + 'Retry this target' the sna"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 516.59,
+"type": "control",
+"data": {
+"id": "sv4",
+"value": "7"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 517.8,
+"type": "fps",
+"data": {
+"fps": 42,
+"gpu": 4,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 522.83,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 3.9,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 527.84,
+"type": "fps",
+"data": {
+"fps": 45,
+"gpu": 3.92,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 532.85,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 4.05,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 534.67,
+"type": "control",
+"data": {
+"id": "sv5",
+"value": "Move the photo-shoot panel off the 3D vi"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 534.67,
+"type": "click",
+"data": {
+"id": "svSend",
+"cls": "primary",
+"text": "Send answers",
+"disabled": false
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 534.71,
+"type": "survey_sent",
+"data": {}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 537.85,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 3.93,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 542.85,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 4,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 548.07,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.18,
+"n": 240608,
+"mode": "view"
+}
+},
+{
+"session": "2624d924f97cd2b8",
+"t": 553.07,
+"type": "fps",
+"data": {
+"fps": 46,
+"gpu": 4,
+"n": 240608,
+"mode": "view"
+}
+}
+]

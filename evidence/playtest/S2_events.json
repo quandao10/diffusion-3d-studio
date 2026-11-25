@@ -1,0 +1,2891 @@
+[
+{
+"session": "05332aa06851521c",
+"t": 0.0,
+"type": "start",
+"data": {
+"w": 1366,
+"h": 591,
+"ua": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/156.0.0.0 Safari/537.36"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 0.63,
+"type": "fps",
+"data": {
+"fps": 1,
+"gpu": null,
+"n": 0,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 1.77,
+"type": "screen",
+"data": {
+"name": "onboarding"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 5.67,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 4.19,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 10.7,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 3.85,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 15.71,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 4.17,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 16.82,
+"type": "click",
+"data": {
+"id": "obNick",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 17.97,
+"type": "control",
+"data": {
+"id": "obNick",
+"value": "S2"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 17.97,
+"type": "click",
+"data": {
+"id": "obGo",
+"cls": "primary",
+"text": "Let's play",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 17.97,
+"type": "screen",
+"data": {
+"name": "challenge"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 18.04,
+"type": "target",
+"data": {
+"id": "crown",
+"tier": "medium"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 20.75,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 10.78,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 25.75,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 4.02,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 27.91,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "05332aa06851521c",
+"t": 30.77,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 4.11,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 35.5,
+"type": "click",
+"data": {
+"id": "helpBtn",
+"cls": "pill btn",
+"text": "? Help",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 35.5,
+"type": "screen",
+"data": {
+"name": "onboarding"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 35.78,
+"type": "fps",
+"data": {
+"fps": 17,
+"gpu": 13.21,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 40.83,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 4.32,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 44.29,
+"type": "click",
+"data": {
+"id": "obGo",
+"cls": "primary",
+"text": "Let's play",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 44.29,
+"type": "screen",
+"data": {
+"name": "challenge"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 45.85,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 3.91,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 50.85,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 4.23,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 52.96,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 55.87,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 4.08,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 60.89,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 4.32,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 65.63,
+"type": "control",
+"data": {
+"id": "prompt",
+"value": "a golden royal headpiece worn by a king,"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 65.63,
+"type": "click",
+"data": {
+"id": "go",
+"cls": "primary",
+"text": "Generate 3D on GPU",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 65.69,
+"type": "job_submit",
+"data": {
+"id": "n9TM-tI7SXNl",
+"mode": "challenge",
+"target": "crown",
+"prompt": "a golden royal headpiece worn by a king, a ring of gold with pointed spikes and red jewels"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 65.94,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.95,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 70.98,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 3.92,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 76.01,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 4.25,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 79.43,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 81.03,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 4.31,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 86.14,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 3.88,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 91.18,
+"type": "fps",
+"data": {
+"fps": 26,
+"gpu": 4.18,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 96.21,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 4.09,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 101.25,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 4.16,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 106.25,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 3.96,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 111.28,
+"type": "fps",
+"data": {
+"fps": 26,
+"gpu": 4.07,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 116.32,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 3.97,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 118.24,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "05332aa06851521c",
+"t": 121.33,
+"type": "fps",
+"data": {
+"fps": 60,
+"gpu": 3.98,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 126.35,
+"type": "fps",
+"data": {
+"fps": 55,
+"gpu": 4.2,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 131.37,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 4.06,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 136.38,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 4.26,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 141.4,
+"type": "fps",
+"data": {
+"fps": 54,
+"gpu": 3.97,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 146.42,
+"type": "fps",
+"data": {
+"fps": 60,
+"gpu": 4.11,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 151.43,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 3.99,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 156.45,
+"type": "fps",
+"data": {
+"fps": 55,
+"gpu": 4.02,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 161.47,
+"type": "fps",
+"data": {
+"fps": 60,
+"gpu": 4.03,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 166.48,
+"type": "fps",
+"data": {
+"fps": 57,
+"gpu": 3.89,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 171.48,
+"type": "fps",
+"data": {
+"fps": 60,
+"gpu": 4.39,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 176.53,
+"type": "fps",
+"data": {
+"fps": 53,
+"gpu": 3.79,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 181.53,
+"type": "fps",
+"data": {
+"fps": 41,
+"gpu": 4.16,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 186.53,
+"type": "fps",
+"data": {
+"fps": 58,
+"gpu": 4.04,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 191.57,
+"type": "fps",
+"data": {
+"fps": 53,
+"gpu": 4.35,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 196.58,
+"type": "fps",
+"data": {
+"fps": 44,
+"gpu": 3.87,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 201.6,
+"type": "fps",
+"data": {
+"fps": 42,
+"gpu": 4,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 206.61,
+"type": "fps",
+"data": {
+"fps": 53,
+"gpu": 4.07,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 211.63,
+"type": "fps",
+"data": {
+"fps": 57,
+"gpu": 3.88,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 216.65,
+"type": "fps",
+"data": {
+"fps": 60,
+"gpu": 4.2,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 221.66,
+"type": "fps",
+"data": {
+"fps": 51,
+"gpu": 4.22,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 226.68,
+"type": "fps",
+"data": {
+"fps": 58,
+"gpu": 4.25,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 231.7,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 3.88,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 236.71,
+"type": "fps",
+"data": {
+"fps": 59,
+"gpu": 4.28,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 241.73,
+"type": "fps",
+"data": {
+"fps": 56,
+"gpu": 4.04,
+"n": 220296,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 242.27,
+"type": "job_end",
+"data": {
+"status": "done",
+"target": "crown",
+"auto_p": 0.91,
+"auto_win": true,
+"total_s": 161.7
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 246.75,
+"type": "fps",
+"data": {
+"fps": 52,
+"gpu": 4.57,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 250.52,
+"type": "click",
+"data": {
+"id": "r-shoot",
+"cls": "primary",
+"text": "\ud83d\udcf8 Start the photo shoot",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 250.52,
+"type": "screen",
+"data": {
+"name": "photo_shoot",
+"target": "crown"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 251.77,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 5.12,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 256.81,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 5.41,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 261.85,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 5.39,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 265.23,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 266.88,
+"type": "fps",
+"data": {
+"fps": 14,
+"gpu": 5.05,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 271.88,
+"type": "fps",
+"data": {
+"fps": 14,
+"gpu": 5.08,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 275.33,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "05332aa06851521c",
+"t": 276.93,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.88,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 281.94,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 2.89,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 286.95,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 2.79,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 287.45,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "05332aa06851521c",
+"t": 292.0,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.66,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 296.2,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 296.47,
+"type": "photo",
+"data": {
+"n": 1,
+"az": 293,
+"el": 17,
+"r": 3.37,
+"light": [
+35,
+50
+],
+"backdrop": "dark",
+"lit": true
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 297.0,
+"type": "fps",
+"data": {
+"fps": 15,
+"gpu": 3.65,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 302.05,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 3.53,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 307.07,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.54,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 307.57,
+"type": "control",
+"data": {
+"id": "backdrop",
+"value": "white"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 310.4,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 312.14,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 6.95,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 317.16,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.75,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 319.63,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 319.83,
+"type": "photo",
+"data": {
+"n": 2,
+"az": 325,
+"el": 28,
+"r": 3.37,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 322.17,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.77,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 323.53,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 324.63,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 324.77,
+"type": "photo",
+"data": {
+"n": 3,
+"az": 273,
+"el": 28,
+"r": 3.37,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 327.22,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.98,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 332.26,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.86,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 336.06,
+"type": "click",
+"data": {
+"id": "submitShots",
+"cls": "primary",
+"text": "Send 3 photos to the judge",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 337.28,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 4.02,
+"n": 260642,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 337.63,
+"type": "round_end",
+"data": {
+"target": "crown",
+"tier": "medium",
+"source": "photos",
+"p": 0.923,
+"auto_p": 0.91,
+"win": true,
+"points": 138
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 342.33,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 4,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 347.36,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 3.84,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 352.92,
+"type": "fps",
+"data": {
+"fps": 1,
+"gpu": 4.47,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 352.99,
+"type": "click",
+"data": {
+"id": "r-again",
+"cls": "ghost",
+"text": "Play again (new target)",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 352.99,
+"type": "target",
+"data": {
+"id": "sailboat",
+"tier": "medium"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 357.95,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.02,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 363.0,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.99,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 364.92,
+"type": "click",
+"data": {
+"id": "prompt",
+"cls": "",
+"text": "a small red mushroom house",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 368.04,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.03,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 373.12,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.84,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 378.16,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.89,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 380.56,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "05332aa06851521c",
+"t": 381.79,
+"type": "control",
+"data": {
+"id": "prompt",
+"value": "a small wooden watercraft with a tall ma"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 381.79,
+"type": "click",
+"data": {
+"id": "go",
+"cls": "primary",
+"text": "Generate 3D on GPU",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 381.83,
+"type": "job_submit",
+"data": {
+"id": "IBxoNLaUU6zD",
+"mode": "challenge",
+"target": "sailboat",
+"prompt": "a small wooden watercraft with a tall mast and a big white triangle of cloth that catches the wind"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 383.16,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 3.96,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 388.2,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 3.98,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 393.23,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 4.01,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 398.23,
+"type": "fps",
+"data": {
+"fps": 24,
+"gpu": 3.99,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 403.23,
+"type": "fps",
+"data": {
+"fps": 31,
+"gpu": 4.02,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 408.27,
+"type": "fps",
+"data": {
+"fps": 25,
+"gpu": 3.89,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 411.56,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "05332aa06851521c",
+"t": 412.55,
+"type": "click",
+"data": {
+"id": "menuBtn",
+"cls": "pill btn",
+"text": "\u2630 Menu",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 412.55,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 413.32,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.61,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 414.16,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 417.19,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 418.33,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 6.62,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 420.23,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 422.56,
+"type": "click",
+"data": {
+"id": null,
+"cls": "mode",
+"text": "\ud83c\udfc5 LeaderboardTop players by points. Eve",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 422.56,
+"type": "screen",
+"data": {
+"name": "board"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 423.34,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 6.49,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 428.36,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 6.65,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 432.99,
+"type": "click",
+"data": {
+"id": "boardClose",
+"cls": "ghost",
+"text": "Close",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 432.99,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 433.4,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 6.64,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 435.39,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 438.42,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 438.42,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 6.64,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 441.46,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 443.44,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 6.61,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 444.48,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 447.52,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 448.47,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 6.66,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 450.54,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 453.48,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 6.57,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 453.57,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 456.61,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 458.51,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 6.64,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 459.64,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 462.68,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 463.52,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 6.24,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 465.73,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 468.55,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 6.62,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 468.76,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 473.59,
+"type": "fps",
+"data": {
+"fps": 14,
+"gpu": 6.53,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 474.14,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 477.3,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 478.6,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 6.53,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 480.33,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 483.35,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 483.62,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 6.47,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 486.37,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 488.63,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 6.63,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 489.4,
+"type": "screen",
+"data": {
+"name": "menu"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 493.67,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.63,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 498.68,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 6.62,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 503.7,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 6.63,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 508.73,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.63,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 513.76,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 6.46,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 518.83,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 6.64,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 523.87,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 6.63,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 528.91,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 6.61,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 533.92,
+"type": "fps",
+"data": {
+"fps": 23,
+"gpu": 6.64,
+"n": 260642,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 535.87,
+"type": "job_end",
+"data": {
+"status": "done",
+"target": "sailboat",
+"auto_p": 0.407,
+"auto_win": true,
+"total_s": 141.8
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 538.96,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 7.95,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 544.01,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 8.05,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 549.04,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 8.07,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 554.06,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 7.99,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 559.09,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 8.03,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 564.11,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 8.05,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 569.12,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 7.98,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 574.17,
+"type": "fps",
+"data": {
+"fps": 16,
+"gpu": 8.07,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 578.0,
+"type": "click",
+"data": {
+"id": "r-shoot",
+"cls": "primary",
+"text": "\ud83d\udcf8 Start the photo shoot",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 578.0,
+"type": "screen",
+"data": {
+"name": "photo_shoot",
+"target": "sailboat"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 579.22,
+"type": "fps",
+"data": {
+"fps": 12,
+"gpu": 8.05,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 584.22,
+"type": "fps",
+"data": {
+"fps": 12,
+"gpu": 8.05,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 589.28,
+"type": "fps",
+"data": {
+"fps": 13,
+"gpu": 7.86,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 594.3,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 7.93,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 599.3,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 8.06,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 600.92,
+"type": "zoom",
+"data": {}
+},
+{
+"session": "05332aa06851521c",
+"t": 604.34,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 5.07,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 605.25,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 609.36,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.76,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 614.41,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 3.8,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 619.44,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.77,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 624.46,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 3.93,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 627.51,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 628.62,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 628.77,
+"type": "photo",
+"data": {
+"n": 1,
+"az": 202,
+"el": 28,
+"r": 4.12,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 629.47,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 8.67,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 634.5,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 4.23,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 639.51,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 4.24,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 644.54,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 4.2,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 649.56,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 4.24,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 651.42,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 652.52,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 652.62,
+"type": "photo",
+"data": {
+"n": 2,
+"az": 238,
+"el": 28,
+"r": 4.12,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 654.58,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 4.66,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 655.54,
+"type": "click",
+"data": {
+"id": "gl",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 656.61,
+"type": "click",
+"data": {
+"id": "snapBtn",
+"cls": "primary",
+"text": "\ud83d\udcf7 Take photo",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 656.75,
+"type": "photo",
+"data": {
+"n": 3,
+"az": 274,
+"el": 28,
+"r": 4.12,
+"light": [
+35,
+50
+],
+"backdrop": "white",
+"lit": true
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 659.61,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.13,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 664.66,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.15,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 669.67,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 5.16,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 674.68,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.14,
+"n": 341305,
+"mode": "shoot"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 676.02,
+"type": "click",
+"data": {
+"id": "submitShots",
+"cls": "primary",
+"text": "Send 3 photos to the judge",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 677.42,
+"type": "round_end",
+"data": {
+"target": "sailboat",
+"tier": "medium",
+"source": "photos",
+"p": 0.033,
+"auto_p": 0.407,
+"win": false,
+"points": 0
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 679.69,
+"type": "fps",
+"data": {
+"fps": 19,
+"gpu": 5.01,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 684.72,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.13,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 689.75,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.16,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 694.77,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.14,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 699.83,
+"type": "fps",
+"data": {
+"fps": 18,
+"gpu": 5.12,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 700.26,
+"type": "click",
+"data": {
+"id": "ptEnd",
+"cls": "ghost small",
+"text": "Finish & answer 5 questions",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 700.26,
+"type": "screen",
+"data": {
+"name": "survey"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 704.86,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.14,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 709.86,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.04,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 714.87,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 4.71,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 719.88,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 4.96,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 724.89,
+"type": "fps",
+"data": {
+"fps": 21,
+"gpu": 5.08,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 728.01,
+"type": "click",
+"data": {
+"id": "sv5",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 729.91,
+"type": "fps",
+"data": {
+"fps": 22,
+"gpu": 5.1,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 734.95,
+"type": "fps",
+"data": {
+"fps": 44,
+"gpu": 5.06,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 739.98,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.12,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 745.0,
+"type": "fps",
+"data": {
+"fps": 29,
+"gpu": 5.11,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 750.01,
+"type": "fps",
+"data": {
+"fps": 54,
+"gpu": 5.15,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 755.03,
+"type": "fps",
+"data": {
+"fps": 43,
+"gpu": 4.97,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 760.06,
+"type": "fps",
+"data": {
+"fps": 20,
+"gpu": 5.15,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 765.08,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.18,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 769.69,
+"type": "control",
+"data": {
+"id": "sv5",
+"value": "During the photo shoot the 'Photo shoot'"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 769.69,
+"type": "click",
+"data": {
+"id": "sv1",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 770.09,
+"type": "fps",
+"data": {
+"fps": 50,
+"gpu": 5.1,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 772.04,
+"type": "control",
+"data": {
+"id": "sv1",
+"value": "During the photo shoot the 'Photo shoot'"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 772.04,
+"type": "click",
+"data": {
+"id": "sv2",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 772.35,
+"type": "control",
+"data": {
+"id": "sv2",
+"value": "5"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 772.35,
+"type": "click",
+"data": {
+"id": "sv3",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 774.28,
+"type": "control",
+"data": {
+"id": "sv3",
+"value": "The corner said 11-21 FPS, so turning th"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 774.28,
+"type": "click",
+"data": {
+"id": "sv4",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 774.59,
+"type": "control",
+"data": {
+"id": "sv4",
+"value": "7"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 774.59,
+"type": "click",
+"data": {
+"id": "sv5",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 775.12,
+"type": "fps",
+"data": {
+"fps": 35,
+"gpu": 5.13,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 780.12,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.14,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 785.14,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.13,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 790.16,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.12,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 795.17,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.12,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 800.19,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.14,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 805.21,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.15,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 805.26,
+"type": "click",
+"data": {
+"id": "sv5",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 810.22,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.15,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 815.24,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.15,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 816.4,
+"type": "control",
+"data": {
+"id": "sv5",
+"value": "Don't cover the model with the photo-sho"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 816.4,
+"type": "click",
+"data": {
+"id": "sv3",
+"cls": "",
+"text": "",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 820.26,
+"type": "fps",
+"data": {
+"fps": 58,
+"gpu": 5.19,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 824.1,
+"type": "control",
+"data": {
+"id": "sv3",
+"value": "The FPS counter in the corner of the 3D "
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 824.1,
+"type": "click",
+"data": {
+"id": "svSend",
+"cls": "primary",
+"text": "Send answers",
+"disabled": false
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 824.12,
+"type": "survey_sent",
+"data": {}
+},
+{
+"session": "05332aa06851521c",
+"t": 825.27,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.13,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 830.29,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.13,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 835.31,
+"type": "fps",
+"data": {
+"fps": 61,
+"gpu": 5.14,
+"n": 341305,
+"mode": "view"
+}
+},
+{
+"session": "05332aa06851521c",
+"t": 840.31,
+"type": "fps",
+"data": {
+"fps": 60,
+"gpu": 5.15,
+"n": 341305,
+"mode": "view"
+}
+}
+]

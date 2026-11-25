@@ -1,0 +1,61 @@
+{
+  "prompt": "a slender wild red forest predator with long thin black legs, a very long fluffy tail with a white tip, large black-tipp",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 172061,
+  "load_model_s": 37.5,
+  "train_s": 93.5,
+  "export_s": 1.5,
+  "render_views_s": 6.8,
+  "total_s": 140.8,
+  "peak_vram_mb": 10776.3,
+  "ply": "p20261124_212318_c1a699_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a slender wild red forest predator with long thin black legs, a very long fluffy tail with a white tip, large black-tipp",
+    "save_path": "p20261124_212318_c1a699",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261124_212318_c1a699",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 19.08,
+  "judge": {
+    "prompt_clip": 19.08,
+    "top": [
+      {
+        "label": "a fox",
+        "p": 0.514
+      },
+      {
+        "label": "a corgi dog",
+        "p": 0.357
+      },
+      {
+        "label": "a pineapple",
+        "p": 0.044
+      },
+      {
+        "label": "a strawberry",
+        "p": 0.037
+      },
+      {
+        "label": "a cactus",
+        "p": 0.024
+      }
+    ],
+    "judge_s": 1.1,
+    "target": "a fox",
+    "target_p": 0.514,
+    "target_rank": 1,
+    "win": true
+  }
+}

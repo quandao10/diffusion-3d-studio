@@ -1,5 +1,500 @@
 [
  {
+  "prompt": "a shiny gold king's headwear, a ring with pointed spikes and red gems",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 240608,
+  "load_model_s": 29.7,
+  "train_s": 92.5,
+  "export_s": 0.8,
+  "render_views_s": 6.9,
+  "total_s": 131.3,
+  "peak_vram_mb": 10932.5,
+  "ply": "p20261124_212641_9ef0db_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 26.22,
+  "judge": {
+   "prompt_clip": 26.22,
+   "top": [
+    {
+     "label": "a crown",
+     "p": 0.989
+    },
+    {
+     "label": "a cupcake",
+     "p": 0.003
+    },
+    {
+     "label": "a donut",
+     "p": 0.003
+    },
+    {
+     "label": "a treasure chest",
+     "p": 0.001
+    },
+    {
+     "label": "a castle",
+     "p": 0.001
+    }
+   ],
+   "judge_s": 1.1,
+   "target": "a crown",
+   "target_p": 0.989,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261124_212641_9ef0db",
+  "rel": "data/results/public/p20261124_212641_9ef0db",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1795573741.8650482
+ },
+ {
+  "prompt": "a slender wild red forest predator with long thin black legs, a very long fluffy tail with a white tip, large black-tipp",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 172061,
+  "load_model_s": 37.5,
+  "train_s": 93.5,
+  "export_s": 1.5,
+  "render_views_s": 6.8,
+  "total_s": 140.8,
+  "peak_vram_mb": 10776.3,
+  "ply": "p20261124_212318_c1a699_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 19.08,
+  "judge": {
+   "prompt_clip": 19.08,
+   "top": [
+    {
+     "label": "a fox",
+     "p": 0.514
+    },
+    {
+     "label": "a corgi dog",
+     "p": 0.357
+    },
+    {
+     "label": "a pineapple",
+     "p": 0.044
+    },
+    {
+     "label": "a strawberry",
+     "p": 0.037
+    },
+    {
+     "label": "a cactus",
+     "p": 0.024
+    }
+   ],
+   "judge_s": 1.1,
+   "target": "a fox",
+   "target_p": 0.514,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261124_212318_c1a699",
+  "rel": "data/results/public/p20261124_212318_c1a699",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1795573546.9855788
+ },
+ {
+  "prompt": "a small wooden watercraft with a tall mast and a big white triangle of cloth that catches the wind",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 341305,
+  "load_model_s": 33.6,
+  "train_s": 95.3,
+  "export_s": 2.5,
+  "render_views_s": 7.5,
+  "total_s": 141.8,
+  "peak_vram_mb": 11117.2,
+  "ply": "p20261124_212232_bec3b1_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 21.76,
+  "judge": {
+   "prompt_clip": 21.76,
+   "top": [
+    {
+     "label": "a sailboat",
+     "p": 0.407
+    },
+    {
+     "label": "a crown",
+     "p": 0.215
+    },
+    {
+     "label": "an umbrella",
+     "p": 0.111
+    },
+    {
+     "label": "a hot air balloon",
+     "p": 0.092
+    },
+    {
+     "label": "a cupcake",
+     "p": 0.057
+    }
+   ],
+   "judge_s": 2.5,
+   "target": "a sailboat",
+   "target_p": 0.407,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261124_212232_bec3b1",
+  "rel": "data/results/public/p20261124_212232_bec3b1",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1795573501.6302369
+ },
+ {
+  "prompt": "an old boxy wooden cabinet with a glowing glass screen, two rabbit-ear antennas and knobs on the side",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 316614,
+  "load_model_s": 28.1,
+  "train_s": 92.2,
+  "export_s": 2.4,
+  "render_views_s": 7.2,
+  "total_s": 133.0,
+  "peak_vram_mb": 11061.9,
+  "ply": "p20261124_212220_05a67b_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 18.2,
+  "judge": {
+   "prompt_clip": 18.2,
+   "top": [
+    {
+     "label": "a treasure chest",
+     "p": 0.822
+    },
+    {
+     "label": "a television",
+     "p": 0.066
+    },
+    {
+     "label": "a crown",
+     "p": 0.022
+    },
+    {
+     "label": "a hot air balloon",
+     "p": 0.007
+    },
+    {
+     "label": "a cupcake",
+     "p": 0.007
+    }
+   ],
+   "judge_s": 2.7,
+   "target": "a television",
+   "target_p": 0.066,
+   "target_rank": 2,
+   "win": false
+  },
+  "name": "p20261124_212220_05a67b",
+  "rel": "data/results/public/p20261124_212220_05a67b",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1795573481.2760832
+ },
+ {
+  "prompt": "a tall white space launch vehicle with red fins and a pointed nose cone",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 159073,
+  "load_model_s": 28.5,
+  "train_s": 93.0,
+  "export_s": 0.5,
+  "render_views_s": 5.7,
+  "total_s": 129.2,
+  "peak_vram_mb": 10772.8,
+  "ply": "p20261124_212152_5b6374_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 21.17,
+  "judge": {
+   "prompt_clip": 21.17,
+   "top": [
+    {
+     "label": "a rocket",
+     "p": 0.888
+    },
+    {
+     "label": "an umbrella",
+     "p": 0.057
+    },
+    {
+     "label": "a hot air balloon",
+     "p": 0.039
+    },
+    {
+     "label": "a crown",
+     "p": 0.005
+    },
+    {
+     "label": "a windmill",
+     "p": 0.005
+    }
+   ],
+   "judge_s": 1.2,
+   "target": "a rocket",
+   "target_p": 0.888,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261124_212152_5b6374",
+  "rel": "data/results/public/p20261124_212152_5b6374",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1795573453.506874
+ },
+ {
+  "prompt": "a small wild orange canine with a bushy white-tipped tail, tall pointed ears, black legs and a narrow snout, sitting",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 211482,
+  "load_model_s": 33.7,
+  "train_s": 91.7,
+  "export_s": 0.7,
+  "render_views_s": 6.5,
+  "total_s": 136.5,
+  "peak_vram_mb": 10851.0,
+  "ply": "p20261124_211839_092082_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 22.15,
+  "judge": {
+   "prompt_clip": 22.15,
+   "top": [
+    {
+     "label": "a corgi dog",
+     "p": 0.568
+    },
+    {
+     "label": "a fox",
+     "p": 0.432
+    },
+    {
+     "label": "a cactus",
+     "p": 0.0
+    },
+    {
+     "label": "a teddy bear",
+     "p": 0.0
+    },
+    {
+     "label": "a pineapple",
+     "p": 0.0
+    }
+   ],
+   "judge_s": 3.5,
+   "target": "a fox",
+   "target_p": 0.432,
+   "target_rank": 2,
+   "win": false
+  },
+  "name": "p20261124_211839_092082",
+  "rel": "data/results/public/p20261124_211839_092082",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1795573265.8714595
+ },
+ {
+  "prompt": "a golden royal headpiece with pointed spikes and red jewels, worn by a king",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 275907,
+  "load_model_s": 54.3,
+  "train_s": 93.0,
+  "export_s": 0.9,
+  "render_views_s": 7.2,
+  "total_s": 161.7,
+  "peak_vram_mb": 10967.9,
+  "ply": "p20261124_211717_cb51fb_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 20.72,
+  "judge": {
+   "prompt_clip": 20.72,
+   "top": [
+    {
+     "label": "a crown",
+     "p": 0.8
+    },
+    {
+     "label": "a cactus",
+     "p": 0.136
+    },
+    {
+     "label": "a pineapple",
+     "p": 0.025
+    },
+    {
+     "label": "a strawberry",
+     "p": 0.007
+    },
+    {
+     "label": "a teddy bear",
+     "p": 0.003
+    }
+   ],
+   "judge_s": 6.0,
+   "target": "a crown",
+   "target_p": 0.8,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261124_211717_cb51fb",
+  "rel": "data/results/public/p20261124_211717_cb51fb",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1795573208.7540288
+ },
+ {
+  "prompt": "a golden royal headpiece worn by a king, a ring of gold with pointed spikes and red jewels",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 260642,
+  "load_model_s": 54.5,
+  "train_s": 92.6,
+  "export_s": 0.8,
+  "render_views_s": 7.4,
+  "total_s": 161.7,
+  "peak_vram_mb": 10956.5,
+  "ply": "p20261124_211716_904ac5_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 22.16,
+  "judge": {
+   "prompt_clip": 22.16,
+   "top": [
+    {
+     "label": "a crown",
+     "p": 0.91
+    },
+    {
+     "label": "a donut",
+     "p": 0.037
+    },
+    {
+     "label": "a cupcake",
+     "p": 0.017
+    },
+    {
+     "label": "a pineapple",
+     "p": 0.007
+    },
+    {
+     "label": "a hamburger",
+     "p": 0.004
+    }
+   ],
+   "judge_s": 6.1,
+   "target": "a crown",
+   "target_p": 0.91,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261124_211716_904ac5",
+  "rel": "data/results/public/p20261124_211716_904ac5",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1795573208.7030284
+ },
+ {
+  "prompt": "a red two-wheeled pedal vehicle with a metal frame, handlebars, chain and a leather saddle",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 268207,
+  "load_model_s": 52.7,
+  "train_s": 93.7,
+  "export_s": 0.8,
+  "render_views_s": 6.7,
+  "total_s": 160.2,
+  "peak_vram_mb": 10934.4,
+  "ply": "p20261124_211720_7a3267_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "clip_prompt": 17.4,
+  "judge": {
+   "prompt_clip": 17.4,
+   "top": [
+    {
+     "label": "a bicycle",
+     "p": 0.966
+    },
+    {
+     "label": "a car",
+     "p": 0.019
+    },
+    {
+     "label": "a strawberry",
+     "p": 0.002
+    },
+    {
+     "label": "a robot",
+     "p": 0.002
+    },
+    {
+     "label": "a teddy bear",
+     "p": 0.001
+    }
+   ],
+   "judge_s": 5.8,
+   "target": "a bicycle",
+   "target_p": 0.966,
+   "target_rank": 1,
+   "win": true
+  },
+  "name": "p20261124_211720_7a3267",
+  "rel": "data/results/public/p20261124_211720_7a3267",
+  "community": true,
+  "has_benchmark": false,
+  "mtime": 1795573208.4120264
+ },
+ {
   "prompt": "a pink frosted fried ring pastry with rainbow sprinkles",
   "seed": 0,
   "iters": 500,

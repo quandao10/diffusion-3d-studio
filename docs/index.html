@@ -14,11 +14,14 @@
     <div class="logo" aria-hidden="true"></div>
     <div>
       <h1>Interactive Diffusion-Based 3D Generation Studio</h1>
-      <p class="sub">CS 549 · Beta build v0.3 (Assignment 5) · Minh Quan Dao (qd66) · Pillars: <b>Procedural Generation</b> + <b>Rendering</b></p>
+      <p class="sub">CS 549 · Feature-complete build v1.0-rc (Assignment 6) · Minh Quan Dao (qd66) · Pillars: <b>Procedural Generation</b> + <b>Rendering</b></p>
     </div>
   </div>
   <div class="status">
     <button id="menuBtn" class="pill btn" title="Main menu (Esc)">☰ Menu</button>
+    <button id="helpBtn" class="pill btn" title="How to play">? Help</button>
+    <button id="muteBtn" class="pill btn" title="Sound on/off" aria-label="Sound on/off">🔊</button>
+    <span id="nickPill" class="pill" hidden></span>
     <span id="modechip" class="pill">Create</span>
     <span id="score" class="pill mono" hidden></span>
     <span id="mode" class="pill">connecting…</span>
@@ -32,11 +35,12 @@
   <section class="card gen" aria-labelledby="h-gen">
     <h2 id="h-gen"><span class="num">1</span> <span id="genTitle">Generate (text → 3D)</span></h2>
     <div id="challengeBox" class="challenge" hidden>
-      <div class="ch-head"><span class="badge ch">CHALLENGE</span><span id="ch-round" class="mono dim"></span></div>
+      <div class="ch-head"><span class="badge ch">CHALLENGE</span><span id="ch-tier" class="tier"></span><span id="ch-round" class="mono dim"></span></div>
       <div class="ch-target">Make the judge see <b id="ch-label">–</b></div>
       <div class="ch-taboo">Don't say: <span id="ch-taboo"></span></div>
-      <p class="dim small">Write a prompt that describes it without those words. When your 3D model is done, you get a preview verdict from 8 automatic views, then a <b>photo shoot</b>: light and frame the model yourself, take up to 3 photos, and the CLIP judge guesses which of 20 objects it is from your photos. If it guesses yours, you win points.</p>
-      <button id="ch-new" class="ghost small">↻ New target</button>
+      <p class="dim small">Write a prompt that describes it without those words. When your 3D model is done, you get a preview verdict from 8 automatic views, then a <b>photo shoot</b>: light and frame the model yourself, take up to 3 photos, and the CLIP judge guesses which of the 40 objects it is from your photos. If it guesses yours, you win 100 × its confidence × the difficulty bonus.</p>
+      <div class="ch-tools"><button id="ch-new" class="ghost small">↻ New target</button>
+        <label class="small">difficulty <select id="ch-tierSel"><option value="any">any</option><option value="easy">easy ×1</option><option value="medium">medium ×1.5</option><option value="hard">hard ×2</option></select></label></div>
     </div>
     <label class="field">Prompt
       <textarea id="prompt" rows="2" spellcheck="false" maxlength="200" placeholder="e.g. a ceramic teapot shaped like a pumpkin">a small red mushroom house</textarea>
@@ -202,14 +206,15 @@
     <p class="tagline">Type an idea. Watch a frozen diffusion model sculpt it out of 3D Gaussians. Spin it in real time.</p>
     <div class="modes">
       <button class="mode" data-go="create"><b>▶ Create</b><span>Free text-to-3D: pick a guidance method, watch the optimisation live, explore the result.</span></button>
-      <button class="mode" data-go="challenge"><b>🎯 Challenge</b><span>Describe a secret object without naming it, then light and photograph your 3D model. If the CLIP judge recognises it in your photos, you win.</span></button>
+      <button class="mode" data-go="challenge"><b>🎯 Challenge</b><span>Describe a secret object without naming it, then light and photograph your 3D model. If the AI judge recognises it in your photos, you score.</span></button>
       <button class="mode" data-go="exhibit"><b>🏛 Exhibition</b><span>Your trophies and creations side by side on one lit stage, rendered live with level of detail.</span></button>
+      <button class="mode" data-go="board"><b>🏅 Leaderboard</b><span>Top players by points. Every Challenge round is scored on the server.</span></button>
       <button class="mode" data-go="gallery"><b>🖼 Gallery</b><span>Render every model made so far in the browser. No GPU needed.</span></button>
       <button class="mode" data-go="how"><b>ⓘ How it works</b><span>Pipeline, measured guidance comparison and stress test.</span></button>
     </div>
     <p id="menuStatus" class="mono small menu-status"></p>
     <p id="menuOffline" class="note" hidden>This is the static build: Create and Challenge need the live GPU server. The gallery and viewer work here.</p>
-    <p class="dim small">CS 549 · Minh Quan Dao (qd66) · Beta v0.3 · Esc = menu</p>
+    <p class="dim small">CS 549 · Minh Quan Dao (qd66) · v1.0-rc · Esc = menu · ? = help</p>
   </div>
 </div>
 
@@ -234,6 +239,46 @@
       <a id="r-ply" class="ghost btnlink" download>⬇ .ply</a>
       <button id="r-menu" class="ghost">Main menu</button>
     </div>
+  </div>
+</div>
+
+<!-- first visit: how to play -->
+<div id="onboard" class="overlay" hidden>
+  <div class="menu-card onboard" role="dialog" aria-labelledby="obTitle">
+    <h1 id="obTitle">How to play</h1>
+    <ol class="steps">
+      <li><b>1 · Describe.</b> You get a secret object (say, <i>a lighthouse</i>). Describe it in the prompt box <b>without</b> the forbidden words shown in red.</li>
+      <li><b>2 · Generate.</b> Press <b>Generate 3D on GPU</b>. A diffusion model sculpts your words into a 3D model in about 2–3 minutes. You can watch it form, or stop it.</li>
+      <li><b>3 · Photo shoot.</b> Drag the model to turn it, scroll to zoom, move the light, pick a backdrop, then press <b>📷 Take photo</b> (up to 3).</li>
+      <li><b>4 · Verdict.</b> An AI judge looks only at your photos and guesses which of 40 objects it is. Right guess = points; harder targets pay more.</li>
+    </ol>
+    <label class="field">Your name on the leaderboard <input id="obNick" maxlength="16" placeholder="anonymous"></label>
+    <div class="r-actions"><button id="obGo" class="primary">Let's play</button><button id="obSkip" class="ghost">Just look around</button></div>
+  </div>
+</div>
+
+<!-- leaderboard -->
+<div id="board" class="overlay" hidden>
+  <div class="menu-card" role="dialog" aria-labelledby="bTitle">
+    <h1 id="bTitle">🏅 Leaderboard</h1>
+    <table class="tbl board"><thead><tr><th>#</th><th>player</th><th>points</th><th>wins</th><th>rounds</th><th>best</th></tr></thead><tbody id="boardRows"></tbody></table>
+    <p id="boardMe" class="small dim"></p>
+    <div class="r-actions"><button id="boardPlay" class="primary">Play a Challenge</button><button id="boardClose" class="ghost">Close</button></div>
+  </div>
+</div>
+
+<!-- playtest mode (?playtest=ID): facilitator bar + post-play interview -->
+<div id="ptBar" class="ptbar" hidden>🧪 Playtest · subject <b id="ptId"></b> · events are logged for the user study <button id="ptEnd" class="ghost small">Finish &amp; answer 5 questions</button></div>
+<div id="survey" class="overlay" hidden>
+  <div class="menu-card survey" role="dialog" aria-labelledby="svTitle">
+    <h1 id="svTitle">Thanks for playing! 5 quick questions</h1>
+    <label class="field">1. What was the most confusing or frustrating part of the experience? <textarea id="sv1" rows="2"></textarea></label>
+    <label class="field">2. On a scale of 1–10, how intuitive were the controls? <input id="sv2" type="number" min="1" max="10"></label>
+    <label class="field">3. Did you notice any visual glitches or lag? If so, when? <textarea id="sv3" rows="2"></textarea></label>
+    <label class="field">4. On a scale of 1–10, how fun was the Challenge? <input id="sv4" type="number" min="1" max="10"></label>
+    <label class="field">5. What one change would make it better? <textarea id="sv5" rows="2"></textarea></label>
+    <div class="r-actions"><button id="svSend" class="primary">Send answers</button></div>
+    <p id="svMsg" class="small dim"></p>
   </div>
 </div>
 

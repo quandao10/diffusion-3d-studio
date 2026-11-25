@@ -1,0 +1,61 @@
+{
+  "prompt": "a small wild orange canine with a bushy white-tipped tail, tall pointed ears, black legs and a narrow snout, sitting",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 211482,
+  "load_model_s": 33.7,
+  "train_s": 91.7,
+  "export_s": 0.7,
+  "render_views_s": 6.5,
+  "total_s": 136.5,
+  "peak_vram_mb": 10851.0,
+  "ply": "p20261124_211839_092082_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a small wild orange canine with a bushy white-tipped tail, tall pointed ears, black legs and a narrow snout, sitting",
+    "save_path": "p20261124_211839_092082",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261124_211839_092082",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 22.15,
+  "judge": {
+    "prompt_clip": 22.15,
+    "top": [
+      {
+        "label": "a corgi dog",
+        "p": 0.568
+      },
+      {
+        "label": "a fox",
+        "p": 0.432
+      },
+      {
+        "label": "a cactus",
+        "p": 0.0
+      },
+      {
+        "label": "a teddy bear",
+        "p": 0.0
+      },
+      {
+        "label": "a pineapple",
+        "p": 0.0
+      }
+    ],
+    "judge_s": 3.5,
+    "target": "a fox",
+    "target_p": 0.432,
+    "target_rank": 2,
+    "win": false
+  }
+}

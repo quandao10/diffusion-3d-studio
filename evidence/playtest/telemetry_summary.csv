@@ -1,0 +1,6 @@
+subject,sessions,minutes,clicks,disabled_clicks,help_opened,first_submit_s,jobs_done,jobs_stopped,ready_to_verdict_s,photos,rounds,wins,points,sources,fps_median,fps_min,js_errors,ui_errors,intuitive_1_10,fun_1_10
+S1,1,12.8,40,0,1,67.23,2,0,90.1,6,2,1,148,photos/photos,19.0,1,0,0,6,7
+S2,1,14.0,40,0,1,65.69,2,0,95.4,6,2,1,138,photos/photos,21.0,1,0,0,5,7
+S3,1,13.3,34,0,0,70.1,1,0,121.6,3,1,1,196,photos,20,1,0,0,5,7
+S4,1,14.0,35,0,0,147.88,2,0,98.3,6,2,0,0,photos/photos,19.0,1,0,0,7,6
+S5,2,9.2,33,0,1,260.62,2,1,62.7,4,2,2,328,auto/photos,20.0,1,0,0,6,7

@@ -1,0 +1,61 @@
+{
+  "prompt": "a shiny gold king's headwear, a ring with pointed spikes and red gems",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 240608,
+  "load_model_s": 29.7,
+  "train_s": 92.5,
+  "export_s": 0.8,
+  "render_views_s": 6.9,
+  "total_s": 131.3,
+  "peak_vram_mb": 10932.5,
+  "ply": "p20261124_212641_9ef0db_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a shiny gold king's headwear, a ring with pointed spikes and red gems",
+    "save_path": "p20261124_212641_9ef0db",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261124_212641_9ef0db",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 26.22,
+  "judge": {
+    "prompt_clip": 26.22,
+    "top": [
+      {
+        "label": "a crown",
+        "p": 0.989
+      },
+      {
+        "label": "a cupcake",
+        "p": 0.003
+      },
+      {
+        "label": "a donut",
+        "p": 0.003
+      },
+      {
+        "label": "a treasure chest",
+        "p": 0.001
+      },
+      {
+        "label": "a castle",
+        "p": 0.001
+      }
+    ],
+    "judge_s": 1.1,
+    "target": "a crown",
+    "target_p": 0.989,
+    "target_rank": 1,
+    "win": true
+  }
+}

@@ -1,0 +1,37 @@
+{
+ "S1": {
+  "confusing": "The photo shoot panel sits on top of the 3D viewer and hides the lower half of my model, and the camera starts very zoomed in, so I was framing half-blind (the photo thumbnails did show the whole model). During the ~2.5 min wait the big viewer kept showing the old owl; my model only appeared in the small snapshot strip further down, which I found by scrolling. Also: closing the Leaderboard dropped me back into the menu, and Esc on Help opened the menu.",
+  "intuitive_1_10": 6,
+  "glitches": "FPS overlay dropped to 3 FPS once while my first job was starting (around 2 min in); otherwise 13-21 FPS. The MEDIUM/HARD badge overlaps the round 1 / 0 wins text. The playtest bar covers the backdrop controls under the viewer. No crashes.",
+  "fun_1_10": 7,
+  "change": "Move the photo shoot controls off the 3D view and show my model forming live in the main viewer while it trains; and when I lose, tell me why the judge picked something else (my TV came out as a treasure chest)."
+ },
+ "S2": {
+  "confusing": "During the photo shoot the 'Photo shoot' box sits on top of the model, so I could only see the tip of it and was guessing what my photos looked like. On the sailboat my own photos dropped the judge from 41% (auto camera) to 3% and I lost; I didn't realise keeping the auto verdict would have been safer. Also many words I didn't understand (CFG scale, SDS loss, Gaussians, CLIP, guidance). Scrolling with the mouse over the 3D view zooms the model instead of scrolling the page.",
+  "intuitive_1_10": 5,
+  "glitches": "The FPS counter in the corner of the 3D view showed only 11-21 FPS (lowest, 11, right when the sailboat photo shoot opened). Right after pressing Generate the snapshot strip showed a broken image ('training snapshot strip'). The 'MEDIUM x1.5' badge overlaps the 'round 1 - 0 wins' text. Closing the Leaderboard dropped me back in the menu instead of the game (Escape got me out). A long scary warning text appeared in the log box while loading.",
+  "fun_1_10": 7,
+  "change": "Don't cover the model with the photo-shoot box: show a large preview of exactly what the photo will look like (and warn me if my photo is worse than the automatic view). Hide the technical settings for normal players."
+ },
+ "S3": {
+  "confusing": "On my phone the 'Photo shoot' panel sits on top of the 3D view and covers almost all of it, so I could barely see the model while framing - I rotated it blind and judged from the tiny thumbnails. The purple Playtest bar also covers the buttons at the bottom of the result pop-ups (I tapped a sliver of an 'Ex...' button without knowing what it was) and the pop-ups would not scroll. My first tap on 'Send 3 photos to the judge' seemed to do nothing.",
+  "intuitive_1_10": 5,
+  "glitches": "The viewer ran about 16-22 FPS on screen (33 FPS on one gallery owl), GPU 1-10 ms, so orbiting felt choppy. Exhibition with 8 models: the objects overlap and interpenetrate in one clump; LOD 0.6M vs 1.2M looked the same at this canvas size. Splats show as coarse glittery discs (bike wheels, owl). Once the bike view turned into a full-canvas red blur (camera too close) until I hit reset view. The FPS overlay text is cut off on the right and covers the top of the canvas.",
+  "fun_1_10": 7,
+  "change": "On phones, put the photo-shoot controls in a bar below the canvas instead of on top of it, make the canvas bigger, and keep the playtest bar from covering buttons."
+ },
+ "S4": {
+  "confusing": "The photo shoot actively hurt me. Both rounds (fox, hard) my 3 photos LOWERED the judge's confidence vs the automatic preview (43%->28%, then 51%->29%), and in round 2 the preview already said fox (51%), so the photo shoot turned a win into 0 pts. Nothing tells you which angles the judge likes or warns you before you send. Also the prompt box silently cut my 2nd prompt at ~120 characters ('large black-tipp') with no counter, so 'pointed ears, muzzle, amber eyes' never reached the model.",
+  "intuitive_1_10": 7,
+  "glitches": "No real lag (renderer 16-21 FPS). The Photo shoot panel covers the lower half of the 3D view, so I could not see the legs while framing (the photos did include them). The main viewer kept showing the old owl example while my model trained; the live progress was only in the snapshot strip lower down. 'red' in my prompt came out magenta/pink.",
+  "fun_1_10": 6,
+  "change": "Show the judge's live guess (or at least the confidence) while framing in the photo shoot, or let me keep the better of auto-verdict vs my photos; and show a character counter/limit on the prompt box."
+ },
+ "S5": {
+  "confusing": "When I left the photo shoot halfway (Esc -> menu -> Create), my rocket round was scored on the auto-camera verdict without asking me and the photo I had taken was gone; I only noticed from the 178 pts in the header. Also the photo-shoot panel sits on top of the 3D view, so I could barely see or drag the model I was photographing. After reloading during a generation the challenge card disappeared (plain Create panel with a default prompt) until the model finished.",
+  "intuitive_1_10": 6,
+  "glitches": "After Stop + 'Retry this target' the snapshot strip showed a broken image (alt text 'training snapshot strip'). While my new job trained, the renderer kept showing the previous model (pineapple / owl). FPS dropped to 3 once right after clicking the gallery. Clicking a gallery item scrolled the list sideways so the thumbnails were cut off. The forbidden-word warning only appears below the fold next to the greyed Generate button.",
+  "fun_1_10": 7,
+  "change": "Move the photo-shoot panel off the 3D view (or make it collapsible), and ask before auto-scoring a round when I leave the photo shoot."
+ }
+}

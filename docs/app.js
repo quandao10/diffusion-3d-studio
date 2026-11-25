@@ -11,12 +11,82 @@ const GRAD_KEYS = [["xyz", "position"], ["features_dc", "colour"], ["opacity", "
 const st = { mode: "create", target: null, lastTargetId: null, galleryTick: 0, live: false, cfg: {}, runs: [], mine: [], sel: null, base: null, mult: 1, metrics: [], jobId: null, lastSnapStep: -1, polling: false };
 const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
 const runPath = (r) => r.rel || `${DATA}/${r.name}`;
+const LS = { get(k) { try { return localStorage.getItem(k); } catch { return null; } }, set(k, v) { try { localStorage.setItem(k, v); } catch { /* storage off */ } } };
+const hex = (n) => Array.from(crypto.getRandomValues(new Uint8Array(n)), (b) => b.toString(16).padStart(2, "0")).join("");
+function playerId() { let p = LS.get("studio.player"); if (!p) { p = hex(16); LS.set("studio.player", p); } return p; }
+const nick = () => LS.get("studio.nick") || "";
+
+// ------------------------------------------------------------------ sound effects (WebAudio, synthesised: no audio files to load)
+const sfx = (() => {
+  let ctx = null, muted = LS.get("studio.mute") === "1";
+  const tone = (f, at, dur, type = "sine", gain = 0.07) => {
+    const o = ctx.createOscillator(), g = ctx.createGain();
+    o.type = type; o.frequency.value = f;
+    g.gain.setValueAtTime(0, ctx.currentTime + at);
+    g.gain.linearRampToValueAtTime(gain, ctx.currentTime + at + 0.01);
+    g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + at + dur);
+    o.connect(g).connect(ctx.destination); o.start(ctx.currentTime + at); o.stop(ctx.currentTime + at + dur + 0.02);
+  };
+  const noise = (dur, gain = 0.12) => {
+    const b = ctx.createBuffer(1, Math.floor(ctx.sampleRate * dur), ctx.sampleRate), d = b.getChannelData(0);
+    for (let i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 3);
+    const s = ctx.createBufferSource(), g = ctx.createGain(), f = ctx.createBiquadFilter();
+    f.type = "highpass"; f.frequency.value = 1800; g.gain.value = gain;
+    s.buffer = b; s.connect(f).connect(g).connect(ctx.destination); s.start();
+  };
+  const SOUNDS = {
+    click: () => tone(880, 0, 0.05, "triangle", 0.03),
+    start: () => { tone(392, 0, 0.12); tone(523, 0.1, 0.18); },
+    done: () => { tone(523, 0, 0.12); tone(659, 0.1, 0.12); tone(784, 0.2, 0.25); },
+    shutter: () => { noise(0.09); tone(1400, 0.05, 0.04, "square", 0.02); },
+    win: () => [523, 659, 784, 1047].forEach((f, i) => tone(f, i * 0.11, 0.3, "triangle", 0.08)),
+    loss: () => { tone(392, 0, 0.22, "sawtooth", 0.035); tone(311, 0.2, 0.4, "sawtooth", 0.035); },
+  };
+  return {
+    get muted() { return muted; },
+    toggle() { muted = !muted; LS.set("studio.mute", muted ? "1" : "0"); return muted; },
+    play(name) {
+      if (muted) return;
+      try { ctx ||= new (window.AudioContext || window.webkitAudioContext)(); if (ctx.state === "suspended") ctx.resume(); SOUNDS[name]?.(); } catch { /* no audio */ }
+    },
+  };
+})();
+
+// ------------------------------------------------------------------ playtest mode (?playtest=SUBJECT): event log for the user study
+const PT = (() => {
+  const id = new URLSearchParams(location.search).get("playtest");
+  if (!id || !/^[A-Za-z0-9_-]{1,32}$/.test(id)) return { on: false, log() {} };
+  const session = hex(8), t0 = performance.now(), buf = [];
+  const log = (type, data = {}) => buf.push({ t: +((performance.now() - t0) / 1000).toFixed(2), type, data });
+  const flush = (beacon) => {
+    if (!buf.length) return;
+    const body = JSON.stringify({ subject: id, session, events: buf.splice(0, 200) });
+    if (beacon && navigator.sendBeacon) navigator.sendBeacon("api/telemetry", new Blob([body], { type: "application/json" }));
+    else fetch("api/telemetry", { method: "POST", headers: { "Content-Type": "application/json" }, body }).catch(() => {});
+  };
+  setInterval(() => flush(false), 5000);
+  addEventListener("pagehide", () => flush(true));
+  return { on: true, id, session, log, flush };
+})();
+if (PT.on) {
+  PT.log("start", { w: innerWidth, h: innerHeight, ua: navigator.userAgent.slice(0, 120) });
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest("button, a, select, input, textarea, canvas, .run, label");
+    if (el) PT.log("click", { id: el.id || null, cls: (el.className || "").toString().slice(0, 40), text: (el.textContent || "").trim().slice(0, 40), disabled: !!el.disabled });
+  }, true);
+  document.addEventListener("change", (e) => PT.log("control", { id: e.target.id, value: String(e.target.value).slice(0, 40) }), true);
+  addEventListener("error", (e) => PT.log("js_error", { msg: String(e.message).slice(0, 200) }));
+  addEventListener("unhandledrejection", (e) => PT.log("js_error", { msg: String(e.reason).slice(0, 200) }));
+  let lastWheel = 0;
+  addEventListener("wheel", () => { if (performance.now() - lastWheel > 2000) { lastWheel = performance.now(); PT.log("zoom"); } }, { passive: true });
+}
 
 // ------------------------------------------------------------------ viewer
 let stats = {};
 const viewer = new SplatViewer($("#gl"), {
   onStats: (s) => {
     stats = s;
+    if (PT.on && performance.now() - (st.ptFps || 0) > 5000) { st.ptFps = performance.now(); PT.log("fps", { fps: s.fps, gpu: s.gpuMs != null ? +s.gpuMs.toFixed(2) : null, n: s.count, mode: st.round ? "shoot" : st.exhibit ? "exhibit" : "view" }); }
     if (!st.base) return;
     $("#hud").textContent =
       `${s.fps} FPS (rAF)` + (s.gpuMs != null ? `  ·  GPU ${s.gpuMs.toFixed(2)} ms` : "") +
@@ -91,6 +161,12 @@ async function loadRuns() {
     b.innerHTML = `<img alt="" src="${runPath(r)}/views/view_000.png"><div><b title="${esc(r.prompt)}">${r.mine ? "★ " : ""}${esc(r.prompt)}</b><i class="tag ${r.community ? "comm" : "ex"}">${r.mine ? "yours" : r.community ? "community" : "example"}</i>
       <span>${esc((r.guidance || "sds").toUpperCase())} · seed ${esc(r.seed)} · ${esc(r.iters)} it · ${esc(r.train_s)}s · ${(r.num_gaussians_final / 1000).toFixed(1)}k G</span></div>`;
     b.onclick = () => selectRun(r.name);
+    if (st.cfg.admin && st.live && r.community) {
+      const h = document.createElement("button");
+      h.className = "ghost hidebtn"; h.textContent = "hide"; h.title = "owner: remove from the public gallery";
+      h.onclick = async (e) => { e.stopPropagation(); if (!confirm(`Hide “${r.prompt}” from the gallery?`)) return; await postJSON(`api/runs/${encodeURIComponent(r.name)}/hide`, {}); loadRuns(); };
+      b.querySelector("div b")?.after(h);
+    }
     el.appendChild(b);
   }
 }
@@ -226,13 +302,14 @@ $("#stop").onclick = async () => {
 };
 
 async function postJSON(url, body, headers = {}) {
-  const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", ...headers }, body: JSON.stringify(body) });
+  const r = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json", "X-Studio-Player": playerId(), ...headers }, body: JSON.stringify(body) });
   const d = await r.json().catch(() => ({}));
   if (!r.ok) throw new Error(d.detail || `${r.status}`);
   return d;
 }
 
 function showError(e) {
+  PT.log("ui_error", { msg: String(e.message).slice(0, 200) });
   $("#jobbox").hidden = false;
   const b = $("#jobstatus");
   b.textContent = "not started"; b.className = "badge failed";
@@ -243,7 +320,9 @@ function showError(e) {
 }
 
 function startJob(id) {
-  if (st.round) { finishRound(st.round.auto, "auto"); $("#result").hidden = true; }
+  if (st.round) endRound([], { silent: true });
+  PT.log("job_submit", { id, mode: st.mode, target: st.target?.id, prompt: $("#prompt").value.slice(0, 120) });
+  sfx.play("start");
   st.jobId = id; st.metrics = []; st.lastSnapStep = -1; drawMetrics();
   // reset the job box so values from the previous job are never shown for the new one
   for (const k of ["eta", "step", "elapsed", "loss", "t", "res", "n", "vram", "gxyz"]) $(`#k-${k}`).textContent = "–";
@@ -428,8 +507,9 @@ async function loadComparison() {
 }
 
 // ------------------------------------------------------------------ game loop: START (menu) -> ACTIVE (studio) -> END (result)
-const loadStats = () => { const z = { rounds: 0, wins: 0, streak: 0, points: 0 }; try { return { ...z, ...JSON.parse(sessionStorage.getItem("studio.stats")) }; } catch { return z; } };
-function saveStats(s) { try { sessionStorage.setItem("studio.stats", JSON.stringify(s)); } catch {} showScore(); }
+// points / wins / rounds come from the server (rounds are scored there); the streak is kept in the browser
+const loadStats = () => { const z = { rounds: 0, wins: 0, streak: 0, points: 0 }; try { return { ...z, ...JSON.parse(LS.get("studio.stats")) }; } catch { return z; } };
+function saveStats(s) { LS.set("studio.stats", JSON.stringify(s)); showScore(); }
 function showScore() {
   const s = loadStats();
   $("#score").hidden = !s.rounds;
@@ -438,7 +518,8 @@ function showScore() {
 }
 
 function showMenu() {
-  if (st.round) finishRound(st.round.auto, "auto");   // leaving mid-round keeps the auto-camera verdict
+  if (st.round) endRound([], { silent: true });   // leaving mid-round keeps the auto-camera verdict
+  PT.log("screen", { name: "menu" });
   $("#result").hidden = true;
   $("#menu").hidden = false;
   const q = st.lastQ;
@@ -450,6 +531,9 @@ function showMenu() {
 
 function enterMode(m) {
   $("#menu").hidden = true;
+  PT.log("screen", { name: m });
+  sfx.play("click");
+  if (m === "board") { showBoard(); return; }
   if (m === "gallery") { m = "create"; setTimeout(() => { $("#runs").scrollIntoView({ behavior: "smooth", block: "center" }); studio.flash("#runs"); }, 50); }
   if (m === "how") { setTimeout(() => $(".algo").scrollIntoView({ behavior: "smooth" }), 50); return; }
   if (m === "exhibit") { showExhibit(); setTimeout(() => $(".viewer").scrollIntoView({ behavior: "smooth", block: "start" }), 50); return; }
@@ -465,7 +549,8 @@ function enterMode(m) {
 }
 
 function newTarget() {
-  const list = st.cfg.challenge || [];
+  const tier = $("#ch-tierSel").value;
+  const list = (st.cfg.challenge || []).filter((t) => tier === "any" || t.tier === tier);
   if (!list.length) return;
   let t;
   do { t = list[Math.floor(Math.random() * list.length)]; } while (list.length > 1 && t.id === st.lastTargetId);
@@ -477,8 +562,14 @@ function setTarget(t) {
   st.target = t; st.lastTargetId = t.id;
   $("#ch-label").textContent = t.label;
   $("#ch-taboo").innerHTML = t.taboo.map((w) => `<i>${esc(w)}</i>`).join("");
+  const m = st.cfg.tiers?.[t.tier]?.mult;
+  $("#ch-tier").className = `tier ${t.tier || ""}`;
+  $("#ch-tier").textContent = t.tier ? `${t.tier}${m ? ` ×${m}` : ""}` : "";
+  $("#ch-tier").title = st.cfg.tiers?.[t.tier]?.note || "";
+  PT.log("target", { id: t.id, tier: t.tier });
 }
 $("#ch-new").onclick = newTarget;
+$("#ch-tierSel").onchange = newTarget;
 
 const tabooHits = (text) => (st.mode === "challenge" && st.target
   ? st.target.taboo.filter((w) => new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(s|es)?\\b`, "i").test(text)) : []);
@@ -514,6 +605,8 @@ function runStatsHTML(run) {
 
 function showResult(j) {
   const run = j.run, jd = run?.judge, ch = !!j.target;
+  PT.log("job_end", { status: j.status, target: j.target, auto_p: jd?.target_p ?? null, auto_win: jd?.win ?? null, total_s: run?.total_s ?? null });
+  sfx.play(j.status === "done" ? "done" : "loss");
   const tgt = ch ? (st.cfg.challenge || []).find((t) => t.id === j.target) : null;
   const banner = $("#r-banner"), sub = $("#r-sub");
   $("#r-photos").hidden = true;
@@ -561,6 +654,8 @@ function startShoot() {
   $("#shootTarget").textContent = `· make the judge see ${r.tgt?.label}`;
   $("#shootMsg").textContent = "";
   $("#shoot").hidden = false;
+  $("#snapBtn").classList.add("pulse"); setTimeout(() => $("#snapBtn").classList.remove("pulse"), 4500);
+  PT.log("screen", { name: "photo_shoot", target: r.tgt?.id });
   drawThumbs();
   $(".viewer").scrollIntoView({ behavior: "smooth", block: "start" });
 }
@@ -594,6 +689,8 @@ $("#snapBtn").onclick = () => {
   const r = st.round;
   if (!r || r.photos.length >= 3) return;
   r.photos.push(capturePhoto());
+  sfx.play("shutter");
+  PT.log("photo", { n: r.photos.length, az: Math.round(viewer.cam.az), el: Math.round(viewer.cam.el), r: +viewer.cam.r.toFixed(2), light: [+$("#lightAz").value, +$("#lightEl").value], backdrop: $("#backdrop").value, lit: viewer.lit });
   $("#gl").animate([{ filter: "brightness(2.2)" }, { filter: "none" }], { duration: 220 });
   drawThumbs();
 };
@@ -602,37 +699,40 @@ $("#submitShots").onclick = async () => {
   if (!r?.photos.length) return;
   $("#submitShots").disabled = $("#snapBtn").disabled = $("#skipShots").disabled = true;
   $("#shootMsg").textContent = "The judge is looking at your photos…";
-  try {
-    const jd = await postJSON("api/judge_photos", { target: r.tgt.id, prompt: r.j.prompt, images: r.photos }, { "X-Studio-Session": sessionId() });
-    finishRound(jd, "photos");
-  } catch (e) {
+  try { await endRound(r.photos); }
+  catch (e) {
     $("#shootMsg").textContent = `Could not judge the photos: ${e.message}. Try again or keep the auto verdict.`;
     drawThumbs();
   } finally { $("#skipShots").disabled = false; }
 };
-$("#skipShots").onclick = () => finishRound(st.round?.auto, "auto");
+$("#skipShots").onclick = () => endRound([]).catch((e) => ($("#shootMsg").textContent = e.message));
 
-// END state of a Challenge round
-function finishRound(jd, source) {
+// END state of a Challenge round: the server judges the photos (or keeps the preview), scores and stores the round
+async function endRound(images, { silent = false } = {}) {
   const r = st.round;
   if (!r) return;
+  const req = postJSON("api/rounds", { job_id: r.j.id, nick: nick(), images }, { "X-Studio-Session": sessionId() });
+  if (silent) { st.round = null; $("#shoot").hidden = true; req.then((rec) => applyRound(rec)).catch(() => {}); return; }
+  const rec = await req;
   st.round = null;
   $("#shoot").hidden = true;
-  const win = !!jd?.win, s = loadStats();
-  const pts = win ? Math.round(100 * (jd.target_p || 0)) : 0;
-  s.rounds += 1; s.wins += win ? 1 : 0; s.streak = win ? s.streak + 1 : 0; s.points += pts; saveStats(s);
-  if (win) addTrophy(r.run);
+  applyRound(rec);
+  const jd = rec.judge, win = !!rec.win, source = rec.source, pts = rec.points;
+  sfx.play(win ? "win" : "loss");
   const banner = $("#r-banner");
   banner.className = "banner " + (win ? "win" : "loss");
-  banner.textContent = win ? `🏆 You win! +${pts} pts. The judge saw ${r.tgt?.label}.` : `✗ Not quite. The judge saw ${jd?.top?.[0]?.label ?? "something else"}.`;
+  const tierNote = r.tgt?.tier && r.tgt.tier !== "easy" ? ` (${r.tgt.tier} ×${st.cfg.tiers?.[r.tgt.tier]?.mult})` : "";
+  banner.textContent = rec.already ? "This round was already scored." :
+    win ? `🏆 You win! +${pts} pts${tierNote}. The judge saw ${r.tgt?.label}.` : `✗ Not quite. The judge saw ${jd?.top?.[0]?.label ?? "something else"}.`;
   const autoP = r.auto?.target_p, p = jd?.target_p;
   let cmp = "";
   if (source === "photos" && autoP != null && p != null) {
     const d = Math.round(100 * (p - autoP));
-    cmp = ` Auto camera ${Math.round(100 * autoP)}% → your photos ${Math.round(100 * p)}% <span class="delta ${d >= 0 ? "up" : "down"}">(${d >= 0 ? "+" : ""}${d} pts of confidence)</span>.`;
+    cmp = ` Auto camera ${Math.round(100 * autoP)}% → your photos ${Math.round(100 * p)}% <span class="delta ${d >= 0 ? "up" : "down"}">(${d >= 0 ? "+" : ""}${d} points of confidence)</span>.`;
   }
   $("#r-sub").innerHTML = `Target: <b>${esc(r.tgt?.label)}</b> · your prompt: “${esc(r.j.prompt)}” · ` +
-    (win ? `rank 1 with ${Math.round(100 * p)}%.` : `your target ranked #${jd?.target_rank ?? "?"}.`) + cmp;
+    (win ? `rank 1 with ${Math.round(100 * (p || 0))}%.` : `your target ranked #${jd?.target_rank ?? "?"} of ${(st.cfg.challenge || []).length}.`) + cmp +
+    (rec.total ? ` <b>Total: ${rec.total.points} pts.</b>` : "");
   if (source === "photos") {
     $("#r-img").hidden = true;
     $("#r-photos").hidden = false;
@@ -642,13 +742,70 @@ function finishRound(jd, source) {
   resultButtons("final", true, true);
   $("#result").hidden = false;
 }
+function applyRound(rec) {
+  PT.log("round_end", { target: rec.target, tier: rec.tier, source: rec.source, p: rec.p, auto_p: rec.auto_p, win: !!rec.win, points: rec.points });
+  if (rec.already) return;
+  const s = loadStats();
+  if (rec.total) Object.assign(s, { points: rec.total.points, wins: rec.total.wins, rounds: rec.total.rounds });
+  s.streak = rec.win ? s.streak + 1 : 0;
+  saveStats(s);
+  if (rec.win && rec.run_rel) addTrophy({ name: rec.run_rel.split("/").pop() });
+}
+
+// ------------------------------------------------------------------ leaderboard
+async function showBoard() {
+  $("#board").hidden = false;
+  $("#boardRows").innerHTML = `<tr><td colspan="6" class="dim">loading…</td></tr>`;
+  try {
+    const b = await fetchJSON("api/leaderboard", { headers: { "X-Studio-Player": playerId() } });
+    $("#boardRows").innerHTML = b.top.length ? b.top.map((r) => `<tr class="${r.me ? "me" : ""}"><td>${r.rank}</td><td>${esc(r.nick || "anonymous")}${r.me ? " (you)" : ""}</td><td>${r.points}</td><td>${r.wins}</td><td>${r.rounds}</td><td>${r.best}</td></tr>`).join("")
+      : `<tr><td colspan="6" class="dim">No rounds yet. Be the first!</td></tr>`;
+    $("#boardMe").textContent = b.me?.rounds ? `You: ${b.me.points} pts from ${b.me.wins} win${b.me.wins === 1 ? "" : "s"} in ${b.me.rounds} round${b.me.rounds === 1 ? "" : "s"}.` : "Play a Challenge round to get on the board.";
+  } catch {
+    $("#boardRows").innerHTML = `<tr><td colspan="6" class="dim">The leaderboard needs the live server (this is the static build).</td></tr>`;
+  }
+}
+$("#boardClose").onclick = () => { $("#board").hidden = true; showMenu(); };
+$("#boardPlay").onclick = () => { $("#board").hidden = true; enterMode("challenge"); };
+
+// ------------------------------------------------------------------ onboarding (first visit, and the ? Help button)
+function showOnboard() { $("#obNick").value = nick(); $("#onboard").hidden = false; PT.log("screen", { name: "onboarding" }); }
+function closeOnboard(play) {
+  LS.set("studio.onboarded", "1");
+  const n = $("#obNick").value.trim().slice(0, 16);
+  if (n) LS.set("studio.nick", n);
+  showNick();
+  $("#onboard").hidden = true;
+  if (play && st.live) enterMode("challenge"); else showMenu();
+}
+function showNick() { $("#nickPill").hidden = !nick(); $("#nickPill").textContent = `👤 ${nick()}`; }
+$("#obGo").onclick = () => closeOnboard(true);
+$("#obSkip").onclick = () => closeOnboard(false);
+$("#helpBtn").onclick = showOnboard;
+$("#muteBtn").textContent = sfx.muted ? "🔇" : "🔊";
+$("#muteBtn").onclick = () => { $("#muteBtn").textContent = sfx.toggle() ? "🔇" : "🔊"; sfx.play("click"); };
+
+// ------------------------------------------------------------------ playtest: post-play interview
+if (PT.on) {
+  $("#ptBar").hidden = false; $("#ptId").textContent = PT.id;
+  $("#ptEnd").onclick = () => { $("#survey").hidden = false; PT.log("screen", { name: "survey" }); };
+  $("#svSend").onclick = async () => {
+    const answers = { confusing: $("#sv1").value, intuitive_1_10: +$("#sv2").value || null, glitches: $("#sv3").value, fun_1_10: +$("#sv4").value || null, change: $("#sv5").value };
+    try {
+      await postJSON("api/survey", { subject: PT.id, session: PT.session, answers });
+      PT.log("survey_sent"); PT.flush();
+      $("#svMsg").textContent = "Thank you! Your answers were saved.";
+      setTimeout(() => ($("#survey").hidden = true), 1200);
+    } catch (e) { $("#svMsg").textContent = `Could not save: ${e.message}`; }
+  };
+}
 
 // ------------------------------------------------------------------ exhibition: trophies + your models on one lit stage
-const loadTrophies = () => { try { return JSON.parse(sessionStorage.getItem("studio.trophies")) || []; } catch { return []; } };
+const loadTrophies = () => { try { return JSON.parse(LS.get("studio.trophies")) || []; } catch { return []; } };
 function addTrophy(run) {
   const t = loadTrophies().filter((n) => n !== run.name);
   t.unshift(run.name);
-  try { sessionStorage.setItem("studio.trophies", JSON.stringify(t.slice(0, 16))); } catch {}
+  LS.set("studio.trophies", JSON.stringify(t.slice(0, 16)));
 }
 const plyCache = new Map();
 async function plyOf(r) {
@@ -683,7 +840,8 @@ async function showExhibit() {
   viewer.autoRotate = 0; $("#rotate").checked = false;
   setStudioLook(true);
   document.querySelectorAll(".run").forEach((b) => b.classList.remove("sel"));
-  $("#viewname").textContent = `· Exhibition: ${items.map((x) => (x.why === "trophy" ? "🏆 " : x.why === "yours" ? "★ " : "") + x.r.prompt.replace(/^an? /, "")).join("  |  ")}`;
+  const own = items.some((x) => x.why !== "example" && x.why !== "community");
+  $("#viewname").textContent = (own ? "" : "· Win Challenge rounds to put your own models here ") + `· Exhibition: ${items.map((x) => (x.why === "trophy" ? "🏆 " : x.why === "yours" ? "★ " : "") + x.r.prompt.replace(/^an? /, "")).join("  |  ")}`;
   $("#exhibitCtl").hidden = false;
   $("#dlply").hidden = true;
 }
@@ -696,7 +854,7 @@ $("#exhibitN").onchange = $("#exhibitBudget").onchange = () => st.exhibit && sho
 
 $("#r-explore").onclick = () => { $("#result").hidden = true; setStudioLook(true); };
 $("#r-shoot").onclick = startShoot;
-$("#r-keep").onclick = () => finishRound(st.round?.auto, "auto");
+$("#r-keep").onclick = () => endRound([]).catch((e) => alert(e.message));
 $("#r-again").onclick = () => { $("#result").hidden = true; if (st.mode === "challenge") newTarget(); else $("#prompt").select(); $("#prompt").focus(); };
 $("#r-retry").onclick = () => { $("#result").hidden = true; $("#prompt").focus(); };
 $("#r-menu").onclick = showMenu;
@@ -704,6 +862,9 @@ $("#menuBtn").onclick = showMenu;
 document.querySelectorAll("#menu .mode").forEach((b) => (b.onclick = () => enterMode(b.dataset.go)));
 document.addEventListener("keydown", (e) => {
   if (e.key !== "Escape") return;
+  if (!$("#onboard").hidden) { closeOnboard(false); return; }
+  if (!$("#board").hidden) { $("#board").hidden = true; return; }
+  if (!$("#survey").hidden) { $("#survey").hidden = true; return; }
   if (!$("#result").hidden) { $("#result").hidden = true; if (st.round) startShoot(); }
   else if (!$("#menu").hidden) $("#menu").hidden = true;
   else showMenu();
@@ -712,7 +873,7 @@ document.addEventListener("keydown", (e) => {
 // ------------------------------------------------------------------ video-narration helpers
 window.studio = {
   viewer, st, generate, bench, sweep, setMult, selectRun, loadRuns, showMenu, enterMode, newTarget, showResult,
-  startShoot, capturePhoto, finishRound, showExhibit, setBackdrop, setStudioLook,
+  startShoot, capturePhoto, endRound, showExhibit, setBackdrop, setStudioLook, showBoard, showOnboard, sfx, PT,
   caption(text, sub = "") { const c = $("#caption"); c.hidden = !text; c.innerHTML = text + (sub ? `<small>${sub}</small>` : ""); },
   flash(sel) { const e = $(sel); e.classList.add("flash"); setTimeout(() => e.classList.remove("flash"), 2500); },
 };
@@ -763,5 +924,6 @@ window.studio = {
     if (resume) { st.jobId = resume; poll(); }
   }
   showScore();
-  if (!resume) showMenu();   // START state
+  showNick();
+  if (!resume) { if (!LS.get("studio.onboarded")) showOnboard(); else showMenu(); }   // START state
 })();

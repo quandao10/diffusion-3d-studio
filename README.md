@@ -1,4 +1,4 @@
-# Interactive Diffusion-Based 3D Generation Studio — Beta v0.3 (Assignment 5)
+# Interactive Diffusion-Based 3D Generation Studio — v1.0-rc, feature complete (Assignment 6)
 
 **CS 549 · Minh Quan Dao (qd66) · Graphics pillars: Procedural Generation + Rendering**
 
@@ -11,7 +11,7 @@ novel-view rendering (CUDA rasterizer + my own WebGL2 Gaussian-splatting viewer)
 | Demo video (2:57) | `video/demo.mp4` (screen capture of the live studio: MVDream generation, queue/ETA/stop, guidance comparison, stress test; recorded by `scripts/record_demo2.py`) → **YouTube: https://www.youtube.com/watch?v=UGFzpFrmWcE** |
 | Static web demo (GitHub Pages, read-only) | https://quandao10.github.io/diffusion-3d-studio/ (built from `docs/`) |
 | Live studio (generation) | local NVIDIA GPU: `GPU=0 python server.py` → http://127.0.0.1:8549 |
-| Reports | `report/Assignment_5_Beta.pdf` (Beta) · `report/Assignment_4_Alpha.pdf` (Alpha) · `report/Assignment_3_Final.pdf` (MVP) |
+| Reports | `report/Assignment_6_Feature_Complete.pdf` (feature freeze + playtest) · `report/Assignment_5_Beta.pdf` (Beta) · `report/Assignment_4_Alpha.pdf` (Alpha) · `report/Assignment_3_Final.pdf` (MVP) |
 
 > **Plan vs. reality.** Assignment 2 specified an SDS-guided **NeRF** (differentiable volume rendering). This MVP keeps
 > the same diffusion-guided loop — frozen 2D diffusion prior, random cameras, differentiable rendering, SDS gradients
@@ -68,6 +68,24 @@ GPU=0 python server.py --port 8549      # open http://127.0.0.1:8549  (ssh -L 85
 # 4) static read-only site for GitHub Pages
 python scripts/export_static.py         # -> docs/  (Settings → Pages → branch main, folder /docs)
 ```
+
+## Feature-complete build v1.0-rc (Assignment 6)
+
+Feature freeze: everything below is in the build; after this only polish, optimisation and bug fixes.
+
+* **Server-side scoring and persistence** (`store.py`, SQLite `run/studio.db`): a round is scored by the server from the
+  job id (target, judge and points never come from the browser), each job can be scored once, and Challenge jobs survive a
+  server restart. `POST /api/rounds` (photos or the auto verdict), `GET /api/leaderboard`.
+* **Leaderboard** (menu) with a nickname chosen on the first visit; points, wins and trophies persist across visits.
+* **40 Challenge targets in 3 difficulty tiers** (`configs/challenge.json`): easy ×1, medium ×1.5, hard ×2 points;
+  difficulty picker in the Challenge box. Judge top-1 accuracy with 40 labels: 48/50 (`evidence/judge_eval.csv`; 49/50 with 20 labels).
+* **Onboarding**: a "How to play" screen on the first visit (also behind **? Help**), a pulsing shutter button in the photo shoot,
+  empty states (exhibition without trophies, static build without leaderboard).
+* **Audio**: synthesised WebAudio effects (start, model ready, shutter, win, loss, clicks) with a mute toggle; no audio files.
+* **Gallery moderation**: the owner (localhost) can hide community models (`POST /api/runs/{name}/hide`).
+* **Playtest mode** `?playtest=ID`: logs clicks, screens, photos, jobs, rounds, errors and an FPS sample every 5 s
+  (`/api/telemetry`), and asks the 5 post-play questions in the app (`/api/survey`). Protocol: `report/playtest_protocol.md`;
+  analysis: `python scripts/playtest_summary.py`.
 
 ## Beta build v0.3 (Assignment 5): Rendering inside the core loop
 
@@ -216,6 +234,7 @@ its numbers are reported as indicative only.
 ```
 server.py                 studio backend (FastAPI): jobs on the GPU, progress, runs, nvidia-smi, photo judging
 photo_judge.py            CLIP judge (CPU) for the player's photos (Beta photo shoot)
+store.py                  SQLite: Challenge jobs, scored rounds, leaderboard, playtest telemetry and surveys
 web/                      studio front-end: index.html, app.js, splat.js (WebGL2 splatting), sort-worker.js, charts.js
 scripts/                  setup_env.sh, collect_env.sh, run_text_to_3d.sh, train_logged.py, benchmark_renderer.py,
                           render_turntable.sh, export_static.py, record_demo.py, tts.py, demo_script.py, browser.py

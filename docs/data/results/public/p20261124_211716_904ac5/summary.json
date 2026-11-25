@@ -1,0 +1,61 @@
+{
+  "prompt": "a golden royal headpiece worn by a king, a ring of gold with pointed spikes and red jewels",
+  "seed": 0,
+  "iters": 500,
+  "guidance": "mvdream",
+  "guidance_scale": 50.0,
+  "sd_model": "MVDream/MVDream sd-v2.1-base-4view",
+  "gpu": "NVIDIA A100-PCIE-40GB",
+  "num_gaussians_final": 260642,
+  "load_model_s": 54.5,
+  "train_s": 92.6,
+  "export_s": 0.8,
+  "render_views_s": 7.4,
+  "total_s": 161.7,
+  "peak_vram_mb": 10956.5,
+  "ply": "p20261124_211716_904ac5_model.ply",
+  "front_azimuth": 90,
+  "mesh": null,
+  "config_overrides": {
+    "prompt": "a golden royal headpiece worn by a king, a ring of gold with pointed spikes and red jewels",
+    "save_path": "p20261124_211716_904ac5",
+    "outdir": "/research/cbim/vast/qd66/workspace/assign/diffusion-3d-studio/results/public/p20261124_211716_904ac5",
+    "iters": 500,
+    "gui": false,
+    "force_cuda_rast": true,
+    "guidance": "mvdream",
+    "guidance_scale": 50.0,
+    "seed": 0
+  },
+  "clip_prompt": 22.16,
+  "judge": {
+    "prompt_clip": 22.16,
+    "top": [
+      {
+        "label": "a crown",
+        "p": 0.91
+      },
+      {
+        "label": "a donut",
+        "p": 0.037
+      },
+      {
+        "label": "a cupcake",
+        "p": 0.017
+      },
+      {
+        "label": "a pineapple",
+        "p": 0.007
+      },
+      {
+        "label": "a hamburger",
+        "p": 0.004
+      }
+    ],
+    "judge_s": 6.1,
+    "target": "a crown",
+    "target_p": 0.91,
+    "target_rank": 1,
+    "win": true
+  }
+}
