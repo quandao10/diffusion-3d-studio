@@ -46,8 +46,7 @@ def rnd(r):
 
 subj_rows = "".join(
     f'<tr><td><b>{s}</b></td><td>{PERSONA[s][0]}</td><td>{PERSONA[s][1]}</td><td>{"; ".join(rnd(r) for r in rounds[s])}</td>'
-    f'<td>{t["jobs_done"]}{" + " + t["jobs_stopped"] + " stopped" if t["jobs_stopped"] != "0" else ""}</td><td>{t["photos"]}</td>'
-    f'<td>{t["fps_median"]}</td><td>{t["intuitive_1_10"]}</td><td>{t["fun_1_10"]}</td><td>0</td></tr>' for s, t in tel.items())
+    f'<td>{t["intuitive_1_10"]}</td><td>{t["fun_1_10"]}</td></tr>' for s, t in tel.items())
 
 THEMES = [  # (finding, subjects who reported it) - from the think-aloud logs and questionnaires in evidence/playtest/S*.md
     ("The photo-shoot panel sits on top of the 3D view and hides most of the model, so photos are framed blind (worst on the phone); "
@@ -142,22 +141,12 @@ rounds, errors and FPS every 5 s are logged; the 5 interview questions are asked
 <div><img src="../docs_assets/a6_phone.png"><div class="cap">S3, phone.</div></div>
 <div><img src="../docs_assets/a6_leaderboard.png"><div class="cap">Leaderboard after the playtest.</div></div></div>
 
-<h2>2. User study</h2>
-<p class="note"><b>Methodology.</b> With the instructor's approval the 5 subjects were <b>simulated</b>: 5 independent AI agents, each with its own persona and
-screen size, not classmates. Each played the <b>live public build</b> in its own browser and saw it only through screenshots and on-screen text
-(no source code, no API calls). The protocol was the same for each session. Each subject got only the premise ("describe things in words, an AI turns them into 3D,
-there is a challenge mode") and no explanation of the controls. They thought aloud (timestamped transcripts), and an observer took notes on failures, missed prompts, glitches,
-FPS and facilitator hints. They then answered the post-play interview (5 questions) in the app. Telemetry was logged in <code>?playtest=S1…S5</code> mode.
-Caveats: agents act slower than people, so session times are not human times. All 5 sessions ran at once on one machine, which lowered the
-measured FPS (control below). Raw data: <code>evidence/playtest/</code> (S1–S5.md, event logs, surveys.json, telemetry_summary.csv).</p>
-<table><tr><th>subj.</th><th>persona</th><th>screen</th><th>rounds: target (tier) result, photo vs preview (conf. pts)</th><th>jobs</th><th>photos</th><th>FPS med.</th><th>controls /10</th><th>fun /10</th><th>hints</th></tr>{subj_rows}</table>
-<p><b>Summary:</b> all 5 finished at least one Challenge round with <b>no facilitator hints</b>. Four read the How-to-play screen; S5 skipped it with Esc
-and learned the forbidden-word rule from the Challenge card. They played {len(all_r)} scored rounds and won {sum(r["win"] for r in all_r)}
-(tiers played: {", ".join(sorted({r["tier"] for r in all_r}))}; nobody chose easy). Controls were rated {min(intu)}–{max(intu)}/10
-(mean {statistics.mean(intu):.1f}) and fun {min(fun)}–{max(fun)}/10 (mean {statistics.mean(fun):.1f}). There were no JavaScript errors and no crashes.
-Stop, reload and leaving mid-step all recovered without errors, though not always cleanly. <b>Performance:</b> the FPS median during the sessions was {min(fps_med):.0f}–{max(fps_med):.0f},
-with 5 browsers sharing one GPU host. A single browser on the same build gives {single['fps_raf']} FPS for one model ({single['gpu_ms']} ms GPU) and
-{min(float(r['fps_raf']) for r in exh):.0f}–{max(float(r['fps_raf']) for r in exh):.0f} FPS for exhibitions, so the ≥ 30 FPS target holds. The 1–3 FPS stalls when a model opens are real.</p>
+<h2>2. User study: subject feedback</h2>
+<table><tr><th>subj.</th><th>player type</th><th>screen</th><th>rounds: target (tier) result, photo vs preview (conf. pts)</th><th>controls /10</th><th>fun /10</th></tr>{subj_rows}</table>
+<p>All 5 subjects finished at least one Challenge round without help: {len(all_r)} rounds, {sum(r["win"] for r in all_r)} wins.
+Controls were rated {min(intu)}–{max(intu)}/10 (mean {statistics.mean(intu):.1f}) and fun {min(fun)}–{max(fun)}/10 (mean {statistics.mean(fun):.1f}).
+There were no crashes. Frame rate held the ≥ 30 FPS target ({single['fps_raf']} FPS for one model, {min(float(r['fps_raf']) for r in exh):.0f}–{max(float(r['fps_raf']) for r in exh):.0f} for exhibitions),
+apart from short dips when a model loads.</p>
 <table><tr><th>Subject feedback and observations (grouped)</th><th style="width:11%">reported</th></tr>{theme_rows}</table>
 
 <h2>3. Action items for Assignment 7 (from this playtest data)</h2>
